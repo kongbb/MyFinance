@@ -5,6 +5,14 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as path from "path";
 import * as indexRoute from "./routes/index";
+import * as mongoose from "mongoose";
+import * as passport from "passport";
+
+var flash    = require("connect-flash");
+var morgan       = require("morgan");
+var cookieParser = require("cookie-parser");
+var session      = require("express-session");
+var configDB = require("./config/database.js");
 
 class Server {
   public app: express.Application;
@@ -29,15 +37,25 @@ class Server {
     //mount logger
     //this.app.use(logger("dev"));
 
+    this.app.use("/app", express.static(path.resolve(__dirname, "app")));
+    this.app.use("/pages", express.static(path.resolve(__dirname, "pages")));
+    this.app.use("/node_modules", express.static(path.resolve(__dirname, "node_modules")));
+    this.app.use("/dist", express.static(path.resolve(__dirname, "dist")));
+    this.app.use("/js", express.static(path.resolve(__dirname, "js")));
+
+    this.app.use(cookieParser()); // read cookies (needed for auth)
     //mount json form parser
     this.app.use(bodyParser.json());
-
     //mount query string parser
     this.app.use(bodyParser.urlencoded({ extended: true }));
-
+    this.app.use(morgan("dev")); // log every request to the console
+    this.app.use(session({ secret: "roger" })); // session secret
+    this.app.use(passport.initialize());
+    this.app.use(passport.session()); // persistent login sessions
+    this.app.use(flash()); // use connect-flash for flash messages stored in session
     //add static paths
-    this.app.use(express.static(path.join(__dirname, "public")));
-    this.app.use(express.static(path.join(__dirname, "bower_components")));
+    // this.app.use(express.static(path.join(__dirname, "public")));
+    // this.app.use(express.static(path.join(__dirname, "bower_components")));
 
     // catch 404 and forward to error handler
     this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -56,7 +74,9 @@ class Server {
     var index: indexRoute.Index = new indexRoute.Index();
 
     //home page
-    router.get("/", index.index.bind(index.index));
+    router.get("/", function(req: express.Request, res: express.Response){
+      res.sendfile("pages/index.html");
+    });
 
     //use router middleware
     this.app.use(router);
