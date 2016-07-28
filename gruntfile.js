@@ -6,10 +6,11 @@ module.exports = function(grunt) {
       app: {
         files: [{
           src: ["src/**/*.ts", "!src/.baseDir.ts", "!src/_all.d.ts"],
-          dest: "."
+          dest: "./javascript/"
         }],
         options: {
           module: "commonjs",
+          moduleResolution: "node",
           noLib: true,
           target: "es6",
           sourceMap: false

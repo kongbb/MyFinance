@@ -13,6 +13,7 @@ var morgan       = require("morgan");
 var cookieParser = require("cookie-parser");
 var session      = require("express-session");
 var configDB = require("./config/database.js");
+var db = require("./db/db");
 
 class Server {
   public app: express.Application;
@@ -37,11 +38,11 @@ class Server {
     //mount logger
     //this.app.use(logger("dev"));
 
-    this.app.use("/app", express.static(path.resolve(__dirname, "app")));
-    this.app.use("/pages", express.static(path.resolve(__dirname, "pages")));
-    this.app.use("/node_modules", express.static(path.resolve(__dirname, "node_modules")));
-    this.app.use("/dist", express.static(path.resolve(__dirname, "dist")));
-    this.app.use("/js", express.static(path.resolve(__dirname, "js")));
+    this.app.use("/javascript", express.static(path.resolve(__dirname, "../javascript")));
+    this.app.use("/pages", express.static(path.resolve(__dirname, "../pages")));
+    this.app.use("/node_modules", express.static(path.resolve(__dirname, "../node_modules")));
+    this.app.use("/dist", express.static(path.resolve(__dirname, "../dist")));
+    this.app.use("/js", express.static(path.resolve(__dirname, "../js")));
 
     this.app.use(cookieParser()); // read cookies (needed for auth)
     //mount json form parser

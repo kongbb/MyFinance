@@ -9,6 +9,7 @@ var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var configDB = require("./config/database.js");
+var db = require("./db/db");
 class Server {
     constructor() {
         this.app = express();
@@ -21,11 +22,11 @@ class Server {
     config() {
         this.app.set("views", path.join(__dirname, "views"));
         this.app.set("view engine", "jade");
-        this.app.use("/app", express.static(path.resolve(__dirname, "app")));
-        this.app.use("/pages", express.static(path.resolve(__dirname, "pages")));
-        this.app.use("/node_modules", express.static(path.resolve(__dirname, "node_modules")));
-        this.app.use("/dist", express.static(path.resolve(__dirname, "dist")));
-        this.app.use("/js", express.static(path.resolve(__dirname, "js")));
+        this.app.use("/javascript", express.static(path.resolve(__dirname, "../javascript")));
+        this.app.use("/pages", express.static(path.resolve(__dirname, "../pages")));
+        this.app.use("/node_modules", express.static(path.resolve(__dirname, "../node_modules")));
+        this.app.use("/dist", express.static(path.resolve(__dirname, "../dist")));
+        this.app.use("/js", express.static(path.resolve(__dirname, "../js")));
         this.app.use(cookieParser());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
