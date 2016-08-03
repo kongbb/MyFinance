@@ -1,3 +1,4 @@
+/// <reference path="browser/ambient/bcrypt-nodejs/index.d.ts" />
 /// <reference path="browser/ambient/body-parser/index.d.ts" />
 /// <reference path="browser/ambient/connect-flash/index.d.ts" />
 /// <reference path="browser/ambient/express-serve-static-core/index.d.ts" />

@@ -13,6 +13,7 @@ module.exports = function(grunt) {
           moduleResolution: "node",
           noLib: true,
           target: "es6",
+          experimentalDecorators: true,
           sourceMap: false
         }
       }

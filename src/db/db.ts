@@ -1,4 +1,3 @@
-/// <reference path="../_all.d.ts" />
 import DbConfig from "../config/database";
 // Bring Mongoose into the app
 import mongoose = require("mongoose");
