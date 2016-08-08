@@ -9,11 +9,13 @@ module.exports = function(grunt) {
           dest: "./javascript/"
         }],
         options: {
+          lib: ["es6", "dom"],
           module: "commonjs",
           moduleResolution: "node",
-          noLib: true,
+          noLib: false,
           target: "es6",
           experimentalDecorators: true,
+          emitDecoratorMetadata: true,
           sourceMap: false
         }
       }
@@ -27,9 +29,18 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      ts: {
-        files: ["js/src/**/*.ts", "src/**/*.ts"],
-        tasks: ["ts", "tslint"]
+      files: [{
+          src: ["src/**/*.ts", "!src/.baseDir.ts", "!src/_all.d.ts"],
+          dest: "./javascript/"
+        }],
+      options: {
+        module: "commonjs",
+        moduleResolution: "node",
+        noLib: true,
+        target: "es6",
+        experimentalDecorators: true,
+        emitDecoratorMetadata: true,
+        sourceMap: false
       }
     }
   });

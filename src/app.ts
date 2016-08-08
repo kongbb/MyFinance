@@ -1,17 +1,20 @@
-"use strict";
+/// <reference path="../typings/index.d.ts" />
 
-import * as bodyParser from "body-parser";
+"use strict";
+import bodyParser = require("body-parser");
+
 import * as express from "express";
 import * as path from "path";
 import * as indexRoute from "./routes/index";
 import * as mongoose from "mongoose";
 import * as passport from "passport";
 
-var flash    = require("connect-flash");
+import flash    = require("connect-flash");
+declare var require:any;
 var morgan       = require("morgan");
 var cookieParser = require("cookie-parser");
 var session      = require("express-session");
-var configDB = require("./config/database.js");
+var configDB = require("./config/database");
 var db = require("./db/db");
 
 class Server {

@@ -4,11 +4,11 @@ const express = require("express");
 const path = require("path");
 const indexRoute = require("./routes/index");
 const passport = require("passport");
-var flash = require("connect-flash");
+const flash = require("connect-flash");
 var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
-var configDB = require("./config/database.js");
+var configDB = require("./config/database");
 var db = require("./db/db");
 class Server {
     constructor() {

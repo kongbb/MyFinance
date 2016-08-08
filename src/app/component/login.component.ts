@@ -8,10 +8,8 @@ import { Component } from "@angular/core";
 export class LoginComponent {
     mode: LoginMode = LoginMode.Index;
     loginMode = LoginMode;
-    constructor(){
-    }
 
-    setMode($event, mode: LoginMode){
+    setMode($event, mode: LoginMode) {
         $event.preventDefault();
         this.mode = mode;
     }

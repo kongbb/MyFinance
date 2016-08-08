@@ -1,9 +1,10 @@
 {
     "compilerOptions":{
+        "noLib": true,
         "target": "es6",
         "module": "commonjs",
         "moduleResolution": "node",
-        "sourceMap": true,
+        "sourceMap": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": false,
@@ -11,7 +12,9 @@
     },
     "exclude":[
         "node_modules",
-        "typings/main",
-        "typings/main.d.ts"
+        "typings",
+        "wwwroot",
+        "javascript",
+        "js"
     ]
 }
