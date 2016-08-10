@@ -10,5 +10,7 @@ import { HTTP_PROVIDERS } from "@angular/http";
 })
 
 export class AppComponent {
-  constructor(router: Router){}
+  constructor(router: Router) {
+    
+  }
 }

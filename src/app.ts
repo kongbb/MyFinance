@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 "use strict";
 import bodyParser = require("body-parser");
 
@@ -10,7 +8,6 @@ import * as mongoose from "mongoose";
 import * as passport from "passport";
 
 import flash    = require("connect-flash");
-declare var require:any;
 var morgan       = require("morgan");
 var cookieParser = require("cookie-parser");
 var session      = require("express-session");

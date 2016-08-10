@@ -2,16 +2,16 @@
 1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
 1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'run',
-1 verbose cli   'tsc' ]
+1 verbose cli   'grunt' ]
 2 info using npm@2.15.5
 3 info using node@v4.4.6
-4 verbose run-script [ 'pretsc', 'tsc', 'posttsc' ]
-5 info pretsc MyFinance@
-6 info tsc MyFinance@
+4 verbose run-script [ 'pregrunt', 'grunt', 'postgrunt' ]
+5 info pregrunt MyFinance@
+6 info grunt MyFinance@
 7 verbose unsafe-perm in lifecycle true
-8 info MyFinance@ Failed to exec tsc script
-9 verbose stack Error: MyFinance@ tsc: `tsc`
-9 verbose stack Exit status 2
+8 info MyFinance@ Failed to exec grunt script
+9 verbose stack Error: MyFinance@ grunt: `grunt`
+9 verbose stack Exit status 3
 9 verbose stack     at EventEmitter.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\lifecycle.js:217:16)
 9 verbose stack     at emitTwo (events.js:87:13)
 9 verbose stack     at EventEmitter.emit (events.js:172:7)
@@ -23,17 +23,17 @@
 10 verbose pkgid MyFinance@
 11 verbose cwd C:\code\MyFinance
 12 error Windows_NT 6.1.7601
-13 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "run" "tsc"
+13 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "run" "grunt"
 14 error node v4.4.6
 15 error npm  v2.15.5
 16 error code ELIFECYCLE
-17 error MyFinance@ tsc: `tsc`
-17 error Exit status 2
-18 error Failed at the MyFinance@ tsc script 'tsc'.
+17 error MyFinance@ grunt: `grunt`
+17 error Exit status 3
+18 error Failed at the MyFinance@ grunt script 'grunt'.
 18 error This is most likely a problem with the MyFinance package,
 18 error not with npm itself.
 18 error Tell the author that this fails on your system:
-18 error     tsc
+18 error     grunt
 18 error You can get information on how to open an issue for this project with:
 18 error     npm bugs MyFinance
 18 error Or if that isn't available, you can get their info via:
