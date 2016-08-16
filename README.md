@@ -5,6 +5,7 @@ would get Duplicate Identifier
 
 
 Command sample:
+npm install npm -g
 typings install dt~packagename --global --save
 typings uninstall packagename --save
 

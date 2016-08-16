@@ -1,35 +1,37 @@
 "use strict";
 const PassportLocal = require("passport-local");
-var User = require("../mongoModel/user");
-var LocalStrategy = PassportLocal.Strategy;
+var user = require("../mongoModel/user");
+var localStrategy = PassportLocal.Strategy;
 module.exports = function (passport) {
     passport.serializeUser(function (user, done) {
         done(null, user.id);
     });
     passport.deserializeUser(function (id, done) {
-        User.findById(id, function (err, user) {
+        user.findById(id, function (err, user) {
             done(err, user);
         });
     });
-    passport.use('local-signup', new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
+    passport.use("local-signup", new localStrategy({
+        usernameField: "email",
+        passwordField: "password",
         passReqToCallback: true
     }, function (req, email, password, done) {
         process.nextTick(function () {
-            User.findOne({ 'local.email': email }, function (err, user) {
-                if (err)
+            user.findOne({ "local.email": email }, function (err, user) {
+                if (err) {
                     return done(err);
+                }
                 if (user) {
-                    return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    return done(null, false, req.flash("signupMessage", "That email is already taken."));
                 }
                 else {
-                    var newUser = new User();
+                    var newUser = new user();
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
                     newUser.save(function (err) {
-                        if (err)
+                        if (err) {
                             throw err;
+                        }
                         return done(null, newUser);
                     });
                 }

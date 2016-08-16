@@ -1,7 +1,6 @@
-<router-outlet></router-outlet>
-<div *ngSwitchWhen="loginMode.Index" class="jumbotron text-center">
+<div class="jumbotron text-center">
   <h1><span class="fa fa-lock"></span> Node Authentication</h1>
   <p>Login or Register with:</p>
-  <a href="/login" class="btn btn-default" (click)="setMode($event, loginMode.Login)"><span class="fa fa-user"></span> Local Login</a>
-  <a href="/signup" class="btn btn-default" (click)="setMode($event, loginMode.Signup)"><span class="fa fa-user"></span> Local Signup</a>
+  <a href="/login" class="btn btn-default" routerLink="/login" routerLinkActive="active"><span class="fa fa-user"></span> Local Login</a>
+  <a href="/signup" class="btn btn-default" routerLink="/signup" routerLinkActive="active"><span class="fa fa-user"></span> Local Signup</a>
 </div>

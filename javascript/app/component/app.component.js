@@ -9,18 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require("@angular/core");
-const router_1 = require("@angular/router");
 let AppComponent = class AppComponent {
-    constructor(router) {
-    }
 };
 AppComponent = __decorate([
     core_1.Component({
         selector: "myfinance",
-        templateUrl: `<router-outlet></router-outlet>`,
-        directives: [router_1.ROUTER_DIRECTIVES],
-        providers: [router_1.Router]
+        template: `
+      <router-outlet></router-outlet>`,
     }), 
-    __metadata('design:paramtypes', [router_1.Router])
+    __metadata('design:paramtypes', [])
 ], AppComponent);
 exports.AppComponent = AppComponent;
