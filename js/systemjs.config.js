@@ -16,7 +16,7 @@
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'immutable':                  { main: 'dist/immutable.js' },
     'rxjs':                       { defaultExtension: 'js' },
-    'angular2-in-memory-web-api': { defaultExtension: 'js' },
+    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
     'ng2-bootstrap':              { defaultExtension: 'js' },
     'moment':                     { main: 'moment.js',  defaultExtension: 'js' }
   };

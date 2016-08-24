@@ -11,11 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require("@angular/core");
 const platform_browser_1 = require("@angular/platform-browser");
 const forms_1 = require("@angular/forms");
+const http_1 = require("@angular/http");
+const angular2_in_memory_web_api_1 = require("angular2-in-memory-web-api");
 const app_component_1 = require("./component/app.component");
 const home_component_1 = require("./component/home.component");
 const signup_component_1 = require("./component/signup.component");
 const login_component_1 = require("./component/login.component");
 const app_router_1 = require("./route/app.router");
+const user_data_1 = require("./mockData/user.data");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -23,7 +26,8 @@ AppModule = __decorate([
         imports: [
             platform_browser_1.BrowserModule,
             forms_1.FormsModule,
-            app_router_1.routing
+            app_router_1.routing,
+            http_1.HttpModule
         ],
         declarations: [
             app_component_1.AppComponent,
@@ -32,7 +36,9 @@ AppModule = __decorate([
             signup_component_1.SignupComponent
         ],
         providers: [
-            app_router_1.appRoutingProviders
+            app_router_1.appRoutingProviders,
+            { provide: http_1.XHRBackend, useClass: angular2_in_memory_web_api_1.InMemoryBackendService },
+            { provide: angular2_in_memory_web_api_1.SEED_DATA, useClass: user_data_1.UserData }
         ],
         bootstrap: [app_component_1.AppComponent]
     }), 

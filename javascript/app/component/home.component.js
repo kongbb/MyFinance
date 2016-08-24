@@ -9,13 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require("@angular/core");
+const user_service_1 = require("../service/user.service");
 let HomeComponent = class HomeComponent {
+    constructor(userService) {
+        this.userService = userService;
+    }
+    ngOnInit() {
+        this.getUsers();
+    }
+    getUsers() {
+        this.userService.getUsers()
+            .subscribe(users => this.users = users, error => this.errorMessage = error);
+    }
 };
 HomeComponent = __decorate([
     core_1.Component({
         selector: "home",
-        templateUrl: "../../pages/template/home.html"
+        templateUrl: "../../pages/template/home.html",
+        providers: [user_service_1.UserService]
     }), 
-    __metadata('design:paramtypes', [])
+    __metadata('design:paramtypes', [user_service_1.UserService])
 ], HomeComponent);
 exports.HomeComponent = HomeComponent;
