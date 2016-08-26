@@ -78,6 +78,10 @@ class Server {
       res.sendfile("pages/index.html");
     });
 
+    router.post("/signup", passport.authenticate("local-signup", {
+
+    }));
+
     //use router middleware
     this.app.use(router);
   }

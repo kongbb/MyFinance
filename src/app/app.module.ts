@@ -25,7 +25,7 @@ import { UserData } from "./mockData/user.data";
     SignupComponent
   ],
   providers: [
-    appRoutingProviders, 
+    appRoutingProviders,
     //HTTP_PROVIDERS
     { provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
     { provide: SEED_DATA, useClass: UserData }

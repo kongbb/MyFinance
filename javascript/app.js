@@ -48,6 +48,7 @@ class Server {
         router.get("/", function (req, res) {
             res.sendfile("pages/index.html");
         });
+        router.post("/signup", passport.authenticate("local-signup", {}));
         this.app.use(router);
     }
 }

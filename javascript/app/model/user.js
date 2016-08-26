@@ -1,7 +1,7 @@
 "use strict";
 class User {
-    constructor(emailAddress, passport) {
-        this.emailAddress = emailAddress;
+    constructor(email, passport) {
+        this.email = email;
         this.passport = passport;
     }
 }
