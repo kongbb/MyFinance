@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { HttpModule, XHRBackend, HTTP_PROVIDERS } from "@angular/http";
-import { InMemoryBackendService, SEED_DATA } from "angular2-in-memory-web-api";
-
+import { HttpModule, XHRBackend } from "@angular/http";
+//import { InMemoryBackendService, SEED_DATA } from "angular2-in-memory-web-api";
+import { InMemoryWebApiModule } from "angular2-in-memory-web-api";
 import { AppComponent } from "./component/app.component";
 import { HomeComponent } from "./component/home.component";
 import { SignupComponent } from "./component/signup.component";
@@ -16,7 +16,8 @@ import { UserData } from "./mockData/user.data";
     BrowserModule,
     FormsModule,
     routing,
-    HttpModule
+    HttpModule,
+    InMemoryWebApiModule.forRoot(UserData)
   ],
   declarations: [
     AppComponent,
@@ -27,8 +28,8 @@ import { UserData } from "./mockData/user.data";
   providers: [
     appRoutingProviders,
     //HTTP_PROVIDERS
-    { provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
-    { provide: SEED_DATA, useClass: UserData }
+    //{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
+    //{ provide: SEED_DATA, useClass: UserData }
   ],
   bootstrap: [AppComponent]
 })

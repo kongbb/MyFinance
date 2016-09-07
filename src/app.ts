@@ -75,7 +75,7 @@ class Server {
 
     //home page
     router.get("/", function(req: express.Request, res: express.Response){
-      res.sendfile("pages/index.html");
+      res.sendFile("index.html", {"root": "pages/"});
     });
 
     router.post("/signup", passport.authenticate("local-signup", {

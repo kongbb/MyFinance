@@ -46,7 +46,7 @@ class Server {
         router = express.Router();
         var index = new indexRoute.Index();
         router.get("/", function (req, res) {
-            res.sendfile("pages/index.html");
+            res.sendFile("index.html", { "root": "pages/" });
         });
         router.post("/signup", passport.authenticate("local-signup", {}));
         this.app.use(router);

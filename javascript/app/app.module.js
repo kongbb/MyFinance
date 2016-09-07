@@ -27,7 +27,8 @@ AppModule = __decorate([
             platform_browser_1.BrowserModule,
             forms_1.FormsModule,
             app_router_1.routing,
-            http_1.HttpModule
+            http_1.HttpModule,
+            angular2_in_memory_web_api_1.InMemoryWebApiModule.forRoot(user_data_1.UserData)
         ],
         declarations: [
             app_component_1.AppComponent,
@@ -37,8 +38,6 @@ AppModule = __decorate([
         ],
         providers: [
             app_router_1.appRoutingProviders,
-            { provide: http_1.XHRBackend, useClass: angular2_in_memory_web_api_1.InMemoryBackendService },
-            { provide: angular2_in_memory_web_api_1.SEED_DATA, useClass: user_data_1.UserData }
         ],
         bootstrap: [app_component_1.AppComponent]
     }), 
