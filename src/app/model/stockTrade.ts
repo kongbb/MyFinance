@@ -1,4 +1,4 @@
-export class StockTrading {
+export class StockTrade {
   constructor(
     public code: string,
     public tradeDate: Date,
