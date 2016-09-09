@@ -1,9 +1,11 @@
 "use strict";
 import bodyParser = require("body-parser");
+import { Request, Response, } from "express";
+import { StockRouter } from "./routes/stock.api";
 
 import * as express from "express";
 import * as path from "path";
-import * as indexRoute from "./routes/index";
+import * as indexRoute from "./routes/index.route";
 import * as mongoose from "mongoose";
 import * as passport from "passport";
 
@@ -70,9 +72,6 @@ class Server {
     let router: express.Router;
     router = express.Router();
 
-    //create routes
-    var index: indexRoute.Index = new indexRoute.Index();
-
     //home page
     router.get("/", function(req: express.Request, res: express.Response){
       res.sendFile("index.html", {"root": "pages/"});
@@ -82,8 +81,14 @@ class Server {
 
     }));
 
+    var stockRouter = new StockRouter().getRouter();
     //use router middleware
     this.app.use(router);
+    this.app.use("/api/stocks", stockRouter);
+  }
+
+  requireAuthentication(req, res){
+    res.json({user: "Roger"});
   }
 }
 

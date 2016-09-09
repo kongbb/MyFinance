@@ -1,8 +1,8 @@
 "use strict";
 const bodyParser = require("body-parser");
+const stock_api_1 = require("./routes/stock.api");
 const express = require("express");
 const path = require("path");
-const indexRoute = require("./routes/index");
 const passport = require("passport");
 const flash = require("connect-flash");
 var morgan = require("morgan");
@@ -44,12 +44,16 @@ class Server {
     routes() {
         let router;
         router = express.Router();
-        var index = new indexRoute.Index();
         router.get("/", function (req, res) {
             res.sendFile("index.html", { "root": "pages/" });
         });
         router.post("/signup", passport.authenticate("local-signup", {}));
+        var stockRouter = new stock_api_1.StockRouter().getRouter();
         this.app.use(router);
+        this.app.use("/api/stocks", stockRouter);
+    }
+    requireAuthentication(req, res) {
+        res.json({ user: "Roger" });
     }
 }
 var server = Server.bootstrap();
