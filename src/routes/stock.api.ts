@@ -74,8 +74,15 @@ export class StockRouter{
 
     ];
     trades.forEach(function(currentValue, index, arr){
-      currentValue.soldUnits = 0;
+      if(currentValue.buySell == "B"){
+        currentValue.soldUnits = 0;
+      }
+      else{
+        currentValue.relatedTrades = [];
+        currentValue.cost = 0;
+      }
     });
+    var totalProfit = 0;
     for (var i = 0; i < trades.length; i++){
       var currentValue = trades[i];
       if(currentValue.buySell == "S"){
@@ -87,18 +94,19 @@ export class StockRouter{
           if(trade.buySell == "B" && trade.code == currentValue.code && unsoldUnits > 0){
             if(unsoldUnits >= units){
               trade.soldUnits += units;
-              units = 0;
               cost += trade.netAmount * 1.0 * units / trade.units;
+              units = 0;
             }
             else{
               trade.soldUnits = trade.units;
               units -= unsoldUnits;
               cost += trade.netAmount * 1.0 * unsoldUnits / trade.units;
             }
-
+            currentValue.relatedTrades.push(trade);
             if(units == 0){
               currentValue.cost = cost;
               currentValue.profit = currentValue.netAmount - cost;
+              totalProfit += currentValue.profit;
               break;
             }
           }
@@ -108,6 +116,6 @@ export class StockRouter{
     var soldTrades = trades.filter(function(trade){
       return trade.buySell == "S";
     });
-    res.json(trades);
+    res.json({profit: totalProfit,soldTrades: soldTrades});
   }
 }
