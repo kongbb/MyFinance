@@ -17,6 +17,7 @@ const app_component_1 = require("./component/app.component");
 const home_component_1 = require("./component/home.component");
 const signup_component_1 = require("./component/signup.component");
 const login_component_1 = require("./component/login.component");
+const stocks_component_1 = require("./component/stocks.component");
 const app_router_1 = require("./route/app.router");
 const user_data_1 = require("./mockData/user.data");
 let AppModule = class AppModule {
@@ -34,7 +35,8 @@ AppModule = __decorate([
             app_component_1.AppComponent,
             home_component_1.HomeComponent,
             login_component_1.LoginComponent,
-            signup_component_1.SignupComponent
+            signup_component_1.SignupComponent,
+            stocks_component_1.StocksComponent
         ],
         providers: [
             app_router_1.appRoutingProviders,

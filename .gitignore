@@ -1,3 +1,5 @@
 /node_modules/*
 /mongodb/*
 /.tscache/*
+/mongodb/log/*
+/mongodb/data/journal/*

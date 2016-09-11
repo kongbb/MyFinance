@@ -7,7 +7,7 @@ import { StockTrade }           from "../model/stockTrade";
 import { Observable }     from "rxjs/Observable";
 
 @Injectable()
-export class StockTradingService {
+export class StockService {
   constructor (private http: Http) {}
 
   private stockTradingUrl = "app/stocktrades";  // URL to web API

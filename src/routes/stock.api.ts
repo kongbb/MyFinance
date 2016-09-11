@@ -1,6 +1,6 @@
 "use strict";
 import { Router, Request, Response } from "express";
-
+var http = require("http");
 export class StockRouter{
   private router: Router;
   
@@ -112,10 +112,28 @@ export class StockRouter{
           }
         }
       }
-    });
+    }
     var soldTrades = trades.filter(function(trade){
       return trade.buySell == "S";
     });
-    res.json({profit: totalProfit,soldTrades: soldTrades});
+    var unsoldTrades = trades.filter(function(trade){
+      return trade.buySell == "B" && trade.soldUnits < trade.units;
+    });
+    unsoldTrades.forEach(function(currentValue, index, arr){
+      var options = {
+        host: 'example.com',
+        port: 80,
+        path: '/foo.html'
+      };
+
+      http.get(options, function(resp){
+        resp.on('data', function(chunk){
+          //do something with chunk
+        });
+      }).on("error", function(e){
+        console.log("Got error: " + e.message);
+      });
+    });
+    res.json({profit: totalProfit,soldTrades: soldTrades, unsoldTrades: unsoldTrades});
   }
 }

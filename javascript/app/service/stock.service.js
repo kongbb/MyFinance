@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require("@angular/core");
 const http_1 = require("@angular/http");
 const Observable_1 = require("rxjs/Observable");
-let StockTradingService = class StockTradingService {
+let StockService = class StockService {
     constructor(http) {
         this.http = http;
         this.stockTradingUrl = "app/stocktrades";
@@ -32,8 +32,8 @@ let StockTradingService = class StockTradingService {
         return Observable_1.Observable.throw(errMsg);
     }
 };
-StockTradingService = __decorate([
+StockService = __decorate([
     core_1.Injectable(), 
     __metadata('design:paramtypes', [http_1.Http])
-], StockTradingService);
-exports.StockTradingService = StockTradingService;
+], StockService);
+exports.StockService = StockService;

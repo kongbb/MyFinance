@@ -8,6 +8,7 @@ import { AppComponent } from "./component/app.component";
 import { HomeComponent } from "./component/home.component";
 import { SignupComponent } from "./component/signup.component";
 import { LoginComponent } from "./component/login.component";
+import { StocksComponent } from "./component/stocks.component";
 import { routing, appRoutingProviders } from "./route/app.router";
 import { UserData } from "./mockData/user.data";
 
@@ -23,7 +24,8 @@ import { UserData } from "./mockData/user.data";
     AppComponent,
     HomeComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    StocksComponent
   ],
   providers: [
     appRoutingProviders,

@@ -17,7 +17,7 @@
         "typings",
         "wwwroot",
         "javascript",
-        "js",
+        "dist",
         "src/.baseDir.ts"
     ]
 }

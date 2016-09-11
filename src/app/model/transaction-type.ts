@@ -1,0 +1,1 @@
+export enum TransactionType {Company = 1, Home = 2};

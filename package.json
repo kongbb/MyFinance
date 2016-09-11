@@ -5,7 +5,7 @@
   "scripts": {
     "grunt": "grunt",
     "start": "node ./bin/www",
-    "devhome": "concurrently \"npm run grunt watch \" \"mongod.exe --dbpath ./mongodb/data \" \"./bin/www\" ",
+    "devhome": "concurrently \"code ..\\MyFinance \" \"npm run grunt watch \" \"mongod.exe --dbpath ./mongodb/data --nojournal \" \"./bin/www\" \"backup.bat \"",
     "devcompany": "concurrently \"npm run grunt watch \" \"./bin/www\" ",
     "demo": "concurrently \"mongod.exe --dbpath ./mongodb/data \" \"./bin/www\" ",
     "db": "mongod.exe --dbpath ./mongodb/data",
