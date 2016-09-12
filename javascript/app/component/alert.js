@@ -9,10 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-const open_component_1 = require('./open.component');
 let Alert = class Alert {
-    constructor(dcl, _elementRef) {
-        this.dcl = dcl;
+    constructor(_elementRef) {
         this._elementRef = _elementRef;
         this.okButton = true;
         this.okButtonText = 'Ok';
@@ -68,11 +66,8 @@ Alert = __decorate([
   </div>
   `,
         providers: [],
-        directives: [open_component_1.Open],
         encapsulation: core_1.ViewEncapsulation.None,
-        pipes: []
     }), 
-    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.DynamicComponentLoader !== 'undefined' && core_1.DynamicComponentLoader) === 'function' && _a) || Object, core_1.ElementRef])
+    __metadata('design:paramtypes', [core_1.ElementRef])
 ], Alert);
 exports.Alert = Alert;
-var _a;

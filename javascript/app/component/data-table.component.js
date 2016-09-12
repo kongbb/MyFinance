@@ -79,7 +79,6 @@ DataTable = __decorate([
                 </table>
                 <alert (alertOutput)="confirmClose($event)"></alert>
             </div>`,
-        directives: [alert_1.Alert]
     }), 
     __metadata('design:paramtypes', [])
 ], DataTable);

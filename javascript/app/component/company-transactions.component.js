@@ -13,12 +13,8 @@ const forms_1 = require("@angular/forms");
 const Observable_1 = require('rxjs/Observable');
 const transactions_1 = require('./transactions');
 const company_transaction_1 = require('../model/company-transaction');
-const date_input_component_1 = require('./date-input.component');
-const data_table_component_1 = require('./data-table.component');
 const match_transaction_pipe_1 = require('../pipes/match-transaction.pipe');
 const company_store_1 = require('../dataStores/company.store');
-const date_match_pipe_1 = require('../pipes/date-match.pipe');
-const categories_component_1 = require('./categories.component');
 const company_service_1 = require('../service/company.service');
 let CompanyTransactionsComponent = class CompanyTransactionsComponent extends transactions_1.Transactions {
     constructor(store, matchTransactionPipe) {
@@ -175,9 +171,7 @@ CompanyTransactionsComponent = __decorate([
                 <!-- /.row -->
             </div>
         </div>`,
-        directives: [data_table_component_1.DataTable, date_input_component_1.DateInputComponent, categories_component_1.Categories],
         providers: [match_transaction_pipe_1.MatchTransaction, company_store_1.CompanyStore, company_service_1.CompanyService],
-        pipes: [date_match_pipe_1.DateMatch, match_transaction_pipe_1.MatchTransaction]
     }), 
     __metadata('design:paramtypes', [company_store_1.CompanyStore, match_transaction_pipe_1.MatchTransaction])
 ], CompanyTransactionsComponent);

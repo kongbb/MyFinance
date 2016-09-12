@@ -14,14 +14,12 @@ const Observable_1 = require("rxjs/Observable");
 let StockService = class StockService {
     constructor(http) {
         this.http = http;
-        this.stockTradingUrl = "app/stocktrades";
+        this.stockTradesUrl = "api/stocks";
     }
-    getStockTrades() {
-        return this.http.get(this.stockTradingUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
+    getTrades() {
+        return this.http.get(this.stockTradesUrl);
     }
-    extractData(res) {
+    extractTradesData(res) {
         let body = res.json();
         return body.data || {};
     }

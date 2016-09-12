@@ -9,22 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require("@angular/core");
-const stock_service_1 = require("../service/stock.service");
+const stock_store_1 = require("../dataStores/stock.store");
 let StocksComponent = class StocksComponent {
-    constructor(stockService) {
-        this.stockService = stockService;
+    constructor(store) {
+        this.store = store;
     }
     ngOnInit() {
-    }
-    getUsers() {
+        this.columns = ["code", "tradeDate", "price", "units", "netAmount", "cost", "profit"];
+        this.titles = ["Code", "Date", "Sold Price", "Units", "Sold Amount", "Cost", "Profit"];
     }
 };
 StocksComponent = __decorate([
     core_1.Component({
         selector: "stocks",
         templateUrl: "../../pages/template/stocks.html",
-        providers: [stock_service_1.StockService]
+        providers: [stock_store_1.StockStore]
     }), 
-    __metadata('design:paramtypes', [stock_service_1.StockService])
+    __metadata('design:paramtypes', [stock_store_1.StockStore])
 ], StocksComponent);
 exports.StocksComponent = StocksComponent;

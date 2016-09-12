@@ -1,5 +1,5 @@
-import {Component, ViewEncapsulation, ComponentRef, DynamicComponentLoader,ElementRef, Input, EventEmitter, Output} from '@angular/core';
-import {Open} from './open.component';
+import { Component, ViewEncapsulation, ComponentRef, ElementRef, Input, EventEmitter, Output } from '@angular/core';
+import { Open } from './open.component';
 
 @Component({
   selector: 'alert',
@@ -29,9 +29,7 @@ import {Open} from './open.component';
   </div>
   `,
   providers: [],
-  directives: [Open],
   encapsulation: ViewEncapsulation.None,
-  pipes: []
 })
 /**
   * API to an open alert window.
@@ -88,7 +86,7 @@ export class Alert{
     * or when Ok method is called.
     */
   @Output() public alertOutput:EventEmitter<any> = new EventEmitter();
-  constructor(public dcl:DynamicComponentLoader, public _elementRef: ElementRef){}
+  constructor(public _elementRef: ElementRef){}
   /**
        * Opens a alert window creating backdrop.
        */

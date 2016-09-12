@@ -23,7 +23,6 @@ import { Alert } from './alert';
                 </table>
                 <alert (alertOutput)="confirmClose($event)"></alert>
             </div>`,
-    directives: [Alert]
 })
 
 export class DataTable{

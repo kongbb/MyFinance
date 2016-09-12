@@ -1,5 +1,4 @@
 import { Component, OnChanges } from '@angular/core';
-import { CORE_DIRECTIVES, FORM_DIRECTIVES } from '@angular/common';
 import { FormControl } from "@angular/forms";
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/RX';
@@ -127,9 +126,7 @@ import { CompanyService } from '../service/company.service';
                 <!-- /.row -->
             </div>
         </div>`,
-     directives: [DataTable, DateInputComponent, Categories],
      providers: [MatchTransaction,  CompanyStore, CompanyService],
-     pipes: [DateMatch, MatchTransaction]
 })
 
 export class CompanyTransactionsComponent extends Transactions{

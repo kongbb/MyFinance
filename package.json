@@ -44,6 +44,7 @@
     "immutable": "^3.8.1",
     "jade": "^1.11.0",
     "method-override": "~1.0.0",
+    "moment": "^2.14.1",
     "mongodb": "^2.2.4",
     "mongoose": "~4.4.20",
     "mongoose-promised": "^0.1.0",

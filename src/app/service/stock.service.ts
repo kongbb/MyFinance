@@ -3,22 +3,20 @@ import { Injectable }     from "@angular/core";
 import { Http, Response } from "@angular/http";
 import { Headers, RequestOptions } from "@angular/http";
 
-import { StockTrade }           from "../model/stockTrade";
+import { StockTrade, TradingSummary }           from "../model/stock-trade";
 import { Observable }     from "rxjs/Observable";
 
 @Injectable()
 export class StockService {
   constructor (private http: Http) {}
 
-  private stockTradingUrl = "app/stocktrades";  // URL to web API
+  private stockTradesUrl = "api/stocks";
 
-  getStockTrades (): Observable<StockTrade[]> {
-    return this.http.get(this.stockTradingUrl)
-                    .map(this.extractData)
-                    .catch(this.handleError);
+  getTrades (){
+    return this.http.get(this.stockTradesUrl);
   }
 
-  private extractData(res: Response) {
+  private extractTradesData(res: Response) {
     let body = res.json();
     return body.data || { };
   }
