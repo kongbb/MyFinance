@@ -14,13 +14,24 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
+                            <h3>Holding Stocks</h3>
+                            <div class="table-responsive">
+                                <data-table [titles]="holdingTitles" [columns]="holdingColumns" [dataset]="store.holdingStocks | async"></data-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
                             <h3>Sold Transactions</h3>
                             <div class="table-responsive">
                                 <data-table [titles]="titles" [columns]="columns" [dataset]="store.soldTransactions | async"></data-table>
                             </div>
-                            <p>Grid classes apply to devices with screen widths greater than or equal to the breakpoint sizes, and override grid classes targeted at smaller devices. Therefore, applying any
-                                <code>.col-md-</code> class to an element will not only affect its styling on medium devices but also on large devices if a
-                                <code>.col-lg-</code> class is not present.</p>
                         </div>
                     </div>
                 </div>

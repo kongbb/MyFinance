@@ -26,3 +26,4 @@ class CompanyTransaction extends transaction_1.Transaction {
     }
 }
 exports.CompanyTransaction = CompanyTransaction;
+//# sourceMappingURL=company-transaction.js.map

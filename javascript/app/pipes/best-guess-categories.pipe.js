@@ -58,3 +58,4 @@ BestGuessCategories = __decorate([
     __metadata('design:paramtypes', [])
 ], BestGuessCategories);
 exports.BestGuessCategories = BestGuessCategories;
+//# sourceMappingURL=best-guess-categories.pipe.js.map

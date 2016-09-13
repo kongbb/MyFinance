@@ -45,3 +45,4 @@ CompanyService = __decorate([
     __metadata('design:paramtypes', [http_1.Http])
 ], CompanyService);
 exports.CompanyService = CompanyService;
+//# sourceMappingURL=company.service.js.map

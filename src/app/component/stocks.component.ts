@@ -1,12 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { StockTrade } from "../model/stock-trade";
+import { StockService } from "../service/stock.service";
 import { StockStore } from "../dataStores/stock.store";
 
 @Component({
     selector: "stocks",
     //template: "<h1>Hello Home</h1>"
     templateUrl: "../../pages/template/stocks.html",
-    providers: [StockStore]
+    providers: [StockStore, StockService]
 })
 
 export class StocksComponent implements OnInit{
@@ -16,11 +17,20 @@ export class StocksComponent implements OnInit{
 
     // variable for what needs to be displayed in the table column header
     protected titles: string[];
+
+    // variable for what needs to be displayed in the table
+    protected holdingColumns: string[];
+
+    // variable for what needs to be displayed in the table column header
+    protected holdingTitles: string[];
     
     constructor (private store: StockStore) {}
 
     ngOnInit() {
         this.columns = ["code", "tradeDate", "price", "units", "netAmount", "cost", "profit"];
         this.titles = ["Code", "Date", "Sold Price", "Units", "Sold Amount", "Cost", "Profit"];
+
+        this.holdingColumns = ["code", "units", "averagePrice", "currentPrice", "netAmount", "marketValue", "profit"];
+        this.holdingTitles = ["Code", "Units", "Purchase Price", "Current Price", "Net Amount", "Current Market Value", "Profit"];
     }
 }

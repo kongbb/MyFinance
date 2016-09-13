@@ -176,3 +176,4 @@ CompanyTransactionsComponent = __decorate([
     __metadata('design:paramtypes', [company_store_1.CompanyStore, match_transaction_pipe_1.MatchTransaction])
 ], CompanyTransactionsComponent);
 exports.CompanyTransactionsComponent = CompanyTransactionsComponent;
+//# sourceMappingURL=company-transactions.component.js.map

@@ -33,3 +33,4 @@ var LoginMode;
     LoginMode[LoginMode["Login"] = 1] = "Login";
     LoginMode[LoginMode["Signup"] = 2] = "Signup";
 })(LoginMode || (LoginMode = {}));
+//# sourceMappingURL=login.component.js.map

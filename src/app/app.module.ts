@@ -31,7 +31,7 @@ import { UserData } from "./mockData/user.data";
     FormsModule,
     routing,
     HttpModule,
-    InMemoryWebApiModule.forRoot(UserData)
+    //InMemoryWebApiModule.forRoot(UserData)
   ],
   declarations: [
     AppComponent,
@@ -50,8 +50,7 @@ import { UserData } from "./mockData/user.data";
     //MatchTransaction
   ],
   providers: [
-    appRoutingProviders,
-    //HTTP_PROVIDERS
+    appRoutingProviders
     //{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
     //{ provide: SEED_DATA, useClass: UserData }
   ],

@@ -44,6 +44,7 @@ class Server {
     this.app.use("/node_modules", express.static(path.resolve(__dirname, "../node_modules")));
     this.app.use("/dist", express.static(path.resolve(__dirname, "../dist")));
     this.app.use("/js", express.static(path.resolve(__dirname, "../js")));
+    this.app.use("/src", express.static(path.resolve(__dirname, "../src")));
 
     this.app.use(cookieParser()); // read cookies (needed for auth)
     //mount json form parser

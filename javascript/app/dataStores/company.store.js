@@ -89,3 +89,4 @@ CompanyStore = __decorate([
     __metadata('design:paramtypes', [company_service_1.CompanyService])
 ], CompanyStore);
 exports.CompanyStore = CompanyStore;
+//# sourceMappingURL=company.store.js.map

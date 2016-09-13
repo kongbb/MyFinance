@@ -83,3 +83,4 @@ DataTable = __decorate([
     __metadata('design:paramtypes', [])
 ], DataTable);
 exports.DataTable = DataTable;
+//# sourceMappingURL=data-table.component.js.map

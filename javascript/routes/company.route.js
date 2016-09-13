@@ -120,3 +120,4 @@ router.route('/transactions/:transaction_id')
     });
 });
 module.exports = router;
+//# sourceMappingURL=company.route.js.map

@@ -12,3 +12,4 @@ var CompanyTransactionSchema = new Schema({
     createdDate: Date
 }, { collection: 'CompanyTransactions' });
 module.exports = mongoose.model('CompanyTransaction', CompanyTransactionSchema);
+//# sourceMappingURL=company-transaction.model.js.map

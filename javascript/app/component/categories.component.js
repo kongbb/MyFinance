@@ -175,3 +175,4 @@ Categories = __decorate([
     __metadata('design:paramtypes', [best_guess_categories_pipe_1.BestGuessCategories])
 ], Categories);
 exports.Categories = Categories;
+//# sourceMappingURL=categories.component.js.map

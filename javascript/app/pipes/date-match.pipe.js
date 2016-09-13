@@ -40,3 +40,4 @@ DateMatch = __decorate([
     __metadata('design:paramtypes', [])
 ], DateMatch);
 exports.DateMatch = DateMatch;
+//# sourceMappingURL=date-match.pipe.js.map

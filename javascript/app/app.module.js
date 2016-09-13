@@ -12,7 +12,6 @@ const core_1 = require("@angular/core");
 const platform_browser_1 = require("@angular/platform-browser");
 const forms_1 = require("@angular/forms");
 const http_1 = require("@angular/http");
-const angular2_in_memory_web_api_1 = require("angular2-in-memory-web-api");
 const app_component_1 = require("./component/app.component");
 const home_component_1 = require("./component/home.component");
 const signup_component_1 = require("./component/signup.component");
@@ -22,7 +21,6 @@ const open_component_1 = require("./component/open.component");
 const alert_1 = require("./component/alert");
 const data_table_component_1 = require("./component/data-table.component");
 const app_router_1 = require("./route/app.router");
-const user_data_1 = require("./mockData/user.data");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -32,7 +30,6 @@ AppModule = __decorate([
             forms_1.FormsModule,
             app_router_1.routing,
             http_1.HttpModule,
-            angular2_in_memory_web_api_1.InMemoryWebApiModule.forRoot(user_data_1.UserData)
         ],
         declarations: [
             app_component_1.AppComponent,
@@ -45,10 +42,11 @@ AppModule = __decorate([
             data_table_component_1.DataTable,
         ],
         providers: [
-            app_router_1.appRoutingProviders,
+            app_router_1.appRoutingProviders
         ],
         bootstrap: [app_component_1.AppComponent]
     }), 
     __metadata('design:paramtypes', [])
 ], AppModule);
 exports.AppModule = AppModule;
+//# sourceMappingURL=app.module.js.map

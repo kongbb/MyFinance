@@ -110,23 +110,38 @@ class StockRouter {
         var soldTrades = trades.filter(function (trade) {
             return trade.buySell == "S";
         });
-        var unsoldTrades = trades.filter(function (trade) {
+        var buyTrades = trades.filter(function (trade) {
             return trade.buySell == "B" && trade.soldUnits < trade.units;
         });
-        unsoldTrades.forEach(function (currentValue, index, arr) {
-            var options = {
-                host: 'example.com',
-                port: 80,
-                path: '/foo.html'
-            };
-            http.get(options, function (resp) {
-                resp.on('data', function (chunk) {
-                });
-            }).on("error", function (e) {
-                console.log("Got error: " + e.message);
+        var unsoldTrades = new Array();
+        for (var i = 0; i < buyTrades.length; i++) {
+            var temp = unsoldTrades.find(function (t) {
+                return t.code == buyTrades[i].code;
             });
+            buyTrades[i].unsoldUnits = buyTrades[i].units - buyTrades[i].soldUnits;
+            buyTrades[i].netAmount = 1.0 * buyTrades[i].netAmount * buyTrades[i].unsoldUnits / buyTrades[i].units;
+            if (temp == null) {
+                unsoldTrades.push(buyTrades[i]);
+            }
+            else {
+                temp.unsoldUnits += buyTrades[i].unsoldUnits;
+                temp.netAmount += buyTrades[i].netAmount;
+            }
+        }
+        unsoldTrades.forEach(function (currentValue, index, arr) {
+            currentValue.averagePrice = currentValue.netAmount / currentValue.unsoldUnits;
         });
         res.json({ profit: totalProfit, soldTrades: soldTrades, unsoldTrades: unsoldTrades });
     }
+    calculateUnsold(trade) {
+        trade.unsoldUnits = trade.units - trade.soldUnits;
+        trade.netAmount = 1.0 * trade.netAmount * trade.unsoldUnits / trade.units;
+    }
+    addUnsold(existing, trade) {
+        this.calculateUnsold(trade);
+        existing.unsoldUnits += trade.unsoldUnits;
+        existing.netAmount += trade.netAmount;
+    }
 }
 exports.StockRouter = StockRouter;
+//# sourceMappingURL=stock.api.js.map

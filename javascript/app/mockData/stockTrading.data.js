@@ -11,3 +11,4 @@ class StockTradingData {
     }
 }
 exports.StockTradingData = StockTradingData;
+//# sourceMappingURL=stockTrading.data.js.map

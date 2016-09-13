@@ -12,3 +12,4 @@ const routes = [
 ];
 exports.appRoutingProviders = [];
 exports.routing = router_1.RouterModule.forRoot(routes);
+//# sourceMappingURL=app.router.js.map

@@ -35,3 +35,4 @@ StockService = __decorate([
     __metadata('design:paramtypes', [http_1.Http])
 ], StockService);
 exports.StockService = StockService;
+//# sourceMappingURL=stock.service.js.map

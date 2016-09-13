@@ -37,7 +37,7 @@ export class StockStore {
                 res => {
                     let summary = <TradingSummary>res.json();
                     this._soldTransactions.next(List(summary.soldTrades));
-                    this._holdingStocks.next(List(summary.holdingStocks));
+                    //this._holdingStocks.next(List(summary.holdingStocks));
                     this._profit.next(summary.profit);
                 },
                 err => {

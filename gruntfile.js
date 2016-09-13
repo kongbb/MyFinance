@@ -15,7 +15,7 @@ module.exports = function(grunt) {
           target: "es6",
           experimentalDecorators: true,
           emitDecoratorMetadata: true,
-          sourceMap: false
+          sourceMap: true
         }
       }
     },

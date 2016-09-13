@@ -8,3 +8,4 @@ class UserData {
     }
 }
 exports.UserData = UserData;
+//# sourceMappingURL=user.data.js.map

@@ -22,3 +22,4 @@ exports.StockTrade = StockTrade;
 class TradingSummary {
 }
 exports.TradingSummary = TradingSummary;
+//# sourceMappingURL=stock-trade.js.map

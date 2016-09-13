@@ -24,3 +24,4 @@ exports.HomeCategories = [
     category_1.Category.create("Cherrybrook", false, [category_1.Category.create("Council", false, null, 4, -455), category_1.Category.create("water", false, null, 4, -256), category_1.Category.create("Electricity", false, null, 4, -356)]),
 ];
 exports.HomeTransactions = [];
+//# sourceMappingURL=mock-data.js.map

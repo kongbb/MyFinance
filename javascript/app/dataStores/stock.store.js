@@ -35,7 +35,6 @@ let StockStore = class StockStore {
             .subscribe(res => {
             let summary = res.json();
             this._soldTransactions.next(immutable_1.List(summary.soldTrades));
-            this._holdingStocks.next(immutable_1.List(summary.holdingStocks));
             this._profit.next(summary.profit);
         }, err => {
             console.log("Error retrieving stock trades!");
@@ -50,3 +49,4 @@ StockStore = __decorate([
     __metadata('design:paramtypes', [stock_service_1.StockService])
 ], StockStore);
 exports.StockStore = StockStore;
+//# sourceMappingURL=stock.store.js.map

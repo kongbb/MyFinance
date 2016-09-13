@@ -5,3 +5,4 @@
 })(exports.TransactionType || (exports.TransactionType = {}));
 var TransactionType = exports.TransactionType;
 ;
+//# sourceMappingURL=transaction-type.js.map

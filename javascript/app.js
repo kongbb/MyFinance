@@ -27,6 +27,7 @@ class Server {
         this.app.use("/node_modules", express.static(path.resolve(__dirname, "../node_modules")));
         this.app.use("/dist", express.static(path.resolve(__dirname, "../dist")));
         this.app.use("/js", express.static(path.resolve(__dirname, "../js")));
+        this.app.use("/src", express.static(path.resolve(__dirname, "../src")));
         this.app.use(cookieParser());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
@@ -58,3 +59,4 @@ class Server {
 }
 var server = Server.bootstrap();
 module.exports = server.app;
+//# sourceMappingURL=app.js.map

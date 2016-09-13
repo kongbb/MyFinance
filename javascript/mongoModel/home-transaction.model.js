@@ -11,3 +11,4 @@ var HomeTransactionSchema = new Schema({
     createdDate: Date
 }, { collection: 'HomeTransactions' });
 module.exports = mongoose.model('HomeTransaction', HomeTransactionSchema);
+//# sourceMappingURL=home-transaction.model.js.map

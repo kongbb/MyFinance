@@ -9,3 +9,4 @@ var Route;
     Route.Index = Index;
 })(Route || (Route = {}));
 module.exports = Route;
+//# sourceMappingURL=index.route.js.map

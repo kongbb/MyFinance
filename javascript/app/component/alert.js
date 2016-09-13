@@ -71,3 +71,4 @@ Alert = __decorate([
     __metadata('design:paramtypes', [core_1.ElementRef])
 ], Alert);
 exports.Alert = Alert;
+//# sourceMappingURL=alert.js.map
