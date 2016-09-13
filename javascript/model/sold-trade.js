@@ -16,4 +16,4 @@ class SoldTrade {
     }
 }
 exports.SoldTrade = SoldTrade;
-//# sourceMappingURL=stock-trade.js.map
+//# sourceMappingURL=sold-trade.js.map

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { StockTrade } from "../model/stock-trade";
+import { SoldTrade } from "../model/stock-trade";
 import { StockService } from "../service/stock.service";
 import { StockStore } from "../dataStores/stock.store";
 
@@ -27,8 +27,8 @@ export class StocksComponent implements OnInit{
     constructor (private store: StockStore) {}
 
     ngOnInit() {
-        this.columns = ["code", "tradeDate", "price", "units", "netAmount", "cost", "profit"];
-        this.titles = ["Code", "Date", "Sold Price", "Units", "Sold Amount", "Cost", "Profit"];
+        this.columns = ["code", "tradeDate", "soldPrice", "units", "soldAmount", "purchaseAmount", "profit"];
+        this.titles = ["Code", "Date", "Sold Price", "Units", "Sold Amount", "Purchase Amount", "Profit"];
 
         this.holdingColumns = ["code", "units", "averagePrice", "currentPrice", "netAmount", "marketValue", "profit"];
         this.holdingTitles = ["Code", "Units", "Purchase Price", "Current Price", "Net Amount", "Current Market Value", "Profit"];

@@ -1,6 +1,7 @@
 "use strict";
 const express_1 = require("express");
-var http = require("http");
+const sold_trade_1 = require("../model/sold-trade");
+const trade_1 = require("../model/trade");
 class StockRouter {
     constructor() {
         this.router = express_1.Router();
@@ -11,136 +12,96 @@ class StockRouter {
     }
     getStockTrades(req, res, next) {
         let trades = [
-            { code: "LPE", tradeDate: "42390", buySell: "B", units: 60606, price: 0.033, brokerage: 19.95, netAmount: 2019.95 },
-            { code: "CAT", tradeDate: "42391", buySell: "B", units: 2000, price: 2, brokerage: 19.95, netAmount: 4019.95 },
-            { code: "LPE", tradeDate: "42417", buySell: "B", units: 66667, price: 0.03, brokerage: 19.95, netAmount: 2019.96 },
-            { code: "ALL", tradeDate: "42418", buySell: "B", units: 300, price: 9.78, brokerage: 19.95, netAmount: 2953.95 },
-            { code: "LPE", tradeDate: "42418", buySell: "S", units: 66667, price: 0.033, brokerage: 19.95, netAmount: 2180.06 },
-            { code: "CAT", tradeDate: "42425", buySell: "S", units: 2000, price: 2.38, brokerage: 19.95, netAmount: 4740.05 },
-            { code: "BBUS", tradeDate: "42425", buySell: "B", units: 300, price: 13.46, brokerage: 19.95, netAmount: 4057.95 },
-            { code: "LPE", tradeDate: "42425", buySell: "B", units: 66667, price: 0.03, brokerage: 19.95, netAmount: 2019.96 },
-            { code: "ALL", tradeDate: "42425", buySell: "S", units: 300, price: 10.01, brokerage: 19.95, netAmount: 2983.05 },
-            { code: "LPE", tradeDate: "42430", buySell: "S", units: 66667, price: 0.033, brokerage: 19.95, netAmount: 2180.06 },
-            { code: "LPE", tradeDate: "42432", buySell: "B", units: 133334, price: 0.03, brokerage: 19.95, netAmount: 4019.97 },
-            { code: "BAP", tradeDate: "42439", buySell: "B", units: 1000, price: 4.52, brokerage: 19.95, netAmount: 4539.95 },
-            { code: "LPE", tradeDate: "42451", buySell: "S", units: 66667, price: 0.035, brokerage: 19.95, netAmount: 2313.4 },
-            { code: "SMN", tradeDate: "42458", buySell: "B", units: 2000, price: 1.49, brokerage: 19.95, netAmount: 2999.95 },
-            { code: "MTR", tradeDate: "42458", buySell: "B", units: 500, price: 4.5, brokerage: 19.95, netAmount: 2269.95 },
-            { code: "SMN", tradeDate: "42464", buySell: "S", units: 2000, price: 1.705, brokerage: 19.95, netAmount: 3390.05 },
-            { code: "MOY", tradeDate: "42465", buySell: "B", units: 30000, price: 0.12, brokerage: 19.95, netAmount: 3619.95 },
-            { code: "BUD", tradeDate: "42471", buySell: "B", units: 20000, price: 0.14, brokerage: 19.95, netAmount: 2819.95 },
-            { code: "BAP", tradeDate: "42479", buySell: "S", units: 1000, price: 4.85, brokerage: 19.95, netAmount: 4830.05 },
-            { code: "SMN", tradeDate: "42481", buySell: "B", units: 1500, price: 2.13, brokerage: 19.95, netAmount: 3214.95 },
-            { code: "SMN", tradeDate: "42488", buySell: "S", units: 1500, price: 2.4, brokerage: 19.95, netAmount: 3580.05 },
-            { code: "TAS", tradeDate: "42488", buySell: "B", units: 30000, price: 0.16, brokerage: 19.95, netAmount: 4819.95 },
-            { code: "AIA", tradeDate: "42495", buySell: "B", units: 1500, price: 5.87, brokerage: 19.95, netAmount: 8824.95 },
-            { code: "ALL", tradeDate: "42502", buySell: "B", units: 1000, price: 11.53, brokerage: 29.95, netAmount: 11559.95 },
-            { code: "LPE", tradeDate: "42502", buySell: "S", units: 66667, price: 0.038, brokerage: 19.95, netAmount: 2513.4 },
-            { code: "ALL", tradeDate: "42503", buySell: "S", units: 1000, price: 12.335, brokerage: 29.95, netAmount: 12305.05 },
-            { code: "TPM", tradeDate: "42506", buySell: "B", units: 500, price: 11.65, brokerage: 19.95, netAmount: 5844.95 },
-            { code: "HSN", tradeDate: "42506", buySell: "B", units: 2000, price: 3.75, brokerage: 19.95, netAmount: 7519.95 },
-            { code: "TPM", tradeDate: "42515", buySell: "S", units: 500, price: 12.275, brokerage: 19.95, netAmount: 6117.55 },
-            { code: "HSN", tradeDate: "42521", buySell: "S", units: 2000, price: 3.72, brokerage: 19.95, netAmount: 7420.05 },
-            { code: "AIA", tradeDate: "42521", buySell: "S", units: 1500, price: 5.88, brokerage: 19.95, netAmount: 8800.05 },
-            { code: "A2M", tradeDate: "42536", buySell: "B", units: 4000, price: 1.71, brokerage: 19.95, netAmount: 6859.95 },
-            { code: "TAS", tradeDate: "42542", buySell: "B", units: 30000, price: 0.135, brokerage: 19.95, netAmount: 4069.95 },
-            { code: "A2M", tradeDate: "42558", buySell: "S", units: 4000, price: 1.74, brokerage: 19.95, netAmount: 6940.05 },
-            { code: "BUD", tradeDate: "42559", buySell: "B", units: 40000, price: 0.13, brokerage: 19.95, netAmount: 5219.95 },
-            { code: "MOY", tradeDate: "42563", buySell: "B", units: 20000, price: 0.249, brokerage: 19.95, netAmount: 4994.95 },
-            { code: "BUD", tradeDate: "42565", buySell: "B", units: 30000, price: 0.115, brokerage: 19.95, netAmount: 3469.95 },
-            { code: "CM8", tradeDate: "42570", buySell: "B", units: 30000, price: 0.155, brokerage: 19.95, netAmount: 4669.95 },
-            { code: "LPE", tradeDate: "42576", buySell: "B", units: 62404, price: 0.033, brokerage: 19.95, netAmount: 2079.28 },
-            { code: "LPE", tradeDate: "42585", buySell: "S", units: 62404, price: 0.038, brokerage: 19.95, netAmount: 2351.4 },
-            { code: "MOY", tradeDate: "42587", buySell: "S", units: 20000, price: 0.29, brokerage: 19.95, netAmount: 5780.05 },
-            { code: "MOY", tradeDate: "42591", buySell: "B", units: 20000, price: 0.28, brokerage: 19.95, netAmount: 5619.95 },
-            { code: "MOY", tradeDate: "42592", buySell: "S", units: 20000, price: 0.295, brokerage: 19.95, netAmount: 5880.05 },
-            { code: "LPE", tradeDate: "42592", buySell: "B", units: 90000, price: 0.033, brokerage: 19.95, netAmount: 2989.95 },
-            { code: "BWX", tradeDate: "42598", buySell: "B", units: 1000, price: 4.93, brokerage: 19.95, netAmount: 4949.95 },
-            { code: "BUD", tradeDate: "42598", buySell: "S", units: 32438, price: 0.097, brokerage: 19.95, netAmount: 3126.54 },
-            { code: "MOY", tradeDate: "42599", buySell: "S", units: 10000, price: 0.37, brokerage: 19.95, netAmount: 3680.05 },
-            { code: "BWX", tradeDate: "42599", buySell: "S", units: 1000, price: 4.494, brokerage: 19.95, netAmount: 4474.11 },
-            { code: "MTR", tradeDate: "42605", buySell: "S", units: 500, price: 3.19, brokerage: 19.95, netAmount: 1575.05 },
-            { code: "MOY", tradeDate: "42605", buySell: "S", units: 20000, price: 0.361, brokerage: 19.95, netAmount: 7202.14 },
-            { code: "BUD", tradeDate: "42605", buySell: "S", units: 27562, price: 0.1, brokerage: 19.95, netAmount: 2736.25 },
-            { code: "BKL", tradeDate: "42606", buySell: "B", units: 50, price: 131.2, brokerage: 19.95, netAmount: 6579.95 },
-            { code: "MIG", tradeDate: "42607", buySell: "B", units: 20000, price: 0.335, brokerage: 19.95, netAmount: 6719.95 },
-            { code: "VOC", tradeDate: "42607", buySell: "B", units: 1000, price: 8.16, brokerage: 19.95, netAmount: 8179.95 },
-            { code: "TAS", tradeDate: "42620", buySell: "S", units: 30000, price: 0.165, brokerage: 19.95, netAmount: 4930.05 }
+            trade_1.Trade.create("LPE", "N82498896", "B", 60606, 0.033, 19.95, 2019.95, "2016-01-21"),
+            trade_1.Trade.create("CAT", "N82520229", "B", 2000, 2, 19.95, 4019.95, "2016-01-22"),
+            trade_1.Trade.create("LPE", "N82975171", "B", 66667, 0.03, 19.95, 2019.96, "2016-02-17"),
+            trade_1.Trade.create("ALL", "N83013303", "B", 300, 9.78, 19.95, 2953.95, "2016-02-18"),
+            trade_1.Trade.create("LPE", "N82976446", "S", 66667, 0.033, 19.95, 2180.06, "2016-02-18"),
+            trade_1.Trade.create("CAT", "N83155905", "S", 2000, 2.38, 19.95, 4740.05, "2016-02-25"),
+            trade_1.Trade.create("BBUS", "N83149790", "B", 300, 13.46, 19.95, 4057.95, "2016-02-25"),
+            trade_1.Trade.create("LPE", "N83147904", "B", 66667, 0.03, 19.95, 2019.96, "2016-02-25"),
+            trade_1.Trade.create("ALL", "N83148017", "S", 300, 10.01, 19.95, 2983.05, "2016-02-25"),
+            trade_1.Trade.create("LPE", "N83154472", "S", 66667, 0.033, 19.95, 2180.06, "2016-03-01"),
+            trade_1.Trade.create("LPE", "N83257895", "B", 133334, 0.03, 19.95, 4019.97, "2016-03-03"),
+            trade_1.Trade.create("BAP", "N83447162", "B", 1000, 4.52, 19.95, 4539.95, "2016-03-10"),
+            trade_1.Trade.create("LPE", "N83457969", "S", 66667, 0.035, 19.95, 2313.4, "2016-03-22"),
+            trade_1.Trade.create("SMN", "N83685934", "B", 2000, 1.49, 19.95, 2999.95, "2016-03-29"),
+            trade_1.Trade.create("MTR", "N83708093", "B", 500, 4.5, 19.95, 2269.95, "2016-03-29"),
+            trade_1.Trade.create("SMN", "N83803978", "S", 2000, 1.705, 19.95, 3390.05, "2016-04-04"),
+            trade_1.Trade.create("MOY", "N83819722", "B", 30000, 0.12, 19.95, 3619.95, "2016-04-05"),
+            trade_1.Trade.create("BUD", "N83922745", "B", 20000, 0.14, 19.95, 2819.95, "2016-04-11"),
+            trade_1.Trade.create("BAP", "N84113062", "S", 1000, 4.85, 19.95, 4830.05, "2016-04-19"),
+            trade_1.Trade.create("SMN", "N84181171", "B", 1500, 2.13, 19.95, 3214.95, "2016-04-21"),
+            trade_1.Trade.create("SMN", "N84181320", "S", 1500, 2.4, 19.95, 3580.05, "2016-04-28"),
+            trade_1.Trade.create("TAS", "N84300647", "B", 30000, 0.16, 19.95, 4819.95, "2016-04-28"),
+            trade_1.Trade.create("AIA", "N84449847", "B", 1500, 5.87, 19.95, 8824.95, "2016-05-05"),
+            trade_1.Trade.create("ALL", "N84595262", "B", 1000, 11.53, 29.95, 11559.95, "2016-05-12"),
+            trade_1.Trade.create("LPE", "N84054932", "S", 66667, 0.038, 19.95, 2513.4, "2016-05-12"),
+            trade_1.Trade.create("ALL", "N84641598", "S", 1000, 12.335, 29.95, 12305.05, "2016-05-13"),
+            trade_1.Trade.create("TPM", "N84656205", "B", 500, 11.65, 19.95, 5844.95, "2016-05-16"),
+            trade_1.Trade.create("HSN", "N84658823", "B", 2000, 3.75, 19.95, 7519.95, "2016-05-16"),
+            trade_1.Trade.create("TPM", "N84868950", "S", 500, 12.275, 19.95, 6117.55, "2016-05-25"),
+            trade_1.Trade.create("HSN", "N84981635", "S", 2000, 3.72, 19.95, 7420.05, "2016-05-31"),
+            trade_1.Trade.create("AIA", "N84981559", "S", 1500, 5.88, 19.95, 8800.05, "2016-05-31"),
+            trade_1.Trade.create("A2M", "N85284197", "B", 4000, 1.71, 19.95, 6859.95, "2016-06-15"),
+            trade_1.Trade.create("TAS", "N85369916", "B", 30000, 0.135, 19.95, 4069.95, "2016-06-21"),
+            trade_1.Trade.create("A2M", "N85768324", "S", 4000, 1.74, 19.95, 6940.05, "2016-07-07"),
+            trade_1.Trade.create("BUD", "N85798142", "B", 40000, 0.13, 19.95, 5219.95, "2016-07-08"),
+            trade_1.Trade.create("MOY", "N85879273", "B", 20000, 0.249, 19.95, 4994.95, "2016-07-12"),
+            trade_1.Trade.create("BUD", "N85917207", "B", 30000, 0.115, 19.95, 3469.95, "2016-07-14"),
+            trade_1.Trade.create("CM8", "N86008521", "B", 30000, 0.155, 19.95, 4669.95, "2016-07-19"),
+            trade_1.Trade.create("LPE", "N86135387", "B", 62404, 0.033, 19.95, 2079.28, "2016-07-25"),
+            trade_1.Trade.create("LPE", "N86178054", "S", 62404, 0.038, 19.95, 2351.4, "2016-08-03"),
+            trade_1.Trade.create("MOY", "N86370828", "S", 20000, 0.29, 19.95, 5780.05, "2016-08-05"),
+            trade_1.Trade.create("MOY", "N86427531", "B", 20000, 0.28, 19.95, 5619.95, "2016-08-09"),
+            trade_1.Trade.create("MOY", "N86427632", "S", 20000, 0.295, 19.95, 5880.05, "2016-08-10"),
+            trade_1.Trade.create("LPE", "N86387531", "B", 90000, 0.033, 19.95, 2989.95, "2016-08-10"),
+            trade_1.Trade.create("BWX", "N86575630", "B", 1000, 4.93, 19.95, 4949.95, "2016-08-16"),
+            trade_1.Trade.create("BUD", "N86577796", "S", 32438, 0.097, 19.95, 3126.54, "2016-08-16"),
+            trade_1.Trade.create("MOY", "N86609406", "S", 10000, 0.37, 19.95, 3680.05, "2016-08-17"),
+            trade_1.Trade.create("BWX", "N86575713", "S", 1000, 4.494, 19.95, 4474.11, "2016-08-17"),
+            trade_1.Trade.create("MTR", "N86733627", "S", 500, 3.19, 19.95, 1575.05, "2016-08-23"),
+            trade_1.Trade.create("MOY", "N86723867", "S", 20000, 0.361, 19.95, 7202.14, "2016-08-23"),
+            trade_1.Trade.create("BUD", "N86733729", "S", 27562, 0.1, 19.95, 2736.25, "2016-08-23"),
+            trade_1.Trade.create("BKL", "N86773279", "B", 50, 131.2, 19.95, 6579.95, "2016-08-24"),
+            trade_1.Trade.create("MIG", "N86788311", "B", 20000, 0.335, 19.95, 6719.95, "2016-08-25"),
+            trade_1.Trade.create("VOC", "N86784696", "B", 1000, 8.16, 19.95, 8179.95, "2016-08-25"),
+            trade_1.Trade.create("TAS", "N86877921", "S", 30000, 0.165, 19.95, 4930.05, "2016-09-07"),
         ];
         trades.forEach(function (currentValue, index, arr) {
             if (currentValue.buySell == "B") {
                 currentValue.soldUnits = 0;
             }
-            else {
-                currentValue.relatedTrades = [];
-                currentValue.cost = 0;
-            }
         });
-        var totalProfit = 0;
+        var soldTrades = [];
         for (var i = 0; i < trades.length; i++) {
-            var currentValue = trades[i];
-            if (currentValue.buySell == "S") {
-                var units = currentValue.units;
-                var cost = 0;
+            var sold = trades[i];
+            if (sold.buySell == "S") {
+                var units = sold.units;
+                var purchaseAmount = 0;
                 for (var index = 0; index < trades.length; index++) {
-                    var trade = trades[index];
-                    var unsoldUnits = trade.units - trade.soldUnits;
-                    if (trade.buySell == "B" && trade.code == currentValue.code && unsoldUnits > 0) {
+                    var buy = trades[index];
+                    var unsoldUnits = buy.units - buy.soldUnits;
+                    if (buy.buySell == "B" && buy.code == sold.code && unsoldUnits > 0) {
                         if (unsoldUnits >= units) {
-                            trade.soldUnits += units;
-                            cost += trade.netAmount * 1.0 * units / trade.units;
+                            buy.soldUnits += units;
+                            purchaseAmount += buy.netAmount * 1.0 * units / buy.units;
                             units = 0;
                         }
                         else {
-                            trade.soldUnits = trade.units;
+                            buy.soldUnits = buy.units;
                             units -= unsoldUnits;
-                            cost += trade.netAmount * 1.0 * unsoldUnits / trade.units;
+                            purchaseAmount += buy.netAmount * 1.0 * unsoldUnits / buy.units;
                         }
-                        currentValue.relatedTrades.push(trade);
                         if (units == 0) {
-                            currentValue.cost = cost;
-                            currentValue.profit = currentValue.netAmount - cost;
-                            totalProfit += currentValue.profit;
+                            soldTrades.push(sold_trade_1.SoldTrade.create(sold.code, sold.units, sold.price, sold.netAmount, purchaseAmount, sold.tradeDate));
                             break;
                         }
                     }
                 }
             }
         }
-        var soldTrades = trades.filter(function (trade) {
-            return trade.buySell == "S";
-        });
-        var buyTrades = trades.filter(function (trade) {
-            return trade.buySell == "B" && trade.soldUnits < trade.units;
-        });
-        var unsoldTrades = new Array();
-        for (var i = 0; i < buyTrades.length; i++) {
-            var temp = unsoldTrades.find(function (t) {
-                return t.code == buyTrades[i].code;
-            });
-            buyTrades[i].unsoldUnits = buyTrades[i].units - buyTrades[i].soldUnits;
-            buyTrades[i].netAmount = 1.0 * buyTrades[i].netAmount * buyTrades[i].unsoldUnits / buyTrades[i].units;
-            if (temp == null) {
-                unsoldTrades.push(buyTrades[i]);
-            }
-            else {
-                temp.unsoldUnits += buyTrades[i].unsoldUnits;
-                temp.netAmount += buyTrades[i].netAmount;
-            }
-        }
-        unsoldTrades.forEach(function (currentValue, index, arr) {
-            currentValue.averagePrice = currentValue.netAmount / currentValue.unsoldUnits;
-        });
-        res.json({ profit: totalProfit, soldTrades: soldTrades, unsoldTrades: unsoldTrades });
-    }
-    calculateUnsold(trade) {
-        trade.unsoldUnits = trade.units - trade.soldUnits;
-        trade.netAmount = 1.0 * trade.netAmount * trade.unsoldUnits / trade.units;
-    }
-    addUnsold(existing, trade) {
-        this.calculateUnsold(trade);
-        existing.unsoldUnits += trade.unsoldUnits;
-        existing.netAmount += trade.netAmount;
+        res.json(soldTrades);
     }
 }
 exports.StockRouter = StockRouter;
