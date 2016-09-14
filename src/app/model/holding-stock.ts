@@ -6,7 +6,7 @@ export class HoldingStock {
   profit: number;
   currentPrice: number;
   currentMarketValue: number;
-
+  
   constructor(){
   }
   

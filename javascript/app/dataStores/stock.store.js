@@ -17,14 +17,22 @@ let StockStore = class StockStore {
     constructor(service) {
         this.service = service;
         this._soldTransactions = new RX_1.BehaviorSubject(immutable_1.List([]));
+        this._holdingStocks = new RX_1.BehaviorSubject(immutable_1.List([]));
         this._profit = new RX_1.BehaviorSubject(0);
+        this._holdingProfit = new RX_1.BehaviorSubject(0);
         this.loadInitialData();
     }
     get soldTransactions() {
         return new Observable_1.Observable(fn => this._soldTransactions.subscribe(fn));
     }
+    get holdingStocks() {
+        return new Observable_1.Observable(fn => this._holdingStocks.subscribe(fn));
+    }
     get profit() {
         return new Observable_1.Observable(fn => this._profit.subscribe(fn));
+    }
+    get holdingProfit() {
+        return new Observable_1.Observable(fn => this._holdingProfit.subscribe(fn));
     }
     loadInitialData() {
         this.service.getTrades()
@@ -35,6 +43,28 @@ let StockStore = class StockStore {
         }, err => {
             console.log("Error retrieving stock trades!");
         });
+        this.service.getHoldingStocks()
+            .subscribe(res => {
+            let holdingStocks = res.json();
+            this._holdingStocks.next(immutable_1.List(holdingStocks));
+            this.getCurrentMarketValue();
+        }, err => {
+            console.log("Error retrieving stock trades!");
+        });
+    }
+    getCurrentMarketValue() {
+        var list = this._holdingStocks.getValue();
+        list.forEach(stock => {
+            this.service.getQuote(stock.code)
+                .subscribe(res => {
+                var quote = res.json();
+                stock.currentPrice = quote.quote.price;
+                stock.currentMarketValue = stock.units * stock.currentPrice;
+                stock.profit = stock.currentMarketValue - stock.amount;
+            });
+        });
+        this._holdingStocks.next(list);
+        this._holdingProfit.next(list.reduce(function (a, b) { return a + b.profit; }, 0));
     }
 };
 StockStore = __decorate([

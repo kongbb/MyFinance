@@ -30,7 +30,7 @@ export class StocksComponent implements OnInit{
         this.columns = ["code", "tradeDate", "soldPrice", "units", "soldAmount", "purchaseAmount", "profit"];
         this.titles = ["Code", "Date", "Sold Price", "Units", "Sold Amount", "Purchase Amount", "Profit"];
 
-        this.holdingColumns = ["code", "units", "averagePrice", "currentPrice", "netAmount", "marketValue", "profit"];
-        this.holdingTitles = ["Code", "Units", "Purchase Price", "Current Price", "Net Amount", "Current Market Value", "Profit"];
+        this.holdingColumns = ["code", "units", "price", "amount", "currentPrice", "currentMarketValue", "profit"];
+        this.holdingTitles = ["Code", "Units", "Purchase Price", "Net Amount", "Current Price", "Current Market Value", "Profit"];
     }
 }

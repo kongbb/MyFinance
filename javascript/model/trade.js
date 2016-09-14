@@ -2,7 +2,7 @@
 class Trade {
     constructor() {
     }
-    static create(code, orderNumber, buySell, units, price, brokerage, netAmount, tradeDate, soldUnits) {
+    static create(code, orderNumber, buySell, units, price, brokerage, netAmount, tradeDate) {
         var t = new Trade();
         t.code = code;
         t.orderNumber = orderNumber;
@@ -12,7 +12,7 @@ class Trade {
         t.brokerage = brokerage;
         t.netAmount = netAmount;
         t.tradeDate = tradeDate;
-        t.soldUnits = soldUnits;
+        t.soldUnits = 0;
         return t;
     }
 }

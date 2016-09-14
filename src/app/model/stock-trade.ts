@@ -7,6 +7,8 @@ export class SoldTrade {
   tradeDate: Date;
   profit: number;
   purchasePrice: number;
+  currentPrice: number;
+  potentialMarketValue: number;
   
   constructor(){
   }

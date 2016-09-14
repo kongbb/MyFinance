@@ -14,10 +14,19 @@ const Observable_1 = require("rxjs/Observable");
 let StockService = class StockService {
     constructor(http) {
         this.http = http;
-        this.stockTradesUrl = "api/stocks";
+        this.soldTradesUrl = "api/stocks/soldtrades";
+        this.holdingStocksUrl = "api/stocks/holdingstocks";
+        this.stockQuoteUrl = "http://quoteapi.com/api/v4/symbols/{code}.asx?appID=af5f4d73c1a54a33&averages=1&desc=1&fundamentals=1&liveness=delayed";
     }
     getTrades() {
-        return this.http.get(this.stockTradesUrl);
+        return this.http.get(this.soldTradesUrl);
+    }
+    getHoldingStocks() {
+        return this.http.get(this.holdingStocksUrl);
+    }
+    getQuote(code) {
+        var url = this.stockQuoteUrl.replace("{code}", code);
+        return this.http.get(url);
     }
     extractTradesData(res) {
         let body = res.json();
