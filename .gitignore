@@ -3,3 +3,4 @@
 /.tscache/*
 /mongodb/log/*
 /mongodb/data/journal/*
+/javascript/*

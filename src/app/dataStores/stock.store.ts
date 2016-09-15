@@ -73,10 +73,10 @@ export class StockStore {
                             stock.currentPrice = quote.quote.price;
                             stock.currentMarketValue = stock.units * stock.currentPrice;
                             stock.profit = stock.currentMarketValue - stock.amount;
+                            this._holdingProfit.next(list.reduce(function(a: number, b: HoldingStock){return a + b.profit}, 0));
                         }
                 );
         });
         this._holdingStocks.next(list);
-        this._holdingProfit.next(list.reduce(function(a: number, b: HoldingStock){return a + b.profit}, 0));
     }
 }

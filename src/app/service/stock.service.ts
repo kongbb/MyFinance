@@ -20,9 +20,11 @@ export class StockService {
     return this.http.get(this.holdingStocksUrl);
   }
 
-  getQuote (code){
-    var url = this.stockQuoteUrl.replace("{code}", code);
-    return this.http.get(url);
+  getQuote (code: string){
+    var url = this.stockQuoteUrl.replace("{code}", code.toLowerCase());
+    let headers = new Headers({"content-type": "application/json"});
+    let options = new RequestOptions({headers: headers});
+    return this.http.get(url, options);
   }
 
   private extractTradesData(res: Response) {
