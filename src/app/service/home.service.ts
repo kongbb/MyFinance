@@ -3,8 +3,8 @@ import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { List } from 'immutable';
 import { ITransactionsService } from './iservice';
-import { Category } from '../models/category';
-import { HomeTransaction } from '../models/home-transaction';
+import { Category } from '../model/category';
+import { HomeTransaction } from '../model/home-transaction';
 import { HomeTransactions } from './mock-data';
 import { HomeCategories } from './mock-data';
 

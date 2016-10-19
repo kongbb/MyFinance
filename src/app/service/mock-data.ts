@@ -1,6 +1,6 @@
-import { CompanyTransaction } from '../models/company-transaction';
-import { HomeTransaction } from '../models/home-transaction';
-import { Category } from '../models/category';
+import { CompanyTransaction } from '../model/company-transaction';
+import { HomeTransaction } from '../model/home-transaction';
+import { Category } from '../model/category';
 
 export var CompanyTransactions: CompanyTransaction[] = [
     CompanyTransaction.createCompanyTransaction('', '收入', 'Delia', '2015-06-12', 9900, 900, '', new Date()),

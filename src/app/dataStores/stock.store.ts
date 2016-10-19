@@ -70,7 +70,7 @@ export class StockStore {
                 .subscribe(
                         res => {
                             var quote = <Object>res.json();
-                            stock.currentPrice = quote.quote.price;
+                            stock.currentPrice = quote["quote"].price;
                             stock.currentMarketValue = stock.units * stock.currentPrice;
                             stock.profit = stock.currentMarketValue - stock.amount;
                             this._holdingProfit.next(list.reduce(function(a: number, b: HoldingStock){return a + b.profit}, 0));

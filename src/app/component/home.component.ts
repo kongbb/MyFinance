@@ -5,7 +5,7 @@ import { User } from "../model/user";
 @Component({
     selector: "home",
     //template: "<h1>Hello Home</h1>"
-    templateUrl: "../../pages/template/home.html",
+    templateUrl: "../../pages/template/index.html",
     providers: [UserService]
 })
 

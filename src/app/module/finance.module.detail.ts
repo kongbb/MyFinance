@@ -1,6 +1,7 @@
 import { FinanceComponent } from "../component/finance.component";
 import { StocksComponent } from "../component/stocks.component";
 import { CompanyTransactionsComponent } from "../component/company-transactions.component";
+import { HomeTransactionsComponent } from "../component/home-transactions.component";
 import { Categories } from "../component/categories.component";
 import { MatchTransaction } from "../pipes/match-transaction.pipe";
 import { BestGuessCategories } from "../pipes/best-guess-categories.pipe";
@@ -9,6 +10,7 @@ export const financeComponents = [
     FinanceComponent,
     StocksComponent,
     CompanyTransactionsComponent,
+    HomeTransactionsComponent,
     Categories
 ];
 

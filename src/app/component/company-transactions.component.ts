@@ -1,23 +1,23 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component, OnChanges } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/RX';
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/RX";
 
-import { Transactions } from './transactions';
-import { Utility } from '../common/utility';
-import { CompanyTransaction } from '../model/company-transaction'
-import { Category } from '../model/category';
-import { DateInputComponent } from './date-input.component';
-import { DataTable } from './data-table.component';
-import { MatchTransaction } from '../pipes/match-transaction.pipe';
-import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
-import { CompanyStore } from '../dataStores/company.store';
-import { DateMatchTransactionPipe } from '../pipes/date-match.pipe';
-import { Categories } from './categories.component';
-import { CompanyService } from '../service/company.service';
+import { Transactions } from "./transactions";
+import { Utility } from "../common/utility";
+import { CompanyTransaction } from "../model/company-transaction"
+import { Category } from "../model/category";
+import { DateInputComponent } from "./date-input.component";
+import { DataTable } from "./data-table.component";
+import { MatchTransaction } from "../pipes/match-transaction.pipe";
+import { BestGuessCategories } from "../pipes/best-guess-categories.pipe";
+import { CompanyStore } from "../dataStores/company.store";
+import { DateMatchTransactionPipe } from "../pipes/date-match.pipe";
+import { Categories } from "./categories.component";
+import { CompanyService } from "../service/company.service";
 
 @Component({
-    selector: 'company-transactions',
+    selector: "company-transactions",
     templateUrl: "../../pages/template/company.html",
     providers: [MatchTransaction,  CompanyStore, CompanyService]
 })

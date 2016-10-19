@@ -31,9 +31,7 @@ import {Open} from './open.component';
   </div>
 `,
   providers: [],
-  directives: [Open],
   encapsulation: ViewEncapsulation.None,
-  pipes: []
 })
 /**
   * API to an open modal window.
