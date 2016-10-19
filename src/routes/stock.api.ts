@@ -223,36 +223,8 @@ export class StockRouter{
       else{
         var holding = HoldingStock.create(trade.code, trade.units - trade.soldUnits, trade.price, trade.netAmount * (trade.units - trade.soldUnits) / trade.units);
         holdingStocks.push(holding);
-        
       }
     }
-
-    var stockQuoteUrl = "https://quoteapi.com/api/v4/symbols/{code}.asx?appID=af5f4d73c1a54a33&averages=1&desc=1&fundamentals=1&liveness=delayed";
-    async.each(holdingStocks, 
-      function(t, callback){
-        request(stockQuoteUrl.replace("{code}", t.code), function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-              var info = JSON.parse(body);
-              t.currentPrice = info.quote.price;
-              t.currentMarketValue = t.currentPrice * t.units;
-              t.profit = t.currentMarketValue - t.amount;
-            }
-            callback();
-          });
-      }, function(){
-        res.json(holdingStocks);
-      });
-    holdingStocks.forEach(t => {
-          request(stockQuoteUrl.replace("{code}", t.code), function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-              var info = JSON.parse(body);
-              t.currentPrice = info.quote.price;
-              t.currentMarketValue = t.currentPrice * t.units;
-              t.profit = t.currentMarketValue - t.amount;
-            }
-          });
-        });
-
-    // res.json(holdingStocks);
+    res.json(holdingStocks);
   }
 }

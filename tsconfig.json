@@ -1,6 +1,6 @@
-{
+﻿{
     "compilerOptions":{
-        "noLib": false,
+        "noLib": true,
         "target": "es6",
         "module": "commonjs",
         "moduleResolution": "node",
@@ -9,11 +9,11 @@
         "experimentalDecorators": true,
         "removeComments": false,
         "noImplicitAny": false,
-        "outDir": "./javascript/"
+        "outDir": "./javascript"
     },
     "include": ["src/**/*.ts"],
     "exclude":[
-        "node_modules",
+        "node_modules/**/*.*",
         "typings",
         "wwwroot",
         "javascript",

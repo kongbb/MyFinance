@@ -4,19 +4,25 @@ module.exports = function(grunt) {
   grunt.initConfig({
     ts: {
       app: {
-        files: [{
-          src: ["src/**/*.ts", "!src/.baseDir.ts"],
-          dest: "./javascript/"
-        }],
-        options: {
-          module: "commonjs",
-          moduleResolution: "node",
-          noLib: false,
-          target: "es6",
-          experimentalDecorators: true,
-          emitDecoratorMetadata: true,
-          sourceMap: true
-        }
+        tsconfig: true
+        // files: [{
+        //   src: ["src/**/*.ts", "!src/.baseDir.ts", "!node_modules/**"],
+        //   dest: "./javascript/"
+        // }],
+        // options: {
+        //   module: "commonjs",
+        //   moduleResolution: "node",
+        //   noLib: true,
+        //   target: "es6",
+        //   experimentalDecorators: true,
+        //   emitDecoratorMetadata: true,
+        //   sourceMap: true
+        // },
+        // default: {
+        //   tsconfig: {
+        //     passThrough: true
+        //   }
+        // }
       }
     },
     tslint: {
@@ -29,7 +35,7 @@ module.exports = function(grunt) {
     },
     watch: {
       ts: {
-        files: ["js/src/**/*.ts", "src/**/*.ts"],
+        files: ["src/**/*.ts"],
         dest: "./javascript/",
         tasks: ["ts", "tslint"]
       }
@@ -41,8 +47,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-tslint");
 
   grunt.registerTask("default", [
-    "ts",
-    "tslint"
+    "ts"
+    //"tslint"
   ]);
 
 };

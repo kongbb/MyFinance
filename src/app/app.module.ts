@@ -1,56 +1,49 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { HttpModule, XHRBackend } from "@angular/http";
+import { HttpModule, JsonpModule } from "@angular/http";
 //import { InMemoryBackendService, SEED_DATA } from "angular2-in-memory-web-api";
 import { InMemoryWebApiModule } from "angular2-in-memory-web-api";
+// modules
+import { SharedModule } from "./module/shared.module";
+import { FinanceModule } from "./module/finance.module";
 
 // components
 import { AppComponent } from "./component/app.component";
 import { HomeComponent } from "./component/home.component";
 import { SignupComponent } from "./component/signup.component";
 import { LoginComponent } from "./component/login.component";
-import { StocksComponent } from "./component/stocks.component";
-import { Open } from "./component/open.component";
-import { Alert } from "./component/alert";
-import { DataTable } from "./component/data-table.component";
-import { DateInputComponent } from "./component/date-input.component";
-import { Categories } from "./component/categories.component";
 
-// pipes
-import { DateMatch } from "./pipes/date-match.pipe";
-import { MatchTransaction } from "./pipes/match-transaction.pipe";
+// service
+import { UserService } from "./service/user.service";
 
-// 
+// route
 import { routing, appRoutingProviders } from "./route/app.router";
-import { UserData } from "./mockData/user.data";
 
+// mock data
+import { UserData } from "./mockData/user.data";
+// TODO try lazy load module later
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     routing,
     HttpModule,
-    //InMemoryWebApiModule.forRoot(UserData)
+    JsonpModule,
+    // InMemoryWebApiModule.forRoot(UserData),
+    SharedModule,
+    FinanceModule
   ],
   declarations: [
     AppComponent,
     //components
     HomeComponent,
     LoginComponent,
-    SignupComponent,
-    StocksComponent,
-    Open,
-    Alert,
-    DataTable,
-    //DateInputComponent,
-    //Categories,
-    //pipes
-    //DateMatch,
-    //MatchTransaction
+    SignupComponent
   ],
   providers: [
-    appRoutingProviders
+    appRoutingProviders,
+    UserService
     //{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
     //{ provide: SEED_DATA, useClass: UserData }
   ],

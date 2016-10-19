@@ -7,7 +7,7 @@ import { Utility } from '../common/utility';
     pure: false
 })
 
-export class DateMatch implements PipeTransform{
+export class DateMatchTransactionPipe implements PipeTransform{
     transform(value, number, quarter, year){
         if(value == null){
             return null;

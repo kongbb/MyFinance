@@ -3,9 +3,6 @@ export class HoldingStock {
   units: number;
   price: number;
   amount: number;
-  profit: number;
-  currentPrice: number;
-  currentMarketValue: number;
 
   constructor(){
   }

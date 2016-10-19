@@ -3,7 +3,7 @@ import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 import { List } from "immutable";
 import { BehaviorSubject } from "rxjs/RX";
-import { SoldTrade } from "../model/stock-trade";
+import { SoldTrade } from "../model/sold-trade";
 import { HoldingStock } from "../model/holding-stock";
 import { StockService } from "../service/stock.service";
 

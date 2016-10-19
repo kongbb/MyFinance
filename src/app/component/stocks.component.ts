@@ -1,15 +1,14 @@
 import { Component, OnInit } from "@angular/core";
-import { SoldTrade } from "../model/stock-trade";
-import { StockService } from "../service/stock.service";
 import { StockStore } from "../dataStores/stock.store";
+import { StockService } from "../service/stock.service";
+//import { FileUploader } from "ng2-file-upload";
 
+const URL = "api/stock";
 @Component({
     selector: "stocks",
-    //template: "<h1>Hello Home</h1>"
     templateUrl: "../../pages/template/stocks.html",
     providers: [StockStore, StockService]
 })
-
 export class StocksComponent implements OnInit{
     errorMessage: string;
     // variable for what needs to be displayed in the table
@@ -24,6 +23,8 @@ export class StocksComponent implements OnInit{
     // variable for what needs to be displayed in the table column header
     protected holdingTitles: string[];
     
+    // public uploader: FileUploader = new FileUploader({url: URL});
+
     constructor (private store: StockStore) {}
 
     ngOnInit() {

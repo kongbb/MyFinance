@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import "../rxjs-operators";
 @Component({
-    selector: "myfinance",
+    selector: "app",
     template: `
       <router-outlet></router-outlet>`,
 })

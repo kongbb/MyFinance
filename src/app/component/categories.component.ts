@@ -10,7 +10,7 @@ import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
     selector: 'categories',
     template: `<div *ngIf="displayCategoryDropdown" class="form-group">
                     <label>Category</label>
-                    <select class="form-control" [(ngModel)]="category" [ngFormControl]="categoryControl" required>
+                    <select class="form-control" [(ngModel)]="category" [formControl]="categoryControl" required>
                         <option *ngFor="let c of bestGuessCategories;let i = index" [selected]="i == 0" [value]="c.name">{{c.name}}</option>
                         <option value="">Create new Category</option>
                     </select>
@@ -18,7 +18,7 @@ import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
                 
                 <div [hidden]="!displayNewCategoryInput" class="form-group">
                     <label>New Category</label>
-                    <input class="form-control" [ngFormControl]="newCategoryControl" placeholder="Enter new category" [(ngModel)]="newCategory">
+                    <input class="form-control" [formControl]="newCategoryControl" placeholder="Enter new category" [(ngModel)]="newCategory">
                 </div>
                 
                 <div [hidden]="!displaySubCategoryDropdown" class="form-group">
@@ -31,7 +31,7 @@ import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
                 
                 <div [hidden]="!displayCreateNewSubCategory" class="form-group">
                     <label>New Sub-Category</label>
-                    <input class="form-control" [ngFormControl]="newSubCategoryControl" placeholder="Enter new sub-category">
+                    <input class="form-control" [formControl]="newSubCategoryControl" placeholder="Enter new sub-category">
                 </div>`,
     providers: [BestGuessCategories],
 })
