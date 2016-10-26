@@ -1,6 +1,6 @@
 import { Component, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { Alert } from './alert';
+import { ModalComponent } from "./modal.component";
 
 @Component({
     selector: 'data-table',
@@ -14,14 +14,14 @@ import { Alert } from './alert';
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of dataset" class="odd gradeX">
-                            <td *ngIf="delete"><button type="button" class="btn btn-danger" (click)="confirmOpen(item)">Remove</button></td>
+                            <td *ngIf="delete"><button type="button" class="btn btn-danger" (click)="showDeleteConfirmation(item)">Remove</button></td>
                             <td *ngFor="let p of columns">
                                 <span>{{item[p]}}</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <alert (alertOutput)="confirmClose($event)"></alert>
+                <modal (action)="doDelete()"></modal>
             </div>`,
 })
 
@@ -37,10 +37,11 @@ export class DataTable{
     
     @Input()
     delete: boolean;
-    
+
+    @ViewChild(ModalComponent)
+    public deleteConfirmation: ModalComponent;
+
     @Output() confirmDelete = new EventEmitter();
-    
-    @ViewChild(Alert) alert;
     
     ngOnInit() {
         if(this.titles == null){
@@ -50,17 +51,14 @@ export class DataTable{
 
     private selectedItem: any;
 
-    confirmOpen(item){
+    showDeleteConfirmation(item){
         this.selectedItem = item;
-        this.alert.cancelButton = true;
-        this.alert.okButton = true;
-        this.alert.alertTitle = "Confirmation";
-        this.alert.message = "You are about to delete \n" + JSON.stringify(item, this.columns);;
-        this.alert.okButtonText = "Delete";
-        this.alert.open();
+        this.deleteConfirmation.title = "Confirmation";
+        this.deleteConfirmation.message = "You are about to delete \n" + JSON.stringify(item, this.columns);;
+        this.deleteConfirmation.show();
     }
 
-    confirmClose(){
+    doDelete(){
         this.confirmDelete.next(this.selectedItem);
     }
 }

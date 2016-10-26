@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import { Category } from '../models/Category';
+import { Category } from '../model/Category';
 import { List } from 'immutable';
-import { Transaction } from '../models/Transaction';
+import { Transaction } from '../model/Transaction';
 
 export interface ITransactionsService {
     getCategories();

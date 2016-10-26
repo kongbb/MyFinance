@@ -2,6 +2,7 @@ import { Component, ViewChild } from "@angular/core";
 import { UserService } from "../service/user.service";
 import { User } from "../model/user";
 import { ModalDirective } from "ng2-bootstrap";
+import { ModalComponent } from "../component/modal.component";
 
 @Component({
     selector: "home",
@@ -13,17 +14,16 @@ import { ModalDirective } from "ng2-bootstrap";
 export class HomeComponent {
     errorMessage: string;
     users: User[];
-    @ViewChild("childModal")
-    public childModal: ModalDirective
+    @ViewChild(ModalComponent) lgModal: ModalComponent;
 
     constructor (private userService: UserService) {}
 
     public show(): void{
-        this.childModal.show();
+        this.lgModal.show();
     }
 
     public hide(): void{
-        this.childModal.hide();
+        this.lgModal.hide();
     }
 
     ngOnInit() {
