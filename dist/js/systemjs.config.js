@@ -39,7 +39,7 @@
         defaultExtension: 'js'
       },
       'immutable':                  { main: 'dist/immutable.js' },
-      'ng2-bootstrap':              { defaultExtension: 'js' },
+      'ng2-bootstrap':              { main: 'ng2-bootstrap.js', defaultExtension: 'js' },
       'ng2-file-upload':            { main: 'ng2-file-upload.js', defaultExtension: 'js' },
       'moment':                     { main: 'moment.js',  defaultExtension: 'js' }
     }

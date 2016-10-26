@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule, JsonpModule } from "@angular/http";
 import { Routes, RouterModule, Router } from "@angular/router";
 
+import { Ng2BootstrapModule } from "ng2-bootstrap";
 import { DatepickerModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 // components
@@ -25,7 +26,8 @@ import { DateInputComponent } from "../component/date-input.component";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    Ng2BootstrapModule
   ],
   declarations: [
     Open,
@@ -48,7 +50,8 @@ import { DateInputComponent } from "../component/date-input.component";
       FormsModule,
       ReactiveFormsModule,
       HttpModule,
-      RouterModule
+      RouterModule,
+      Ng2BootstrapModule
   ],
   providers: [
   ]

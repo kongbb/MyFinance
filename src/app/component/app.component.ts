@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewContainerRef } from "@angular/core";
 import "../rxjs-operators";
 @Component({
     selector: "app",
@@ -6,4 +6,7 @@ import "../rxjs-operators";
       <router-outlet></router-outlet>`,
 })
 
-export class AppComponent { }
+export class AppComponent { 
+  public constructor(private viewContainerRef: ViewContainerRef){
+  }
+}
