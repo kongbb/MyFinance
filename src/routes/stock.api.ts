@@ -3,6 +3,9 @@ import { Router, Request, Response } from "express";
 import { HoldingStock } from "../model/holding-stock";
 import { SoldTrade } from "../model/sold-trade";
 import { Trade } from "../model/trade";
+var multer = require("multer");
+var upload = multer({dest: "upload/"});
+var fs = require("fs");
 var request = require("request");
 var async = require("async");
 
@@ -13,6 +16,7 @@ export class StockRouter{
     this.router = Router();
     this.router.get("/soldtrades", this.getStockTrades);
     this.router.get("/holdingstocks", this.getHoldingStocks);
+    this.router.post("/", upload.single('file'), this.uploadHandler);
   }
 
   public getRouter(){
@@ -226,5 +230,15 @@ export class StockRouter{
       }
     }
     res.json(holdingStocks);
+  }
+
+  uploadHandler(req: Request, res: Response, next: any){
+    fs.readFile(req.file.path, "utf8", function(err, data){
+      console.log(data);
+    });
+    
+    console.log(req.body) // form fields
+    console.log(req.file) // form files
+    res.status(204).end()
   }
 }

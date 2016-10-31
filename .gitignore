@@ -4,3 +4,4 @@
 /mongodb/log/*
 /mongodb/data/journal/*
 /javascript/*
+/upload/*

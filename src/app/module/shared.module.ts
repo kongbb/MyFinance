@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { FileUploadModule } from "ng2-file-upload";
 import { FileUploader } from "ng2-file-upload";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule, JsonpModule } from "@angular/http";
@@ -21,6 +22,7 @@ import { ModalComponent } from "../component/modal.component";
     HttpModule,
     // JsonpModule,
     // InMemoryWebApiModule.forRoot(UserData),
+    FileUploadModule,
     DatepickerModule,
     CommonModule,
     FormsModule,
@@ -32,17 +34,14 @@ import { ModalComponent } from "../component/modal.component";
     DataTable,
     NavigationComponent,
     DateInputComponent,
-    ModalComponent
-    // FileUploader
-    //UPLOAD_DIRECTIVES
+    ModalComponent,
   ],
   exports: [
       DataTable,
       NavigationComponent,
       DateInputComponent,
       ModalComponent,
-      // FileUploader
-      //UPLOAD_DIRECTIVES,
+      FileUploadModule,
       CommonModule,
       FormsModule,
       ReactiveFormsModule,

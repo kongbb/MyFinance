@@ -7,6 +7,7 @@
 /// <reference path="globals/mongodb/index.d.ts" />
 /// <reference path="globals/mongoose-promise/index.d.ts" />
 /// <reference path="globals/mongoose/index.d.ts" />
+/// <reference path="globals/multer/index.d.ts" />
 /// <reference path="globals/node/index.d.ts" />
 /// <reference path="globals/passport-local/index.d.ts" />
 /// <reference path="globals/passport/index.d.ts" />
