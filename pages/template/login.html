@@ -7,14 +7,14 @@
     <form action="/login" method="post">
         <div class="form-group">
             <label>Email</label>
-            <input type="text" class="form-control" name="email">
+            <input type="text" class="form-control" name="email" [(ngModel)]="username" placeholder="Email">
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control" name="password">
+            <input type="password" class="form-control" name="password" [(ngModel)]="password" placeholder="Password">
         </div>
 
-        <button type="submit" class="btn btn-warning btn-lg">Login</button>
+        <button type="submit" class="btn btn-warning btn-lg" (click)="login()">Login</button>
     </form>
     <hr>
     <p>Need an account? <a routerLink="/signup" routerLinkActive="active">Signup</a></p>

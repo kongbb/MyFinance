@@ -3,6 +3,8 @@ import { Router, Request, Response } from "express";
 import { HoldingStock } from "../model/holding-stock";
 import { SoldTrade } from "../model/sold-trade";
 import { Trade } from "../model/trade";
+import { CommsecCSV } from "../fileHandler/commsecCSV";
+
 var multer = require("multer");
 var upload = multer({dest: "upload/"});
 var fs = require("fs");
@@ -234,11 +236,20 @@ export class StockRouter{
 
   uploadHandler(req: Request, res: Response, next: any){
     fs.readFile(req.file.path, "utf8", function(err, data){
-      console.log(data);
+      if(err){
+        res.status(400).json(err);
+      }
+      else{
+        var handler = new CommsecCSV();
+        if(!handler.IsValid(data)){
+          res.status(400);
+        }
+        else{
+          var trades = handler.exactData(data);
+          res.json(trades);
+        }
+      }
+      next();
     });
-    
-    console.log(req.body) // form fields
-    console.log(req.file) // form files
-    res.status(204).end()
   }
 }

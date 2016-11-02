@@ -7,34 +7,14 @@ import { ModalComponent } from "../component/modal.component";
 @Component({
     selector: "home",
     //template: "<h1>Hello Home</h1>"
-    templateUrl: "../../pages/template/index.html",
-    providers: [UserService]
+    templateUrl: "../../pages/template/index.html"
 })
 
 export class HomeComponent {
-    errorMessage: string;
-    users: User[];
-    @ViewChild(ModalComponent) lgModal: ModalComponent;
+    username: string;
+    password: string;
 
-    constructor (private userService: UserService) {}
-
-    public show(): void{
-        this.lgModal.show();
-    }
-
-    public hide(): void{
-        this.lgModal.hide();
-    }
-
-    ngOnInit() {
-        //this.getUsers();
-    }
-
-    getUsers() {
-        this.userService.getUsers()
-                            .subscribe(
-                                users => this.users = users,
-                                error => this.errorMessage = <any>error
-                            );
+    login(){
+        
     }
 }

@@ -1,16 +1,54 @@
-"use strict";
+import { Request, Response, Application } from "express";
+import { Passport } from "passport";
 
-import * as express from "express";
+export class IndexRoute{
+  config(app: Application, passport: Passport){
+    app.get("/", function(req: Request, res: Response){
+      res.sendFile("index.html", {"root": "pages/"});
+    });
 
-module Route {
+    // app.get("/login", function(req: Request, res: Response){
+    //   res.sendFile("login.html", {"root": "pages/"});
+    // });
 
-  export class Index {
+    // app.get("/signup", function(req: Request, res: Response){
+    //   res.sendFile("signup.html", {"root": "pages/"});
+    // });
 
-    public index(req: express.Request, res: express.Response, next: express.NextFunction) {
-      //render page
-      res.render("index");
-    }
+    // app.get("/finance", function(req: Request, res: Response){
+    //   res.sendFile("finance.html", {"root": "pages/"});
+    // });
+
+    // app.post('/login', passport.authenticate('local-login', {
+    //   successRedirect : '/finance', // redirect to the secure profile section
+    //   failureRedirect : '/login', // redirect back to the signup page if there is an error
+    //   failureFlash : true // allow flash messages
+    // }));
+
+    // // process the signup form
+    // app.post('/signup', passport.authenticate('local-signup', {
+    //   successRedirect : '/finance', // redirect to the secure profile section
+    //   failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    //   failureFlash : true // allow flash messages
+    // }));
+
+    // // =====================================
+    // // LOGOUT ==============================
+    // // =====================================
+    // app.get('/logout', function(req, res) {
+    //   req.logout();
+    //   res.redirect('/');
+    // });
   }
 }
 
-export = Route;
+// route middleware to make sure
+// function isLoggedIn(req, res, next) {
+
+// 	// if user is authenticated in the session, carry on
+// 	if (req.isAuthenticated())
+// 		return next();
+
+// 	// if they aren't redirect them to the home page
+// 	res.redirect('/');
+// }

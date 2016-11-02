@@ -14,7 +14,6 @@ import { DataTable } from "../component/data-table.component";
 import { NavigationComponent } from "../component/navigation.component";
 import { DateInputComponent } from "../component/date-input.component";
 import { ModalComponent } from "../component/modal.component";
-//import { UPLOAD_DIRECTIVES } from "ng2-uploader";
 
 @NgModule({
   imports: [

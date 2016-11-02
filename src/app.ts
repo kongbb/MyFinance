@@ -1,11 +1,11 @@
 "use strict";
 import bodyParser = require("body-parser");
-import { Request, Response, } from "express";
+import { Request, Response, Application } from "express";
+import { IndexRoute } from "./routes/index.route";
 import { StockRouter } from "./routes/stock.api";
 
 import * as express from "express";
 import * as path from "path";
-import * as indexRoute from "./routes/index.route";
 import * as mongoose from "mongoose";
 import * as passport from "passport";
 
@@ -54,7 +54,7 @@ class Server {
     this.app.use(morgan("dev")); // log every request to the console
     this.app.use(session({ secret: "roger" })); // session secret
     this.app.use(passport.initialize());
-    this.app.use(passport.session()); // persistent login sessions
+    this.app.use(passport.session());
     this.app.use(flash()); // use connect-flash for flash messages stored in session
     //add static paths
     // this.app.use(express.static(path.join(__dirname, "public")));
@@ -64,7 +64,7 @@ class Server {
     //   res.sendFile("index.html", { root: 'pages/' });
     // });
     // catch 404 and forward to error handler
-    this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
+    this.app.use(function(err: any, req: Request, res: express.Response, next: express.NextFunction) {
       var error = new Error("Not Found");
       err.status = 404;
       next(err);
@@ -72,27 +72,9 @@ class Server {
   }
 
   private routes() {
-    //get router
-    let router: express.Router;
-    router = express.Router();
-
-    //home page
-    router.get("/", function(req: express.Request, res: express.Response){
-      res.sendFile("index.html", {"root": "pages/"});
-    });
-
-    router.post("/signup", passport.authenticate("local-signup", {
-
-    }));
-
+    new IndexRoute().config(this.app, passport);
     var stockRouter = new StockRouter().getRouter();
-    //use router middleware
-    this.app.use(router);
     this.app.use("/api/stocks", stockRouter);
-  }
-
-  requireAuthentication(req, res){
-    res.json({user: "Roger"});
   }
 }
 
