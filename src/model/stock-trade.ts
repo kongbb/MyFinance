@@ -1,4 +1,6 @@
-export class Trade {
+import * as moment from 'moment';
+
+export class StockTrade {
   code: string;
   confirmationNumber: string;
   orderNumber: string;
@@ -15,8 +17,8 @@ export class Trade {
   constructor(){
   }
   
-  static create(code, orderNumber, buySell, units, price, brokerage, netAmount, tradeDate) : Trade{
-      var t = new Trade();
+  static create(code, orderNumber, buySell, units, price, brokerage, netAmount, tradeDate) : StockTrade{
+      var t = new StockTrade();
       t.code = code;
       t.orderNumber = orderNumber;
       t.buySell = buySell;
@@ -29,8 +31,8 @@ export class Trade {
       return t;
   }
 
-  static create2(code, orderNumber, buySell, units, price, brokerage, netAmount, tradeDate, confirmationNumber, confirmationStatus, settlementDate) : Trade{
-      var t = new Trade();
+  static create2(code, orderNumber, buySell, units, price, brokerage, netAmount, tradeDate, confirmationNumber, confirmationStatus, settlementDate) : StockTrade{
+      var t = new StockTrade();
       t.code = code;
       t.orderNumber = orderNumber;
       t.buySell = buySell;
@@ -38,11 +40,11 @@ export class Trade {
       t.price = price;
       t.brokerage = brokerage;
       t.netAmount = netAmount;
-      t.tradeDate = tradeDate;
+      t.tradeDate = new Date(moment(tradeDate, "DD/MM/YYYY"));
       t.soldUnits = 0;
       t.confirmationNumber = confirmationNumber;
       t.confirmationStatus = confirmationStatus;
-      t.settlementDate = settlementDate;
+      t.settlementDate = new Date(moment(settlementDate, "DD/MM/YYYY"));
       return t;
   }
 }

@@ -1,4 +1,4 @@
-import { Trade } from "../model/trade";
+import { StockTrade } from "../model/stock-trade";
 
 export class CommsecCSV {
     public IsValid(content: string): boolean{
@@ -23,17 +23,17 @@ export class CommsecCSV {
             return false;
         }
 
-        return false;
+        return true;
     }
 
-    public exactData(content: string): Trade[]{
+    public exactData(content: string): StockTrade[]{
         var lines = content.split("\n");
         var count = lines.length - 1;
         
         lines.splice(0, 1);
         var trades = lines.map(function(line: string, index: number){
             var f = line.split(",");
-            return Trade.create2(f[4], f[1], f[3], f[5], f[6], f[7], f[8], f[2], f[0], f[10], f[9]);
+            return StockTrade.create2(f[4], f[1], f[3], f[5], f[6], f[7], f[8], f[2], f[0], f[10], f[9]);
         });
 
         return trades;

@@ -12,10 +12,8 @@
     "db": "mongod.exe --dbpath ./mongodb/data",
     "lite": "lite-server",
     "tsc": "tsc",
-    "tsc:w": "tsc -w -force",
-    "typings": "typings",
-    "test": "grunt --force",
-    "posttest": "npm run start"
+    "tsc:w": "tsc -w",
+    "typings": "typings"
   },
   "dependencies": {
     "@angular/common": "^2.1.2",
@@ -42,7 +40,7 @@
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-ts": "^6.0.0-beta.2",
+    "grunt-ts": "^6.0.0-beta.3",
     "grunt-tslint": "^3.1.1",
     "immutable": "^3.8.1",
     "jade": "^1.11.0",

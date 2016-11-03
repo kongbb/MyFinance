@@ -2,7 +2,7 @@
 import bodyParser = require("body-parser");
 import { Request, Response, Application } from "express";
 import { IndexRoute } from "./routes/index.route";
-import { StockRouter } from "./routes/stock.api";
+import { StockRouter } from "./routes/stock.route";
 
 import * as express from "express";
 import * as path from "path";

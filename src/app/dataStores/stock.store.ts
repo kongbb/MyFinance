@@ -18,7 +18,7 @@ export class StockStore {
 
     
     constructor(private service: StockService){
-        this.loadInitialData();
+        this.loadData();
     }
     
     get soldTransactions(){
@@ -37,7 +37,19 @@ export class StockStore {
         return new Observable(fn => this._holdingProfit.subscribe(fn));
     }
 
-    loadInitialData(){
+    importStockTrades(filePath: string){
+        this.service.importTrades(filePath)
+            .subscribe(
+                res => {
+                    this.loadData();
+                },
+                err => {
+                    console.log("Error importing stock trades!")
+                }
+            );
+    }
+
+    loadData(){
         this.service.getTrades()
             .subscribe(
                 res => {

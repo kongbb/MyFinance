@@ -54,7 +54,7 @@ export class DataTable{
     showDeleteConfirmation(item){
         this.selectedItem = item;
         this.deleteConfirmation.title = "Confirmation";
-        this.deleteConfirmation.message = "You are about to delete \n" + JSON.stringify(item, this.columns);;
+        this.deleteConfirmation.message = "You are about to delete \n" + JSON.stringify(item, this.columns);
         this.deleteConfirmation.show();
     }
 

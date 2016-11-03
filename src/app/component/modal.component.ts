@@ -16,6 +16,9 @@ export class ModalComponent {
     @Input()
     message: string;
 
+    @Input()
+    arg: any;
+
     @Output() action = new EventEmitter();
 
     public show(): void{

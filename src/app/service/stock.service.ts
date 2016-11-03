@@ -10,6 +10,7 @@ export class StockService {
 
   private soldTradesUrl = "api/stocks/soldtrades";
   private holdingStocksUrl = "api/stocks/holdingstocks";
+  private importTradesUrl = "api/stocks/import";
 
   private stockQuoteUrl = "http://quoteapi.com/api/v4/symbols/{code}.asx?appID=af5f4d73c1a54a33&averages=1&desc=1&fundamentals=1&liveness=delayed";
   getTrades (){
@@ -25,6 +26,12 @@ export class StockService {
     let headers = new Headers({"content-type": "application/json"});
     let options = new RequestOptions({headers: headers});
     return this.http.get(url, options);
+  }
+
+  importTrades(path: string){
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json; charset=utf-8');
+    return this.http.post(this.importTradesUrl, JSON.stringify({path: path}),{headers}).share();
   }
 
   private extractTradesData(res: Response) {
