@@ -9,6 +9,8 @@ import { CommsecCSV } from "../fileHandler/commsecCSV";
 var multer = require("multer");
 var upload = multer({dest: "upload/"});
 var fs = require("fs");
+var Promise = require("bluebird");
+Promise.promisifyAll(fs);
 var request = require("request");
 var async = require("async");
 
@@ -237,12 +239,8 @@ export class StockRouter{
   }
 
   uploadHandler(req: Request, res: Response, next: any){
-    fs.readFile(req.file.path, "utf8", function(err, data){
-      if(err){
-        res.status(400).json(err);
-      }
-      else{
-        var handler = new CommsecCSV();
+    fs.readFileAsync(req.file.path, "utf8").then(function(data){
+      var handler = new CommsecCSV();
         if(!handler.IsValid(data)){
           res.status(400);
         }
@@ -250,15 +248,33 @@ export class StockRouter{
           var trades = handler.exactData(data);
           res.json({filePath: req.file.path, transactionsCount: trades.length});
         }
-      }
+    }).catch(function(err){
+      res.status(400).json(err);
+    }).finally(function(){
       next();
     });
+    // fs.readFile(req.file.path, "utf8", function(err, data){
+    //   if(err){
+    //     res.status(400).json(err);
+    //   }
+    //   else{
+    //     var handler = new CommsecCSV();
+    //     if(!handler.IsValid(data)){
+    //       res.status(400);
+    //     }
+    //     else{
+    //       var trades = handler.exactData(data);
+    //       res.json({filePath: req.file.path, transactionsCount: trades.length});
+    //     }
+    //   }
+    //   next();
+    // });
   }
 
   importStocks(req: Request, res: Response, next: any){
     if(fs.existsSync(req.body.path)){
-      var content = fs.readFileSync(req.body.path, "utf8");
-      var handler = new CommsecCSV();
+      fs.readFileAsync(req.body.path, "utf8").then(function(content){
+        var handler = new CommsecCSV();
         if(!handler.IsValid(content)){
           res.status(400);
         }
@@ -267,16 +283,17 @@ export class StockRouter{
           new StockRepository().importStockTrades(trades)
             .then(function(){
               res.status(200);
-              next();
-            })
-            .catch(function(err){
-              res.status(400).send(err);
-              next();
             });
         }
+      }).catch(function(err){
+        res.status(400).json(err);
+      }).finally(function(){
+        next();
+      });
     }
     else{
       res.status(400).json({err: "file doesn't exists."});
+      next();
     }
   }
 }

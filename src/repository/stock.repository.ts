@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+var Promise = require("bluebird");
 import { StockTrade } from "../model/stock-trade";
 var StockTradeDB = require('../mongoModel/stock-trade.model');
 
@@ -18,6 +19,16 @@ export class StockRepository{
         confirmationStatus: t.confirmationStatus
       };
     });
+    Promise.map(valuesToBeFiltered, function(value, index, length) {
+      return Promise.all([filterer(value, index, length), value]);
+    }).then(function(values) {
+      return values.filter(function(stuff) {
+          return stuff[0] == true
+      }).map(function(stuff) {
+          return stuff[1];
+      });
+    });
+    Promise.filter(stockTrades,function(trade){return true;}).then(function(){});
     // unable to create objects by new Model() then save through insertMany() or insert()
     // got Range Error, should be a bug in mongoose
     // if create a single object by new Model(), then save(), it's fine
