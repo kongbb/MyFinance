@@ -3,8 +3,7 @@ import { Router, Request, Response } from "express";
 import { HoldingStock } from "../model/holding-stock";
 import { SoldTrade } from "../model/sold-trade";
 import { StockTrade } from "../model/stock-trade";
-import { StockRepository } from "../repository/stock.repository";
-import { CommsecCSV } from "../fileHandler/commsecCSV";
+import { StockController } from "../controller/stock.controller";
 
 var multer = require("multer");
 var upload = multer({dest: "upload/"});
@@ -16,13 +15,15 @@ var async = require("async");
 
 export class StockRouter{
   private router: Router;
+  private controller: StockController;
   
   constructor(){
     this.router = Router();
+    this.controller = new StockController();
     this.router.get("/soldtrades", this.getStockTrades);
     this.router.get("/holdingstocks", this.getHoldingStocks);
-    this.router.post("/", upload.single('file'), this.uploadHandler);
-    this.router.post("/import", this.importStocks);
+    this.router.post("/", upload.single('file'), this.uploadStockTransactionsCSV);
+    this.router.post("/import", this.importStockTransactions);
   }
 
   public getRouter(){
@@ -238,62 +239,19 @@ export class StockRouter{
     res.json(holdingStocks);
   }
 
-  uploadHandler(req: Request, res: Response, next: any){
-    fs.readFileAsync(req.file.path, "utf8").then(function(data){
-      var handler = new CommsecCSV();
-        if(!handler.IsValid(data)){
-          res.status(400);
-        }
-        else{
-          var trades = handler.exactData(data);
-          res.json({filePath: req.file.path, transactionsCount: trades.length});
-        }
-    }).catch(function(err){
+  uploadStockTransactionsCSV(req: Request, res: Response, next: any){
+    this.controller.uploadStockTransactionsCSV(req.file.path).then((data) => {
+      res.status(200).json(data);
+    }).catch((err) => {
       res.status(400).json(err);
-    }).finally(function(){
-      next();
     });
-    // fs.readFile(req.file.path, "utf8", function(err, data){
-    //   if(err){
-    //     res.status(400).json(err);
-    //   }
-    //   else{
-    //     var handler = new CommsecCSV();
-    //     if(!handler.IsValid(data)){
-    //       res.status(400);
-    //     }
-    //     else{
-    //       var trades = handler.exactData(data);
-    //       res.json({filePath: req.file.path, transactionsCount: trades.length});
-    //     }
-    //   }
-    //   next();
-    // });
   }
 
-  importStocks(req: Request, res: Response, next: any){
-    if(fs.existsSync(req.body.path)){
-      fs.readFileAsync(req.body.path, "utf8").then(function(content){
-        var handler = new CommsecCSV();
-        if(!handler.IsValid(content)){
-          res.status(400);
-        }
-        else{
-          var trades = handler.exactData(content);
-          new StockRepository().importStockTrades(trades)
-            .then(function(){
-              res.status(200);
-            });
-        }
-      }).catch(function(err){
-        res.status(400).json(err);
-      }).finally(function(){
-        next();
-      });
-    }
-    else{
-      res.status(400).json({err: "file doesn't exists."});
-      next();
-    }
+  importStockTransactions(req: Request, res: Response, next: any){
+    this.controller.importStockTransactions(req.body.path).then(() => {
+      res.status(200);
+    }).catch((err) => {
+      res.status(400).json(err);
+    });
   }
 }

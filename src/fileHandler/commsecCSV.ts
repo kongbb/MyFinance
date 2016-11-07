@@ -26,7 +26,7 @@ export class CommsecCSV {
         return true;
     }
 
-    public exactData(content: string): StockTrade[]{
+    public extractData(content: string): StockTrade[]{
         var lines = content.split("\n");
         var count = lines.length - 1;
         

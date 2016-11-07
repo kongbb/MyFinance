@@ -1,8 +1,8 @@
 "use strict";
 import bodyParser = require("body-parser");
 import { Request, Response, Application } from "express";
-import { IndexRoute } from "./routes/index.route";
-import { StockRouter } from "./routes/stock.route";
+import { IndexRoute } from "./route/index.route";
+import { StockRouter } from "./route/stock.route";
 
 import * as express from "express";
 import * as path from "path";
