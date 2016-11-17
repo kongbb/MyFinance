@@ -4,15 +4,10 @@ export class HoldingStock {
   price: number;
   amount: number;
 
-  constructor(){
-  }
-  
-  static create(code, units, price, amount) : HoldingStock{
-      var t = new HoldingStock();
-      t.code = code;
-      t.units = units;
-      t.price = price;
-      t.amount = amount;
-      return t;
+  constructor(code: string, units: number, price: number, amount: number){
+    this.code = code;
+    this.units = units;
+    this.price = price;
+    this.amount = amount;
   }
 }

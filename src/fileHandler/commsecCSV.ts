@@ -33,7 +33,7 @@ export class CommsecCSV {
         lines.splice(0, 1);
         var trades = lines.map(function(line: string, index: number){
             var f = line.split(",");
-            return StockTrade.create2(f[4], f[1], f[3], f[5], f[6], f[7], f[8], f[2], f[0], f[10], f[9]);
+            return new StockTrade(f[4], f[1], f[3], Number.parseInt(f[5]), Number.parseFloat(f[6]), Number.parseFloat(f[7]), Number.parseFloat(f[8]), f[2], f[0], f[10], f[9]);
         });
 
         return trades;

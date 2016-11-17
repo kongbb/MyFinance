@@ -6,6 +6,7 @@ var StockTransactionSchema   = new Schema({
     id: mongoose.Schema.Types.ObjectId,
     confirmationNumber: { type: String, unique: true },
     orderNumber: String,
+    security: String,
     buySell: String,
     units: Number,
     price: Number,
