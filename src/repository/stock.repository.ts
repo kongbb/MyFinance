@@ -39,15 +39,11 @@ export class StockRepository{
     });
   }
 
-  public getSoldTrades(){
-
-  }
-
   public getStockTrades(){
-    return StockTradeDB.find({security: "LPE"}).sort({tradeDate: 1})
+    return StockTradeDB.find().sort({tradeDate: 1})
         .lean().exec().then(function(trans){
             return Promise.map(trans, (t)=> {
-              return new StockTrade(t.security, t.orderNumber, t.buySell, t.units, t.price, t.brokerage, t.netAmount, t.tradeDate, t.confirmationNumber, t.confirmationStatus, t.settlementDate);
+              return new StockTrade(null, t.security, t.orderNumber, t.buySell, t.units, t.price, t.brokerage, t.netAmount, t.tradeDate, t.confirmationNumber, t.confirmationStatus, t.settlementDate);
             });
         });
   }

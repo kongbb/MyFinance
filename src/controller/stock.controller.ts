@@ -3,6 +3,7 @@ var fs = require("fs");
 var Promise = require("bluebird");
 Promise.promisifyAll(fs);
 import { StockTrade } from "../model/stock-trade";
+import { SoldTrade } from "../model/sold-trade";
 import { HoldingStock } from "../model/holding-stock";
 import { CommsecCSV } from "../fileHandler/commsecCSV";
 import { StockRepository } from "../repository/stock.repository";
@@ -41,17 +42,64 @@ export class StockController{
     });
   }
 
+  getSoldTrades(): Promise<SoldTrade>{
+    return this.repository.getStockTrades().then((trades: Array<StockTrade>) => {
+      return this.generateSoldTrades(trades);
+    });
+  }
+
   getHoldingStocks(): Promise<HoldingStock>{
     return this.repository.getStockTrades().then((trades: Array<StockTrade>) => {
       return this.generateHoldingStocksFromTrades(trades);
     });
   }
 
+  private generateSoldTrades(trades: Array<StockTrade>): Array<SoldTrade>{
+    var result = new Array<SoldTrade>();
+    // var sellTrades = new Map<string, Array<StockTrade>>();
+    var buyTrades = new Map<string, Array<StockTrade>>();
+    trades.forEach((trade: StockTrade, index: number, arr: StockTrade[]) => {
+      if(!buyTrades.has(trade.code)){
+        //assuming first entry here is always a buy trade, and the trades are ordered by trade date desc
+        buyTrades.set(trade.code, Array.of(trade));
+      }
+      else{
+        var array: StockTrade[] = buyTrades.get(trade.code);
+        if(trade.buySell == "B"){
+          array.push(trade);
+        }
+        else{
+          var sold = new SoldTrade(trade);
+          result.push(sold);
+          var units = trade.units;
+          var cost = 0;
+          while(units > 0){
+            sold.matchedBuyTrades.push(array[0].clone());
+            if(array[0].units > units){
+              cost += Math.round(array[0].netAmount * units / array[0].units * 100) / 100;
+              array[0].netAmount = Math.round(array[0].netAmount * (array[0].units - units) / array[0].units * 100) / 100;
+              array[0].units -= units;
+              units = 0;
+            }
+            else{
+              cost += Math.round(array[0].netAmount * 100) / 100;
+              units -= array[0].units;
+              array.shift();
+            }
+          }
+          sold.profit = Math.round((sold.netAmount - cost) * 100) / 100;
+          sold.purchasePrice = Math.round(cost / sold.units * 1000) / 1000;
+        }
+      }
+    });
+    return result;
+  }
+
   private generateHoldingStocksFromTrades(trades: Array<StockTrade>): Array<HoldingStock>{
     var map = new Map<string, Array<StockTrade>>();
     trades.forEach((trade: StockTrade, index: number, arr: StockTrade[]) => {
       if(!map.has(trade.code)){
-        //assuming first entry here is always a buy trade, and the trades are ordered by trade date desc
+        //assuming first entry here is always a buy trade, and the trades are ordered by trade date
         map.set(trade.code, Array.of(trade));
       }
       else{
@@ -75,68 +123,14 @@ export class StockController{
       }
     });
     
-    return Array.from(map.values()).map((ts: StockTrade[]) => {
-      return this.aggregate(ts);
+    return Array.from(map.values()).filter(arr => { return arr.length > 0; }).map((ts: StockTrade[]) => {
+      return this.aggregateHoldingStocks(ts);
     }, this);
   }
 
-  private aggregate(trades: StockTrade[]): HoldingStock{
+  private aggregateHoldingStocks(trades: StockTrade[]): HoldingStock{
     return trades.reduce((a: HoldingStock, b: StockTrade) => {
       return new HoldingStock(a.code, a.units + b.units, Math.round((a.amount + b.netAmount) / (a.units + b.units) * 1000) / 1000, a.amount + b.netAmount)
     }, new HoldingStock(trades[0].code, 0, 0, 0));
   }
-
-  // trades.forEach(function(currentValue, index, arr){
-    //   if(currentValue.buySell == "B"){
-    //     currentValue.soldUnits = 0;
-    //   }
-    // });
-    // var soldTrades = new Array();
-    // for (var i = 0; i < trades.length; i++){
-    //   var sold = trades[i];
-    //   if(sold.buySell == "S"){
-    //     var units = sold.units;
-    //     var purchaseAmount = 0;
-    //     for (var index = 0; index < trades.length; index++) {
-    //       var buy = trades[index];
-    //       var unsoldUnits = buy.units - buy.soldUnits;
-    //       if(buy.buySell == "B" && buy.code == sold.code && unsoldUnits > 0){
-    //         if(unsoldUnits >= units){
-    //           buy.soldUnits += units;
-    //           purchaseAmount += buy.netAmount * 1.0 * units / buy.units;
-    //           units = 0;
-    //         }
-    //         else{
-    //           buy.soldUnits = buy.units;
-    //           units -= unsoldUnits;
-    //           purchaseAmount += buy.netAmount * 1.0 * unsoldUnits / buy.units;
-    //         }
-            
-    //         if(units == 0){
-    //           soldTrades.push(SoldTrade.create(sold.code, sold.units, sold.price, sold.netAmount, purchaseAmount, sold.tradeDate));
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // var holdingStocks = new Array<HoldingStock>();
-    // for (var i = 0; i < trades.length; i++){
-    //   if(trades[i].buySell == "S" || (trades[i].buySell == "B" && trades[i].soldUnits == trades[i].units)){
-    //     continue;
-    //   }
-    //   var trade = trades[i];
-    //   var existing: HoldingStock = holdingStocks.find(function(t: HoldingStock){
-    //     return t.code == trade.code; 
-    //   });
-    //   if(existing != null){
-    //     existing.units += trade.units - trade.soldUnits;
-    //     existing.amount += trade.netAmount * (trade.units - trade.soldUnits) / trade.units;
-    //     existing.price = existing.amount / existing.units;
-    //   }
-    //   else{
-    //     var holding = HoldingStock.create(trade.code, trade.units - trade.soldUnits, trade.price, trade.netAmount * (trade.units - trade.soldUnits) / trade.units);
-    //     holdingStocks.push(holding);
-    //   }
-    // }
 }

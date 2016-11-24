@@ -31,9 +31,12 @@ export class CommsecCSV {
         var count = lines.length - 1;
         
         lines.splice(0, 1);
+        lines = lines.filter( t => { return t.split(",").length >= 11; } );
         var trades = lines.map(function(line: string, index: number){
             var f = line.split(",");
-            return new StockTrade(f[4], f[1], f[3], Number.parseInt(f[5]), Number.parseFloat(f[6]), Number.parseFloat(f[7]), Number.parseFloat(f[8]), f[2], f[0], f[10], f[9]);
+            if(f.length >= 11){
+              return new StockTrade(null, f[4], f[1], f[3], Number.parseInt(f[5]), Number.parseFloat(f[6]), Number.parseFloat(f[7]), Number.parseFloat(f[8]), f[2], f[0], f[10], f[9]);
+            }
         });
 
         return trades;
