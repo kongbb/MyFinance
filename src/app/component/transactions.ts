@@ -62,9 +62,16 @@ export abstract class Transactions{
         this.newTransaction.subCategory = value;
     }
 
-    setDate(results: Date){
-        this.newTransaction.date = results;
+    setValue(value: any){
+        this.newTransaction.amount = value.amount;
+        this.newTransaction.gst = value.gst;
+        this.newTransaction.category = value.category;
+        this.newTransaction.subCategory = value.subCategory;
     }
+
+    // setDate(results: Date){
+    //     this.newTransaction.date = results;
+    // }
     
     showTransactions(number){
         this.showTransactionsMode = number;

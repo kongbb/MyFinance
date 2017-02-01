@@ -25,7 +25,10 @@
                             </div>
                             
                             <categories [amount]="amountControl.valueChanges" [categories]="store.categories | async" (categoryChanged)="setCategory($event)" (subCategoryChanged)="setSubCategory($event)"></categories>                                     
-                            <date-input [date]="date" (dateChanged)="setDate($event)"></date-input>
+                            <div class="form-group input-group">
+                                <input type="date" class="form-control" name="date" [(ngModel)]="newTransaction.date" required>
+                            </div>
+                            <!--<date-input [date]="date" (dateChanged)="setDate($event)"></date-input>-->
                                                                         
                             <div class="form-group">
                                 <label>Comment</label>

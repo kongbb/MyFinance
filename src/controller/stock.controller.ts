@@ -4,6 +4,7 @@ var Promise = require("bluebird");
 Promise.promisifyAll(fs);
 import { StockTrade } from "../model/stock-trade";
 import { SoldTrade } from "../model/sold-trade";
+import { MatchingBuyTrade } from "../model/matching-buy-trade";
 import { HoldingStock } from "../model/holding-stock";
 import { CommsecCSV } from "../fileHandler/commsecCSV";
 import { StockRepository } from "../repository/stock.repository";
@@ -42,13 +43,13 @@ export class StockController{
     });
   }
 
-  getSoldTrades(): Promise<SoldTrade>{
+  getSoldTrades(): Promise<Array<SoldTrade>>{
     return this.repository.getStockTrades().then((trades: Array<StockTrade>) => {
       return this.generateSoldTrades(trades);
     });
   }
 
-  getHoldingStocks(): Promise<HoldingStock>{
+  getHoldingStocks(): Promise<Array<HoldingStock>>{
     return this.repository.getStockTrades().then((trades: Array<StockTrade>) => {
       return this.generateHoldingStocksFromTrades(trades);
     });
@@ -74,18 +75,21 @@ export class StockController{
           var units = trade.units;
           var cost = 0;
           while(units > 0){
-            sold.matchedBuyTrades.push(array[0].clone());
+            var matchingTrade = new MatchingBuyTrade(array[0].clone());
             if(array[0].units > units){
               cost += Math.round(array[0].netAmount * units / array[0].units * 100) / 100;
               array[0].netAmount = Math.round(array[0].netAmount * (array[0].units - units) / array[0].units * 100) / 100;
               array[0].units -= units;
+              matchingTrade.matchingUnits = units;
               units = 0;
             }
             else{
               cost += Math.round(array[0].netAmount * 100) / 100;
+              matchingTrade.matchingUnits = array[0].units;
               units -= array[0].units;
               array.shift();
             }
+            sold.matchedBuyTrades.push(matchingTrade);
           }
           sold.profit = Math.round((sold.netAmount - cost) * 100) / 100;
           sold.purchasePrice = Math.round(cost / sold.units * 1000) / 1000;

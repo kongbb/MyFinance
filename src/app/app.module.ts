@@ -16,6 +16,8 @@ import { LoginComponent } from "./component/login.component";
 
 // service
 import { UserService } from "./service/user.service";
+import { LoginStatusStore } from "./dataStores/login-status.store";
+import { GoogleApiHelper } from "./common/gapi";
 
 // route
 import { routing, appRoutingProviders } from "./route/app.router";
@@ -43,7 +45,9 @@ import { UserData } from "./mockData/user.data";
   ],
   providers: [
     appRoutingProviders,
-    UserService
+    UserService,
+    LoginStatusStore,
+    GoogleApiHelper
     //{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
     //{ provide: SEED_DATA, useClass: UserData }
   ],

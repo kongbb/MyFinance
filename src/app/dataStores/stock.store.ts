@@ -3,13 +3,13 @@ import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 import { List } from "immutable";
 import { BehaviorSubject } from "rxjs/RX";
-import { SoldTrade } from "../model/sold-trade";
+import { SoldStockTrade } from "../model/sold-stock-trade";
 import { HoldingStock } from "../model/holding-stock";
 import { StockService } from "../service/stock.service";
 
 @Injectable()
 export class StockStore {
-    private _soldTransactions : BehaviorSubject<List<SoldTrade>> 
+    private _soldTransactions : BehaviorSubject<List<SoldStockTrade>> 
         = new BehaviorSubject(List([]));
     private _holdingStocks : BehaviorSubject<List<HoldingStock>> 
         = new BehaviorSubject(List([]));
@@ -53,9 +53,9 @@ export class StockStore {
         this.service.getTrades()
             .subscribe(
                 res => {
-                    let soldTrades = <SoldTrade[]>res.json();
+                    let soldTrades = <SoldStockTrade[]>res.json();
                     this._soldTransactions.next(List(soldTrades));
-                    this._profit.next(soldTrades.reduce(function(a: number, b: SoldTrade){return a + b.profit}, 0));
+                    this._profit.next(soldTrades.reduce(function(a: number, b: SoldStockTrade){return Math.round((a + b.profit) * 100) / 100}, 0));
                 },
                 err => {
                     console.log("Error retrieving stock trades!")
@@ -84,8 +84,8 @@ export class StockStore {
                             var quote = <Object>res.json();
                             stock.currentPrice = quote["quote"].price;
                             stock.currentMarketValue = stock.units * stock.currentPrice;
-                            stock.profit = stock.currentMarketValue - stock.amount;
-                            this._holdingProfit.next(list.reduce(function(a: number, b: HoldingStock){return a + b.profit}, 0));
+                            stock.profit = Math.round((stock.currentMarketValue - stock.amount) * 100) / 100;
+                            this._holdingProfit.next(list.reduce(function(a: number, b: HoldingStock){return Math.round((a + b.profit) * 100) / 100}, 0));
                         }
                 );
         });

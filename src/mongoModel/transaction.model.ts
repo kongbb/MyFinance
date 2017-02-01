@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var TransactionSchema   = new Schema({
     id: mongoose.Schema.Types.ObjectId,
-    userId: mongoose.Schema.Types.ObjectId,
+    userId: String,
     transactionType: String,
     date: String,
     amount: Number,

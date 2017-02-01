@@ -24,7 +24,7 @@
       '@angular/http':              'npm:@angular/http/bundles/http.umd.js',
       '@angular/router':            'npm:@angular/router/bundles/router.umd.js',
       '@angular/forms':             'npm:@angular/forms/bundles/forms.umd.js',
-      'ng2-file-upload':            'npm:ng2-file-upload',
+      'ng2-file-upload':            'npm:ng2-file-upload'
     },
     packages: {
       app: {

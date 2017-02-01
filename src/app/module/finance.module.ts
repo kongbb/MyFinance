@@ -9,7 +9,7 @@ import { financeComponents, financePipes, financeDirectives } from "./finance.mo
 import { FinanceComponent } from "../component/finance.component";
 import { StocksComponent } from "../component/stocks.component";
 import { CompanyTransactionsComponent } from "../component/company-transactions.component";
-import { HomeTransactionsComponent } from "../component/home-transactions.component";
+// import { HomeTransactionsComponent } from "../component/home-transactions.component";
 
 import { StockStore } from "../dataStores/stock.store";
 import { StockService } from "../service/stock.service";
@@ -37,10 +37,10 @@ export const routerConfig : Routes = [
         path: "company",
         component: CompanyTransactionsComponent,
       },
-      {
-        path: "home",
-        component: HomeTransactionsComponent,
-      }
+      // {
+      //   path: "home",
+      //   component: HomeTransactionsComponent,
+      // }
     ] 
   },
 ];

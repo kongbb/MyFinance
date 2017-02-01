@@ -32,38 +32,44 @@ export class StocksComponent implements OnInit{
     constructor (private store: StockStore) {}
 
     ngOnInit() {
-        this.columns = ["code", "tradeDate", "soldPrice", "units", "soldAmount", "purchaseAmount", "profit"];
-        this.titles = ["Code", "Date", "Sold Price", "Units", "Sold Amount", "Purchase Amount", "Profit"];
+        this.columns = ["code", "tradeDate", "price", "units", "netAmount", "profit"];
+        this.titles = ["Code", "Date", "Sold Price", "Units", "Sold Amount", "Profit"];
 
         this.holdingColumns = ["code", "units", "price", "amount", "currentPrice", "currentMarketValue", "profit"];
         this.holdingTitles = ["Code", "Units", "Purchase Price", "Net Amount", "Current Price", "Current Market Value", "Profit"];
-        this.stockBulkUploader.onCompleteItem = (item: any, response: string, status: number, headers: any) => {
-            this.onFileUploadComplete(item, response, status, headers);
+        this.stockBulkUploader.onSuccessItem = (item: any, response: string, status: number, headers: any) => {
+            this.onSuccessItem(item, response, status, headers);
         };
         this.stockBulkUploader.onErrorItem = (item: any, response: string, status: number, headers: any) => {
-            this.onFileUploadError(item, response, status, headers);
+            this.onErrorItem(item, response, status, headers);
         };
+        this.stockBulkUploader.onAfterAddingFile = (item: any) => {
+            this.onAfterAddingFile(item);
+        }
     }
 
-    onFileUploadComplete(item: any, response: string, status: number, headers: any){
+    onSuccessItem(item: any, response: string, status: number, headers: any){
         this.importConfirmation.title = "Confirmation";
         var resJson = JSON.parse(response);
         this.importConfirmation.message = "Proceed to import " + resJson.transactionsCount + " stock transactions.";
         this.importConfirmation.arg = resJson.filePath;
+        this.importConfirmation.defaultActionOnly = false;
         this.importConfirmation.show();
     }
     
-    onFileUploadError(item: any, response: string, status: number, headers: any){
+    onErrorItem(item: any, response: string, status: number, headers: any){
         this.importConfirmation.title = "Error";
         this.importConfirmation.message = "Error occurred during analysing file.";
+        this.importConfirmation.defaultActionOnly = true;
+        this.stockBulkUploader.removeFromQueue(item);
         this.importConfirmation.show();
+    }
+
+    onAfterAddingFile(item: any){
+        this.stockBulkUploader.uploadItem(item);
     }
 
     confirmImport(){
         this.store.importStockTrades(this.importConfirmation.arg);
-    }
-
-    test(){
-        this.importConfirmation.show();
     }
 }

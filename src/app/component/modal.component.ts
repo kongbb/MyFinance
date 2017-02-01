@@ -21,6 +21,8 @@ export class ModalComponent {
 
     @Output() action = new EventEmitter();
 
+    public defaultActionOnly: boolean;
+
     public show(): void{
         this.confirmModal.show();
     }
@@ -30,7 +32,9 @@ export class ModalComponent {
     }
 
     confirmAction(){
-        this.action.next();
+        if(!this.defaultActionOnly){
+            this.action.next();
+        }
         this.confirmModal.hide();
     }
 }

@@ -1,10 +1,18 @@
 import * as moment from 'moment';
+var Promise = require("bluebird");
+Promise.promisifyAll(require("mongoose"));
 import { Transaction } from "../model/transaction";
-var TransactionDB = require('../models/transaction.model');
+var TransactionDB = require('../mongoModel/transaction.model');
 
 export class TransactionRepository{
   public getTransactions(userId: string, transactionType: string): any{
-    return TransactionDB.find({userId: userId, transactionType: transactionType}).sort({date: -1}).lean().exec();
+    return TransactionDB.find({userId: userId, transactionType: transactionType})
+      .sort({date: -1}).lean().exec().then(function(trans){
+            return Promise.map(trans, (t)=> {
+              return new Transaction(t.id, t.userId, t.transactionType, t.date, t.amount, 
+                t.gst, t.category, t.subCategory, t.comment, t.createdDate);
+            });
+        });
   }
 
   public postTransaction(tran: Transaction): any{
@@ -28,7 +36,16 @@ export class TransactionRepository{
   }
 
   public getCategories(userId: string, transactionType: string): any{
-    return TransactionDB.find({userId: userId, transactionType: transactionType}).aggregate([
+    return TransactionDB.aggregate([
+      {
+        $match: {
+          $and: 
+            [
+              { "userId": { $eq: userId },},
+              { "transactionType": { $eq: transactionType }}
+            ]
+        }
+      },
       {
         $group: {
           _id: { 
@@ -61,7 +78,19 @@ export class TransactionRepository{
           subCategories: 1,
         }
       }
-    ]).exec();
+    ]).exec()
+    .then(function(cs){
+      return Promise.map(cs, (c)=> {
+        if (c.subCategories && c.subCategories.length == 1) {
+            if (!c.subCategories[0].name) {
+                c.averageAmount = c.subCategories[0].averageAmount;
+                c.count = c.subCategories[0].count;
+                c.subCategories = null;
+            }
+        }
+        return c;
+      });
+    });
   }
 
   public getTransactionById(id: string): any{

@@ -6,6 +6,7 @@ export class Transaction {
   category: string;
   subCategory: string;
   amount: number;
+  gst: number;
   date: Date;
   comment: string;
   createdDate: Date;

@@ -3,7 +3,9 @@ import bodyParser = require("body-parser");
 import { Request, Response, Application } from "express";
 import { IndexRoute } from "./route/index.route";
 import { StockRouter } from "./route/stock.route";
-
+import { CompanyRouter } from "./route/company.route";
+var BearerStrategy = require("passport-http-bearer").Strategy;
+var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 import * as express from "express";
 import * as path from "path";
 import * as mongoose from "mongoose";
@@ -72,9 +74,35 @@ class Server {
   }
 
   private routes() {
+    //this.test(passport);
+    //this.testGoogle(passport);
     new IndexRoute().config(this.app, passport);
     var stockRouter = new StockRouter().getRouter();
     this.app.use("/api/stocks", stockRouter);
+
+    var companyRoute = new CompanyRouter().getRouter();
+    this.app.use("/api/company", companyRoute);
+
+  }
+
+  private test(passport){
+    passport.use(new BearerStrategy(function(token, done){
+      var s = "123";
+      return done(null, {test: "123"});
+    }));
+  }
+
+  private testGoogle(passport){
+    passport.use(new GoogleStrategy({
+        clientID: "1005942748616-gn1b79gm1dvv800q3pjtk7e0rh8n1loi.apps.googleusercontent.com",
+        clientSecret: "2tk5fTAZcM6cuJ4kneq3QUF6",
+        callbackURL: ""
+      }, function(accessToken, refreshToken, profile, done){
+        var token = accessToken;
+        process.nextTick(function(){
+          return done(null, profile);
+        });
+    }));
   }
 }
 

@@ -1,10 +1,33 @@
 import { Request, Response, Application } from "express";
 import { Passport } from "passport";
 
+
 export class IndexRoute{
+  
+  serialize(req: Request, res: Response, next){
+    var user = req.user;
+    req.user = {
+      id: "roger-test-id"
+    };
+    next();
+  }
+  
+  generateToken(req: Request, res: Response, next){
+    //req.token = ""
+    next();
+  }
+
   config(app: Application, passport: Passport){
     app.get("/", function(req: Request, res: Response){
       res.sendFile("index.html", {"root": "pages/"});
+    });
+
+    app.get("/ping", passport.authenticate("bearer", { session: false }), this.serialize, this.generateToken, function(req: Request, res: Response){
+      res.status(200).json({hello: "world"});
+    });
+
+    app.get("/google", passport.authenticate("google", { session: false }), function(req: Request, res: Response){
+      res.status(200).json({google: "success"});
     });
 
     // app.get("/login", function(req: Request, res: Response){

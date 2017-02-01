@@ -14,24 +14,24 @@ export class CompanyService implements ITransactionsService{
     constructor(protected http: Http){}
 
     getTransactions(){
-        return this.http.get('/company/transactions');
+        return this.http.get('/api/company/transactions');
     }
     
     getCategories(){
-        return this.http.get('/company/categories');
+        return this.http.get('/api/company/categories');
     }
     
     save(transaction: CompanyTransaction){
         var headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=utf-8');
-        return this.http.post('/company/transactions', JSON.stringify(transaction),{headers}).share();
+        return this.http.post('/api/company/transactions', JSON.stringify(transaction),{headers}).share();
     }
 
     delete(transaction: CompanyTransaction){
         // var headers = new Headers();
         // headers.append('Content-Type', 'application/json; charset=utf-8');
         // return this.http.post('/company/transactions', JSON.stringify(transaction),{headers}).share();
-        return this.http.delete('/company/transactions/' + transaction.id);
+        return this.http.delete('api/company/transactions/' + transaction.id);
     }
 
     private transformCompanyTransaction(tran: CompanyTransaction){

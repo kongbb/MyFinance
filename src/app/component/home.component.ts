@@ -1,20 +1,29 @@
-import { Component, ViewChild } from "@angular/core";
-import { UserService } from "../service/user.service";
-import { User } from "../model/user";
-import { ModalDirective } from "ng2-bootstrap";
-import { ModalComponent } from "../component/modal.component";
+import { Component, ViewChild, OnInit, OnDestroy } from "@angular/core";
+import { LoginStatusStore } from "../dataStores/login-status.store";
+import { GoogleApiHelper } from "../common/gapi";
 
 @Component({
     selector: "home",
-    //template: "<h1>Hello Home</h1>"
-    templateUrl: "../../pages/template/index.html"
+    templateUrl: "../../pages/template/index.html",
+    providers: [LoginStatusStore, GoogleApiHelper]
 })
 
-export class HomeComponent {
-    username: string;
-    password: string;
+export class HomeComponent implements OnInit, OnDestroy {
+    public userName: string;
+    constructor(private store: LoginStatusStore){
+    }
 
-    login(){
+    ngOnInit(){
+        // this.store.userName.subscribe(name => { 
+        //     this.userName = name; 
+        // })
+    }
+
+    ngOnDestroy(){
         
+    }
+
+    signInGoogle(){
+
     }
 }

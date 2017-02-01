@@ -8,7 +8,7 @@ import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
 
 @Component({
     selector: 'categories',
-    template: `<div *ngIf="displayCategoryDropdown" class="form-group">
+    template: `<div [hidden]="!displayCategoryDropdown" class="form-group">
                     <label>Category</label>
                     <select class="form-control" [(ngModel)]="category" [formControl]="categoryControl" required>
                         <option *ngFor="let c of bestGuessCategories;let i = index" [selected]="i == 0" [value]="c.name">{{c.name}}</option>
@@ -61,7 +61,8 @@ export class Categories {
     private _category: String;
     set category(value){
        this._category = value;
-       this.categoryChanged.next(value);
+       this.displayNewCategoryInput = this.shouldDisplayNewCategoryInput(value);
+       this.categoryChanged.emit(value);
     }
     get category(){
        return this._category;
@@ -70,37 +71,39 @@ export class Categories {
     private _subCategory: String;
     set subCategory(value){
        this._subCategory = value;
-       this.subCategoryChanged.next(value);
+       this.subCategoryChanged.emit(value);
     }
     get subCategory(){
        return this._subCategory;
     }
     
     protected shouldDisplayCategoryDropdown(amount: Number): boolean{
-        if(amount != null 
-            && amount != 0 
-            && (!(this.bestGuessCategories == null || this.bestGuessCategories.length == 0))){
-                return true;
-            }
-        else{
-            if(this.category != null){
-                this.category = null;
-            }
-            return false;
-        }
+        return amount != null && amount != 0;
+        // if(amount != null 
+        //     && amount != 0 
+        //     && (!(this.bestGuessCategories == null || this.bestGuessCategories.length == 0))){
+        //         return true;
+        //     }
+        // else{
+        //     if(this.category != null){
+        //         this.category = null;
+        //     }
+        //     return false;
+        // }
     }
     protected shouldDisplayNewCategoryInput(category): boolean{
-        if(category != null 
-            && category == ''){
-            return true;
-        }
-        // with best-guess.pipe, unless no any income category or no any outcome, 
-        // otherwise bestGuessFCategories always return something
-        if(this.bestGuessCategories == null || this.bestGuessCategories.length == 0){
-            return true;
-        }
+        return category != null && category == "";
+        // if(category != null 
+        //     && category == ''){
+        //     return true;
+        // }
+        // // with best-guess.pipe, unless no any income category or no any outcome, 
+        // // otherwise bestGuessFCategories always return something
+        // if(this.bestGuessCategories == null || this.bestGuessCategories.length == 0){
+        //     return true;
+        // }
         
-        return false;
+        // return false;
     }
 
     protected get displaySubCategoryDropdown(): boolean{
@@ -108,21 +111,23 @@ export class Categories {
     }
     
     protected get displayCreateNewSubCategory(): boolean{
-        if(this.category == '' 
-            && this.newCategory != null 
-            && this.newCategory != ''
-            ){
-            return true;
-        }
+        return this.category == "" || this.subCategory == "";
+        // if(this.category == '' 
+        //     && this.newCategory != null 
+        //     && this.newCategory != ''
+        //     ){
+        //     return true;
+        // }
         
-        if(this.subCategory == ''){
-            return true;
-        }
+        // if(this.subCategory == ''){
+        //     return true;
+        // }
         
-        return false;
+        // return false;
     }
 
     protected handleAmountChanged(amount){
+        var originalCategory = this.category;
         this.bestGuessCategories = this.bestGuessCategoriesPipe.transform(this.categories, amount);
         if(this.bestGuessCategories != null && this.bestGuessCategories.length > 0){
             if(this.category != this.bestGuessCategories[0].name){
@@ -131,6 +136,9 @@ export class Categories {
         }
         
         this.displayCategoryDropdown = this.shouldDisplayCategoryDropdown(amount);
+        if(originalCategory != this.category){
+            this.handleCategoryChanged(this.category);
+        }
     }
 
     protected handleCategoryChanged(newValue){
@@ -146,8 +154,6 @@ export class Categories {
         else{
             this.subCategories = [];
         }
-
-        this.displayNewCategoryInput = this.shouldDisplayNewCategoryInput(newValue);
     }
 
     constructor(protected bestGuessCategoriesPipe: BestGuessCategories) {
@@ -159,18 +165,20 @@ export class Categories {
             .distinctUntilChanged().subscribe(a => {
                 this.handleAmountChanged(a)
         });
-        this.categoryControl
-            .valueChanges
-            .distinctUntilChanged()
-            .subscribe(c => {
-                this.handleCategoryChanged(c);
-        });
+        //remove category Subscribe due to that cause "Expression has changed after it is checked"
+        //should be fixed by enable Production model
+        // this.categoryControl
+        //     .valueChanges
+        //     .distinctUntilChanged()
+        //     .subscribe(c => {
+        //         this.handleCategoryChanged(c);
+        // });
         this.newCategoryControl.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(c => {
                 if(c != null){
-                    this.categoryChanged.next(c);
+                    this.categoryChanged.emit(c);
                 }
             });
         this.newSubCategoryControl.valueChanges
@@ -178,7 +186,7 @@ export class Categories {
             .distinctUntilChanged()
             .subscribe(s => {
                 if(s != null){
-                    this.subCategoryChanged.next(s);
+                    this.subCategoryChanged.emit(s);
                 }
             });
     }

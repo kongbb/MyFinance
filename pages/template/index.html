@@ -1,7 +1,14 @@
-<div class="jumbotron text-center">
-  <h1><span class="fa fa-lock"></span> Node Authentication</h1>
+<script async defer src="https://apis.google.com/js/api.js"
+  onload="this.onload=function(){};gapi.load('client:auth2', initClient);"
+  onreadystatechange="if (this.readyState === 'complete') this.onload()">
+</script>
+<div [hidden]="store.isSignedIn" class="jumbotron text-center">
+  <h1><span class="fa fa-lock"></span> Google Authentication</h1>
   <p>Login or Register with:</p>
-  <a class="btn btn-default" routerLink="/login" routerLinkActive="active"><span class="fa fa-user"></span> Local Login</a>
-  <a class="btn btn-default" routerLink="/signup" routerLinkActive="active"><span class="fa fa-user"></span> Local Signup</a>
+  <a class="btn btn-default" (click)="signinGoogle()"><span class="fa fa-user"></span> Sign in with Google</a>
+  <!--<a class="btn btn-default" routerLink="/signup" routerLinkActive="active"><span class="fa fa-user"></span> Local Signup</a>-->
+</div>
+<div [hidden]="!store.isSignedIn" class="jumbotron text-center">
+  <h1><span class="fa fa-lock"></span> Welcome Back {{store.userName | async}}</h1>
   <a class="btn btn-default" routerLink="/finance" routerLinkActive="active"><span class="fa fa-user"></span> Finance</a>
 </div>
