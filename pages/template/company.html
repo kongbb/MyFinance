@@ -9,6 +9,17 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
+                Import from file
+            </div>
+            <div class="panel-body">
+                <div  class="form-group">
+                    <input type="file" class="form-control" ng2FileSelect [uploader]="transactionBulkUploader" />
+                    <modal (action)="confirmImport()"></modal>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
                 New Transaction
             </div>
             <div class="panel-body">

@@ -18,4 +18,8 @@ export class TransactionController{
   getCategories(userId: string, transactionType: string): Promise<Array<any>>{
     return this.repository.getCategories(userId, transactionType);
   }
+
+  saveTransaction(t: Transaction): Promise<Transaction>{
+    return this.repository.saveTransaction(t);
+  }
 }

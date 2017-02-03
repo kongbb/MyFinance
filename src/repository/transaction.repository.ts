@@ -1,38 +1,47 @@
 import * as moment from 'moment';
 var Promise = require("bluebird");
-Promise.promisifyAll(require("mongoose"));
+// Promise.promisifyAll(require("mongoose"));
+var mongoose = require("mongoose");
+mongoose.Promise = require("bluebird");
 import { Transaction } from "../model/transaction";
+// import { TransactionDB } from "../mongoModel/transaction.model"
 var TransactionDB = require('../mongoModel/transaction.model');
 
 export class TransactionRepository{
   public getTransactions(userId: string, transactionType: string): any{
     return TransactionDB.find({userId: userId, transactionType: transactionType})
-      .sort({date: -1}).lean().exec().then(function(trans){
+      .sort({date: -1})
+      .exec()
+        .then(function(trans){
             return Promise.map(trans, (t)=> {
-              return new Transaction(t.id, t.userId, t.transactionType, t.date, t.amount, 
-                t.gst, t.category, t.subCategory, t.comment, t.createdDate);
+              return t.toJSON();
             });
         });
   }
 
-  public postTransaction(tran: Transaction): any{
+  public saveTransaction(tran: Transaction): Promise<Transaction>{
     //create transaction
     var t = new TransactionDB({
       userId: tran.userId,
       transactionType: tran.transactionType,
       date: tran.date,
       amount: tran.amount,
-      gst: tran.gst,
       comment: tran.comment,
       category: tran.category,
-      createdDate: Date.now()
+      updatedDate: tran.updatedDate.toISOString()
     });
+
+    if(tran.gst != null){
+      t.gst = tran.gst;
+    }
 
     if(tran.subCategory != null && tran.subCategory != ""){
       t.subCategory = tran.subCategory;
     }
 
-    return t.save();
+    return t.save().then(function(){
+      return Promise.resolve(t.toJSON());
+    });
   }
 
   public getCategories(userId: string, transactionType: string): any{

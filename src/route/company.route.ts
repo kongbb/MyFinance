@@ -1,4 +1,5 @@
 import express = require('express');
+var Promise = require("bluebird");
 import { Router, Request, Response } from "express";
 import { TransactionController } from "../controller/transaction.controller";
 import { Transaction } from "../model/transaction";
@@ -15,7 +16,7 @@ export class CompanyRouter{
         this.controller = new TransactionController();
         this.router.get("/transactions", (req: Request, res: Response) => this.getTransactions(req, res));
         this.router.get("/categories", (req: Request, res: Response) => this.getCategories(req, res));
-        // this.router.post("/transactions", (req: Request, res: Response) => this.createTransaction(req, res));
+        this.router.post("/transactions", (req: Request, res: Response) => this.postTransaction(req, res));
     }
 
     public getRouter(){
@@ -38,38 +39,27 @@ export class CompanyRouter{
         });
     }
 
-    // public postTransaction(req: express.Request, res: express.Response, next: express.NextFunction) {
-    //     //create transaction
-    //     var ct = new CompanyTransaction({
-    //         date: req.body.date,
-    //         amount: req.body.amount,
-    //         comment: req.body.comment,
-    //         category: req.body.category,
-    //         createdDate: Date.now()
-    //     });
+    public postTransaction(req: express.Request, res: express.Response) {
+        //create transaction
+        var t = new Transaction(
+            null,
+            req.body.userId,
+            req.body.transactionType,
+            new Date(req.body.date),
+            req.body.amount,
+            req.body.gst,
+            req.body.category,
+            req.body.subCategory,
+            req.body.comment,
+            new Date()
+        );
 
-    //     if(req.body.gst != null && req.body.gst != ""){
-    //         ct.gst = req.body.gst;
-    //     }
-    //     if(req.body.subCategory != null && req.body.subCategory != ""){
-    //         ct.subCategory = req.body.subCategory;
-    //     }
-                
-    //     // save the transaction and check for errors
-    //     ct.save().then(function(){
-    //         res.json({
-    //             id:  ct._id.toString(),
-    //             //date: moment(ct.date).format('YYYY-MM-DD'),
-    //             date: ct.date,
-    //             amount: ct.amount,
-    //             gst: ct.gst,
-    //             category: ct.category,
-    //             subCategory: ct.subCategory,
-    //             comment: ct.comment,
-    //             createdDate: ct.createdDate
-    //         });
-    //     }); 
-    // } 
+        this.controller.saveTransaction(t).then((data) => {
+            res.status(200).json(data);
+        }).catch((err) => {
+            res.status(400).json(err);
+        });
+    } 
 }
 
 // var jsonParser = bodyParser.json();

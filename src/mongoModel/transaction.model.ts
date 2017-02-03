@@ -1,18 +1,27 @@
 import mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+var transactionSchema = new mongoose.Schema({
+        userId: String,
+        transactionType: String,
+        date: Date,
+        amount: Number,
+        gst: Number,
+        category: String,
+        subCategory: String,
+        comment: String,
+        updatedDate: Date
+    }, 
+    {
+        collection: 'Transactions',
+        toJSON: {
+            transform: function(doc, ret){
+                delete ret._id;
+            },
+            virtuals: true
+        },
+        toObject: {
+            virtuals: true,
+        }
+    });
 
-var TransactionSchema   = new Schema({
-    id: mongoose.Schema.Types.ObjectId,
-    userId: String,
-    transactionType: String,
-    date: String,
-    amount: Number,
-    gst: Number,
-    category: String,
-    subCategory: String,
-    comment: String,
-    createdDate: Date    
-}, { collection: 'Transactions'});
-
-module.exports = mongoose.model('Transaction', TransactionSchema);
+module.exports = mongoose.model('Transaction', transactionSchema);

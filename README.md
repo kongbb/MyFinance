@@ -18,3 +18,6 @@ Google application client ID
 
 Google client secret
 2tk5fTAZcM6cuJ4kneq3QUF6
+
+typings upgrade
+npm i -g typings

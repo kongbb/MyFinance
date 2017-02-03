@@ -1,10 +1,13 @@
+import { OnInit } from "@angular/core";
 import { Transaction } from '../model/transaction';
 import { TransactionType } from '../model/transaction-type';
 import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
 import { Utility } from '../common/utility';
 import { Category } from '../model/category';
+import { FileUploader } from "ng2-file-upload";
 
-export abstract class Transactions{
+const URL = "api/transactions";
+export abstract class Transactions implements OnInit {
     // variable store all the transactions
     protected allTransactions: Transaction[];
     
@@ -29,6 +32,8 @@ export abstract class Transactions{
     protected quarter: number;
     protected year: number;
     
+    public transactionBulkUploader: FileUploader = new FileUploader({url: URL});
+
     // variable for filter in the all transactions table
     protected showTransactionsMode = DisplayTransaactionsMode.currentQuarter;
 
@@ -54,6 +59,39 @@ export abstract class Transactions{
         this.year = Utility.getYearNumber(date);
     }
     
+    ngOnInit() {
+        this.transactionBulkUploader.onSuccessItem = (item: any, response: string, status: number, headers: any) => {
+            this.onSuccessItem(item, response, status, headers);
+        };
+        this.transactionBulkUploader.onErrorItem = (item: any, response: string, status: number, headers: any) => {
+            this.onErrorItem(item, response, status, headers);
+        };
+        this.transactionBulkUploader.onAfterAddingFile = (item: any) => {
+            this.onAfterAddingFile(item);
+        }
+    }
+
+    onSuccessItem(item: any, response: string, status: number, headers: any){
+        // this.importConfirmation.title = "Confirmation";
+        // var resJson = JSON.parse(response);
+        // this.importConfirmation.message = "Proceed to import " + resJson.transactionsCount + " stock transactions.";
+        // this.importConfirmation.arg = resJson.filePath;
+        // this.importConfirmation.defaultActionOnly = false;
+        // this.importConfirmation.show();
+    }
+    
+    onErrorItem(item: any, response: string, status: number, headers: any){
+        // this.importConfirmation.title = "Error";
+        // this.importConfirmation.message = "Error occurred during analysing file.";
+        // this.importConfirmation.defaultActionOnly = true;
+        // this.stockBulkUploader.removeFromQueue(item);
+        // this.importConfirmation.show();
+    }
+
+    onAfterAddingFile(item: any){
+        this.transactionBulkUploader.uploadItem(item);
+    }
+
     setCategory(value: string){
         this.newTransaction.category = value;
     }
