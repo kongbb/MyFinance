@@ -6,7 +6,7 @@ import { Utility } from '../common/utility';
 import { Category } from '../model/category';
 import { FileUploader } from "ng2-file-upload";
 
-const URL = "api/transactions";
+const URL = "api/company/transactions";
 export abstract class Transactions implements OnInit {
     // variable store all the transactions
     protected allTransactions: Transaction[];

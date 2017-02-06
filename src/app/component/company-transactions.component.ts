@@ -32,6 +32,7 @@ export class CompanyTransactionsComponent extends Transactions{
     }
     
     ngOnInit() {
+        super.ngOnInit();
         this.columns = ["displayTransactionDate", "displayCategory", "amount", "gst", "comment"];
         this.titles = ["Transaction Date", "Category", "Amount", "GST", "Comment"];
         this.amountControl.valueChanges.distinctUntilChanged()

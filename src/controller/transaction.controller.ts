@@ -1,10 +1,14 @@
 import * as moment from 'moment';
 var Promise = require("bluebird");
+var fs = require("fs");
+Promise.promisifyAll(fs);
 import { Transaction } from "../model/transaction";
+import { CommbankCSV } from "../fileHandler/commbankCSV";
 import { TransactionRepository } from "../repository/transaction.repository";
 
 export class TransactionController{
 
+  private fileHandler: CommbankCSV;
   private repository: TransactionRepository;
 
   constructor(){
@@ -21,5 +25,17 @@ export class TransactionController{
 
   saveTransaction(t: Transaction): Promise<Transaction>{
     return this.repository.saveTransaction(t);
+  }
+
+  uploadTransactionsCSV(path: string): Promise<any>{
+    return fs.readFileAsync(path, "utf8").bind(this).then(function(content){
+      if(!this.fileHandler.IsValid(content)){
+        return Promise.reject(new Error("Invalid CBA Transactions CSV format."))
+      }
+      else{
+        var trades = this.fileHandler.extractData(content);
+        return Promise.resolve({filePath: path, transactionsCount: trades.length});
+      }
+    });
   }
 }

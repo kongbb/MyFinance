@@ -1,5 +1,7 @@
 import express = require('express');
 var Promise = require("bluebird");
+var multer = require("multer");
+var upload = multer({dest: "upload/"});
 import { Router, Request, Response } from "express";
 import { TransactionController } from "../controller/transaction.controller";
 import { Transaction } from "../model/transaction";
@@ -17,13 +19,22 @@ export class CompanyRouter{
         this.router.get("/transactions", (req: Request, res: Response) => this.getTransactions(req, res));
         this.router.get("/categories", (req: Request, res: Response) => this.getCategories(req, res));
         this.router.post("/transactions", (req: Request, res: Response) => this.postTransaction(req, res));
+        this.router.post("/", upload.single('file'), (req: Request, res: Response) => this.uploadTransactionsCSV(req, res));
     }
 
     public getRouter(){
         return this.router;
     }
 
-    public getTransactions(req: express.Request, res: express.Response){
+    uploadTransactionsCSV(req: Request, res: Response){
+        this.controller.uploadTransactionsCSV(req.file.path).then((data) => {
+            res.status(200).json(data);
+        }).catch((err) => {
+            res.status(400).json(err);
+        });
+    }
+
+    getTransactions(req: express.Request, res: express.Response){
         this.controller.getTransactions("roger", "Company").then((data) => {
             res.status(200).json(data);
         }).catch((err) => {
@@ -31,7 +42,7 @@ export class CompanyRouter{
         });
     }
 
-    public getCategories(req: express.Request, res: express.Response){
+    getCategories(req: express.Request, res: express.Response){
         this.controller.getCategories("roger", "Company").then((data) => {
             res.status(200).json(data);
         }).catch((err) => {
@@ -39,7 +50,7 @@ export class CompanyRouter{
         });
     }
 
-    public postTransaction(req: express.Request, res: express.Response) {
+    postTransaction(req: express.Request, res: express.Response) {
         //create transaction
         var t = new Transaction(
             null,
