@@ -5,3 +5,4 @@
 /mongodb/data/journal/*
 /javascript/*
 /upload/*
+/.vscode/*
