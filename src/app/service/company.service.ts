@@ -33,16 +33,4 @@ export class CompanyService implements ITransactionsService{
         // return this.http.post('/company/transactions', JSON.stringify(transaction),{headers}).share();
         return this.http.delete('api/company/transactions/' + transaction.id);
     }
-
-    private transformCompanyTransaction(tran: CompanyTransaction){
-        return {
-            Category: tran.category,
-            SubCategory: tran.subCategory,
-            Date: tran.date,
-            Amount: tran.amount,
-            GST:tran.gst,
-            Comment: tran.comment,
-            CreatedDate: tran.createdDate
-        };
-    }
 }

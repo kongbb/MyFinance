@@ -12,11 +12,7 @@ export class Transaction {
   createdDate: Date;
   
   constructor(){
-    this.date = new Date();
-  }
-
-  public clone(){
-    return new (<any>this.constructor)
+    this.date = Utility.getToday();
   }
   
   get displayCategory(): string{

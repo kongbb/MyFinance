@@ -1,4 +1,6 @@
-import { OnInit } from "@angular/core";
+const moment = require('moment');
+import { OnInit, ViewChild } from "@angular/core";
+import { ModalComponent } from "../component/modal.component";
 import { Transaction } from '../model/transaction';
 import { TransactionType } from '../model/transaction-type';
 import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
@@ -6,7 +8,7 @@ import { Utility } from '../common/utility';
 import { Category } from '../model/category';
 import { FileUploader } from "ng2-file-upload";
 
-const URL = "api/company/transactions";
+const URL = "api/company";
 export abstract class Transactions implements OnInit {
     // variable store all the transactions
     protected allTransactions: Transaction[];
@@ -14,11 +16,14 @@ export abstract class Transactions implements OnInit {
     // variable for the right side transactions table
     protected transactions: Transaction[];
     
+    // temporary transactions extracted from upload file
+    protected importingTrans: Transaction[];
+    
     // variable store all the categories
     protected categories: Category[];
     
     // variable for displaying corresponding subCategories
-    protected subCategories: Category[] = [];
+    // protected subCategories: Category[] = [];
     
     // model
     protected newTransaction: Transaction;
@@ -31,8 +36,16 @@ export abstract class Transactions implements OnInit {
 
     protected quarter: number;
     protected year: number;
+
+    protected isImporting: boolean;
+    protected bulkTotal: number;
+    protected bulkDone: number;
+    protected bulkSkipped: number;
     
     public transactionBulkUploader: FileUploader = new FileUploader({url: URL});
+
+    @ViewChild(ModalComponent)
+    public modalConfirmation: ModalComponent;
 
     // variable for filter in the all transactions table
     protected showTransactionsMode = DisplayTransaactionsMode.currentQuarter;
@@ -45,6 +58,10 @@ export abstract class Transactions implements OnInit {
         return Utility.getYearStringFromYearNumber(this.year);
     }
 
+    protected get progressMessage(): string{
+        return this.bulkDone + " out of " + this.bulkTotal + "proceeded.";
+    }
+
     // transactions in current quarter, filter by the category, subCategory of the unsaved transaction    
     protected get matchedTransactions(): Transaction[]{
         throw new Error("Should call actual method in child class. This is because no abstract property in TypeScript.")
@@ -52,9 +69,11 @@ export abstract class Transactions implements OnInit {
 
     protected abstract initialNewTransaction();
 
+    public alerts: any = [];
+
     constructor() {
         this.initialNewTransaction();
-        var date = new Date();
+        var date = Utility.getToday();
         this.quarter = Utility.getQuarterNumber(date);
         this.year = Utility.getYearNumber(date);
     }
@@ -72,24 +91,77 @@ export abstract class Transactions implements OnInit {
     }
 
     onSuccessItem(item: any, response: string, status: number, headers: any){
-        // this.importConfirmation.title = "Confirmation";
-        // var resJson = JSON.parse(response);
-        // this.importConfirmation.message = "Proceed to import " + resJson.transactionsCount + " stock transactions.";
-        // this.importConfirmation.arg = resJson.filePath;
-        // this.importConfirmation.defaultActionOnly = false;
-        // this.importConfirmation.show();
+        this.transactionBulkUploader.clearQueue();
+        this.modalConfirmation.title = "Confirmation";
+        
+        //mock up data
+        this.importingTrans = new Array<Transaction>();
+        
+        var transaction = new Transaction();
+        transaction.amount = -39;
+        transaction.date = Utility.getToday();
+        this.importingTrans.push(transaction);
+
+        var transaction = new Transaction();
+        transaction.amount = 90;
+        transaction.date = Utility.getToday();
+        this.importingTrans.push(transaction);
+
+        this.modalConfirmation.message = "Proceed to import " + this.importingTrans.length + "  transactions.";
+        this.modalConfirmation.defaultActionOnly = false;
+        this.modalConfirmation.show();
     }
     
     onErrorItem(item: any, response: string, status: number, headers: any){
-        // this.importConfirmation.title = "Error";
-        // this.importConfirmation.message = "Error occurred during analysing file.";
-        // this.importConfirmation.defaultActionOnly = true;
-        // this.stockBulkUploader.removeFromQueue(item);
-        // this.importConfirmation.show();
+        this.alerts.push(Utility.createAlert("danger", "Unable to analyse the file.", 5000));
+        this.transactionBulkUploader.clearQueue();
     }
 
     onAfterAddingFile(item: any){
         this.transactionBulkUploader.uploadItem(item);
+    }
+
+    startImport(){
+        this.isImporting = true;
+        this.bulkDone = 0;
+        this.bulkSkipped = 0;
+        this.bulkTotal = this.importingTrans.length;
+        this.proceedingImport();
+    }
+
+    stopImport(){
+        this.isImporting = false;
+        this.importingTrans = [];
+        this.initialNewTransaction();
+        var message = (this.bulkDone - this.bulkSkipped) + "imported, " + this.bulkSkipped + " skipped.";
+        if(this.bulkDone < this.bulkTotal){
+            this.alerts.push(Utility.createAlert("warning", "Importing stopped! " + message, 5000));
+        }
+        else{
+            this.alerts.push(Utility.createAlert("info", message, 5000));
+        }
+    }
+
+    submitImportedTran(){
+        this.submit();
+        this.bulkDone++;
+        this.proceedingImport();
+    }
+
+    skipImport(){
+        this.bulkSkipped++;
+        this.bulkDone++;
+        this.proceedingImport();
+    }
+
+    proceedingImport(){
+        if(this.bulkDone == this.bulkTotal){
+            this.stopImport();
+        }
+        var tran = this.importingTrans[this.bulkDone];
+        this.initialNewTransaction();
+        this.newTransaction.amount = tran.amount;
+        this.newTransaction.date = moment(tran.date).format("YYYY-MM-DD");
     }
 
     setCategory(value: string){
@@ -115,19 +187,17 @@ export abstract class Transactions implements OnInit {
         this.showTransactionsMode = number;
     }
         
-    submit(){
-        //this.service.save(this.newTransaction);
-    }
+    protected abstract submit();
     
-    reset(){
-        this.subCategories = [];
-        this.initialNewTransaction();
-    }
+    // reset(){
+    //     // this.subCategories = [];
+    //     this.initialNewTransaction();
+    // }
     
     resetCategory(){
         this.newTransaction.category = null;
         this.newTransaction.subCategory = null;
-        this.subCategories = null;
+        // this.subCategories = null;
     }
 }
 

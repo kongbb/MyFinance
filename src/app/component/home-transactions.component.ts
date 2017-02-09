@@ -25,7 +25,7 @@ import { HomeService } from "../service/home.service";
 export class HomeTransactionsComponent extends Transactions{
     amountControl: FormControl = new FormControl();
     gst: number;
-    date: Date = new Date();
+    date: Date = Utility.getToday();
         
     setDate(results){
         this.date = results;
@@ -75,8 +75,8 @@ export class HomeTransactionsComponent extends Transactions{
             );
     }
 
-    reset(){
-        this.subCategories = [];
-        this.initialNewTransaction();
-    }
+    // reset(){
+    //     // this.subCategories = [];
+    //     this.initialNewTransaction();
+    // }
 }

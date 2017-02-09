@@ -49,6 +49,7 @@ export class StocksComponent implements OnInit{
     }
 
     onSuccessItem(item: any, response: string, status: number, headers: any){
+        this.stockBulkUploader.clearQueue();
         this.importConfirmation.title = "Confirmation";
         var resJson = JSON.parse(response);
         this.importConfirmation.message = "Proceed to import " + resJson.transactionsCount + " stock transactions.";
@@ -61,7 +62,7 @@ export class StocksComponent implements OnInit{
         this.importConfirmation.title = "Error";
         this.importConfirmation.message = "Error occurred during analysing file.";
         this.importConfirmation.defaultActionOnly = true;
-        this.stockBulkUploader.removeFromQueue(item);
+        this.stockBulkUploader.clearQueue();
         this.importConfirmation.show();
     }
 

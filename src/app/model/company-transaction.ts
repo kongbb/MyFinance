@@ -1,5 +1,6 @@
 import { Transaction } from './transaction';
 const moment = require('moment');
+import { Utility } from '../common/utility';
 
 export class CompanyTransaction extends Transaction{
   gst: number;
@@ -27,7 +28,7 @@ export class CompanyTransaction extends Transaction{
 
   static createEmptyCompanyTransaction(): CompanyTransaction{
     var t = new CompanyTransaction();
-    t.date = moment(new Date()).format("YYYY-MM-DD");
+    t.date = moment(Utility.getToday()).format("YYYY-MM-DD");
     return t;
   }
 }

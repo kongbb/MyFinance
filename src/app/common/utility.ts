@@ -61,4 +61,26 @@ export class Utility {
   static getYearStringFromYearNumber(y: number) : string{
       return y + "-" + (y + 1);
   }
+
+  static toString(date: Date): string{
+      return moment(date).format("YYYY-MM-DD")
+  }
+
+  static getToday(): Date{
+      var d = new Date();
+      d.setHours(0, 0, 0, 0);
+      return d;
+  }
+
+  static createAlert(type, message, timeout) : any {
+      var to = 5000;
+      if(timeout){
+          to = timeout;
+      }
+      return {
+            type: type, //valid value are "info", "success", "warning", "danger"
+            msg: message,
+            timeout: timeout
+    };
+  }
 }

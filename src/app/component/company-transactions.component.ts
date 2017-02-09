@@ -1,8 +1,10 @@
 const moment = require('moment');
-import { Component, OnChanges } from "@angular/core";
+import { Component, OnChanges, ViewChild, AfterViewInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { NgIf } from '@angular/common';
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/RX";
+import { ModalDirective } from "ng2-bootstrap";
 
 import { Transactions } from "./transactions";
 import { Utility } from "../common/utility";
@@ -22,10 +24,13 @@ import { CompanyService } from "../service/company.service";
     providers: [MatchTransaction,  CompanyStore, CompanyService]
 })
 
-export class CompanyTransactionsComponent extends Transactions{
+export class CompanyTransactionsComponent extends Transactions implements AfterViewInit{
     amountControl: FormControl = new FormControl();
     gst: number;
     
+    @ViewChild("duplicationModal")
+    public duplicationModal: ModalDirective
+
     constructor(protected store: CompanyStore,
                 protected matchTransactionPipe: MatchTransaction) {
         super();
@@ -41,6 +46,10 @@ export class CompanyTransactionsComponent extends Transactions{
             });
     }
     
+    ngAfterViewInit(){
+        this.duplicationModal.show();
+    }
+
     initialNewTransaction(){
         this.newTransaction = CompanyTransaction.createEmptyCompanyTransaction();
     }
@@ -68,8 +77,8 @@ export class CompanyTransactionsComponent extends Transactions{
             );
     }
 
-    reset(){
-        this.subCategories = [];
-        this.initialNewTransaction();
-    }
+    // reset(){
+    //     // this.subCategories = [];
+    //     this.initialNewTransaction();
+    // }
 }

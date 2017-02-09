@@ -6,6 +6,10 @@ would get Duplicate Identifier
 
 Command sample:
 npm install npm -g
+npm install <package>@<version>
+npm install express@3.0.0
+npm outdated
+npm update --save
 typings install dt~packagename --global --save
 typings uninstall packagename --save
 

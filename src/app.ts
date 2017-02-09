@@ -21,10 +21,6 @@ var db = require("./db/db");
 class Server {
   public app: express.Application;
 
-  public static bootstrap(): Server {
-    return new Server();
-  }
-
   constructor() {
     this.app = express();
 
@@ -106,5 +102,4 @@ class Server {
   }
 }
 
-var server = Server.bootstrap();
-export = server.app;
+export = new Server().app;

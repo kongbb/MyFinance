@@ -54,6 +54,8 @@ export class Categories {
 
     protected bestGuessCategories: Category[];
     private subCategories: Category[]
+    private defaultCategory: Category = Category.create("Create new Category", null, null, null, null);
+    private defaultSubCategory: Category = Category.create("Create new SubCategory", null, null, null, null);
 
     protected displayCategoryDropdown: boolean;
     protected displayNewCategoryInput: boolean;
@@ -92,7 +94,7 @@ export class Categories {
         // }
     }
     protected shouldDisplayNewCategoryInput(category): boolean{
-        return category != null && category == "";
+        return category != null && category == "Create new Category";
         // if(category != null 
         //     && category == ''){
         //     return true;
@@ -111,7 +113,7 @@ export class Categories {
     }
     
     protected get displayCreateNewSubCategory(): boolean{
-        return this.category == "" || this.subCategory == "";
+        return this.category == "Create new Category" || this.subCategory == "Create new SubCategory";
         // if(this.category == '' 
         //     && this.newCategory != null 
         //     && this.newCategory != ''
@@ -129,27 +131,36 @@ export class Categories {
     protected handleAmountChanged(amount){
         var originalCategory = this.category;
         this.bestGuessCategories = this.bestGuessCategoriesPipe.transform(this.categories, amount);
-        if(this.bestGuessCategories != null && this.bestGuessCategories.length > 0){
+        if(this.bestGuessCategories == null){
+            this.bestGuessCategories = [];
+        }
+        this.bestGuessCategories.push(this.defaultCategory);
+        this.displayCategoryDropdown = this.shouldDisplayCategoryDropdown(amount);
+
+        // if(this.bestGuessCategories != null && this.bestGuessCategories.length > 0){
             if(this.category != this.bestGuessCategories[0].name){
                 this.category = this.bestGuessCategories[0].name;
+                this.handleCategoryChanged(this.category, amount);
             }
-        }
+        // }
         
-        this.displayCategoryDropdown = this.shouldDisplayCategoryDropdown(amount);
-        if(originalCategory != this.category){
-            this.handleCategoryChanged(this.category);
-        }
+        // if(originalCategory != this.category){
+        // }
     }
 
-    protected handleCategoryChanged(newValue){
-        if(newValue){
-            this.subCategories = this.bestGuessCategories.find(c => c.name == newValue).subCategories;
-            if(this.subCategories != null && this.subCategories.length > 0){
+    protected handleCategoryChanged(newValue, amount){
+        if(newValue != "Create new Category"){
+            this.subCategories = this.bestGuessCategories.find(c => c.name == newValue && c.isIncome == amount > 0).subCategories;
+            if(this.subCategories == null){
+                this.subCategories = [];
+            }
+            this.subCategories.push(this.defaultSubCategory);
+            // if(this.subCategories != null && this.subCategories.length > 0){
                 this.subCategory = this.subCategories[0].name;
-            }
-            else{
-                this.subCategory = null;
-            }
+            // }
+            // else{
+            //     this.subCategory = null;
+            // }
         }
         else{
             this.subCategories = [];
