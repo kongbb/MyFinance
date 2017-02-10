@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Transaction } from "../model/transaction";
 
 export class CommbankCSV {
@@ -12,34 +13,46 @@ export class CommbankCSV {
         }
 
         var columns = lines[0].split(",");
-        if(columns.length < 11){
+        if(columns.length < 4){
             return false;
         }
 
-        if(columns[0] != "Confirmation Number" || columns[1] != "Order Number" || columns[2] != "Trade Date" 
-        || columns[3] != "Buy/ Sell" || columns[4] != "Security" 
-        || columns[5] != "Units" || columns[6] != "Average Price ($)" || columns[7] != "Brokerage (inc GST.)" 
-        || columns[8] != "Net Proceeds ($)" || columns[9] != "Settlement Date" || columns[10] != "Confirmation Status"){
-            return false;
-        }
-
-        return true;
+        return this.isValidLine(lines[0]);
     }
 
     public extractData(content: string): Transaction[]{
         var lines = content.split("\n");
-        var count = lines.length - 1;
+        var count = lines.length;
         
-        lines.splice(0, 1);
-        lines = lines.filter( t => { return t.split(",").length >= 11; } );
-        var trans = lines.map(function(line: string, index: number){
-            var f = line.split(",");
-            if(f.length >= 11){
-              return new Transaction(null, null, null, null, null, null, null, null, null, null);
-              //return new StockTrade(null, f[4], f[1], f[3], Number.parseInt(f[5]), Number.parseFloat(f[6]), Number.parseFloat(f[7]), Number.parseFloat(f[8]), f[2], f[0], f[10], f[9]);
-            }
+        lines = lines.filter( t => { return this.isValidLine(t); } );
+        var trans = lines.map((line: string, index: number) => {
+            return this.transactionFromLine(line);
         });
 
         return trans;
+    }
+
+    private isValidLine(str: string): boolean{
+        var vs = str.split(",");
+        if(vs.length < 4){
+            return false;
+        }
+        return moment(vs[0], "DD/MM/YYYY").isValid() && !isNaN(this.parseFloat(vs[1])) && !isNaN(this.parseFloat(vs[3]));
+    }
+
+    private transactionFromLine(str: string): Transaction{
+        var vs = str.split(",");
+        return new Transaction(null, null, null, moment(vs[0], "DD/MM/YYYY").toDate(), this.parseFloat(vs[1]), this.parseFloat(vs[1]) / 10, null, null, vs[2], null);
+    }
+
+    private parseFloat(str: string): number{
+        var t: string = str.trim();
+        if (t.length >= 2 ){
+            if(t[0] == '"' && t[t.length - 1] == '"'){
+                t = t.substring(1, t.length - 2);
+            }
+        }
+
+        return parseFloat(t);
     }
 }

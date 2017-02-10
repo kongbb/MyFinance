@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { List } from 'immutable';
+import { List, Iterable } from 'immutable';
 import { BehaviorSubject } from 'rxjs/RX';
 import { CompanyTransaction } from '../model/company-transaction';
 import { Category } from '../model/category';
@@ -71,12 +71,23 @@ export class CompanyStore {
                 res => {
                     this._transactions.next(this._transactions.getValue().push(tran).sort(this.sortByDate).toList());
                     this._balance.next(this._balance.getValue() + tran.amount);
+                    //update category
                 },
                 err => {
                     console.log("Error saving company categories");
                 }
             );
         return this.transactions;
+    }
+
+    FindTransactionByDateAmount(tran: CompanyTransaction): CompanyTransaction {
+        return this._transactions.getValue().find(t => {
+            return t.amount == tran.amount && t.date == tran.date;
+        });
+    }
+
+    compareTransaction(target: CompanyTransaction, transaction: CompanyTransaction) : boolean{
+        return target.amount == transaction.amount && target.date == transaction.date;
     }
 
     deleteTransaction(tran: CompanyTransaction){

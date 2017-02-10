@@ -30,8 +30,7 @@ export class CompanyRouter{
         this.controller.uploadTransactionsCSV(req.file.path).then((data) => {
             res.status(200).json(data);
         }).catch((err) => {
-            res.status(200).json(err);
-            //res.status(400).json(err);
+            res.status(400).json(err);
         });
     }
 

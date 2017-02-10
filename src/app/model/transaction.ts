@@ -26,6 +26,10 @@ export class Transaction {
   get quarter(): string{
       return Utility.getQuarterString(this.date);
   }
+
+  toString(): string{
+    return this.displayTransactionDate + " " + this.displayCategory + " " + this.amount;
+  }
   
   static create(category, subCategory, date, amount) : Transaction{
       var t = new Transaction();

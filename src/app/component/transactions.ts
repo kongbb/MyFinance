@@ -91,6 +91,7 @@ export abstract class Transactions implements OnInit {
     }
 
     onSuccessItem(item: any, response: string, status: number, headers: any){
+        var trades = JSON.parse(response);
         this.transactionBulkUploader.clearQueue();
         this.modalConfirmation.title = "Confirmation";
         
@@ -102,7 +103,22 @@ export abstract class Transactions implements OnInit {
         transaction.date = Utility.getToday();
         this.importingTrans.push(transaction);
 
-        var transaction = new Transaction();
+        transaction = new Transaction();
+        transaction.amount = 87;
+        transaction.date = new Date(2017, 1, 25);
+        this.importingTrans.push(transaction);
+
+        transaction = new Transaction();
+        transaction.amount = -6;
+        transaction.date = new Date(2017, 1, 13);
+        this.importingTrans.push(transaction);
+
+        transaction = new Transaction();
+        transaction.amount = 87;
+        transaction.date = new Date(2017, 1, 25);
+        this.importingTrans.push(transaction);
+
+        transaction = new Transaction();
         transaction.amount = 90;
         transaction.date = Utility.getToday();
         this.importingTrans.push(transaction);
@@ -152,6 +168,12 @@ export abstract class Transactions implements OnInit {
         this.bulkSkipped++;
         this.bulkDone++;
         this.proceedingImport();
+    }
+
+    skipAllDuplication(){
+        for(var i = this.bulkDone; i < this.bulkTotal; i++){
+
+        }
     }
 
     proceedingImport(){

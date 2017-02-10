@@ -24,12 +24,14 @@ import { CompanyService } from "../service/company.service";
     providers: [MatchTransaction,  CompanyStore, CompanyService]
 })
 
-export class CompanyTransactionsComponent extends Transactions implements AfterViewInit{
+export class CompanyTransactionsComponent extends Transactions{
     amountControl: FormControl = new FormControl();
     gst: number;
     
     @ViewChild("duplicationModal")
-    public duplicationModal: ModalDirective
+    public duplicationModal: ModalDirective;
+
+    protected duplicationMessage: string;
 
     constructor(protected store: CompanyStore,
                 protected matchTransactionPipe: MatchTransaction) {
@@ -45,10 +47,6 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
                 (<CompanyTransaction>this.newTransaction).gst = amount /10;
             });
     }
-    
-    ngAfterViewInit(){
-        this.duplicationModal.show();
-    }
 
     initialNewTransaction(){
         this.newTransaction = CompanyTransaction.createEmptyCompanyTransaction();
@@ -63,6 +61,15 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
                     alert(err);
                 }
             );
+    }
+
+    proceedingImport(){
+        super.proceedingImport();
+        var t = this.store.FindTransactionByDateAmount(this.newTransaction);
+        if(t != null){
+            this.duplicationMessage = t.toString();
+            this.duplicationModal.show();
+        }
     }
     
     delete(tran){

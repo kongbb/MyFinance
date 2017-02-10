@@ -41,6 +41,4 @@ export class MatchTransaction implements PipeTransform{
         
         return true;
     }
-    
-    
 }

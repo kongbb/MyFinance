@@ -1,3 +1,4 @@
+import { Transaction } from "./transaction";
 export class Category {
   name: string;
   isIncome: boolean;
@@ -26,5 +27,23 @@ export class Category {
         c.averageAmount = averageAmount;
       }
       return c;
+  }
+
+  static fromTransaction(tran: Transaction): Category{
+    var c = new Category();
+    c.averageAmount = tran.amount;
+    c.count = 1;
+    c.isIncome = tran.amount > 0;
+    c.name = tran.category;
+    if(tran.subCategory != null){
+      var s = new Category();
+      s.name = tran.subCategory;
+      s.averageAmount = tran.amount;
+      s.count = 1;
+      s.isIncome = c.isIncome;
+      c.subCategories = [s];
+    }
+
+    return c;
   }
 }

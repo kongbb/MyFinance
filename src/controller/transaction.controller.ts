@@ -13,6 +13,7 @@ export class TransactionController{
 
   constructor(){
     this.repository = new TransactionRepository();
+    this.fileHandler = new CommbankCSV();
   }
 
   getTransactions(userId: string, transactionType: string): Promise<Array<Transaction>>{
@@ -34,7 +35,7 @@ export class TransactionController{
       }
       else{
         var trades = this.fileHandler.extractData(content);
-        return Promise.resolve({filePath: path, transactionsCount: trades.length});
+        return Promise.resolve(trades);
       }
     });
   }
