@@ -3,6 +3,8 @@ import { Utility } from '../common/utility';
 
 export class Transaction {
   id: number;
+  userId: string;
+  transactionType: string;
   category: string;
   subCategory: string;
   amount: number;

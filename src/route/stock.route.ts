@@ -56,7 +56,7 @@ export class StockRouter{
 
   importStockTransactions(req: Request, res: Response){
     this.controller.importStockTransactions(req.body.path).then(() => {
-      res.status(200);
+      res.status(200).json({success: 1});
     }).catch((err) => {
       res.status(400).json(err);
     });

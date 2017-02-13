@@ -107,7 +107,7 @@ export class Categories {
     }
 
     protected get displaySubCategoryDropdown(): boolean{
-        return this.subCategories && this.subCategories.length > 0;    
+        return this.category != "Create new Category" && this.subCategories && this.subCategories.length > 0;    
     }
     
     protected get displayCreateNewSubCategory(): boolean{

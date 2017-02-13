@@ -83,7 +83,7 @@ export class StockStore {
                         res => {
                             var quote = <Object>res.json();
                             stock.currentPrice = quote["quote"].price;
-                            stock.currentMarketValue = stock.units * stock.currentPrice;
+                            stock.currentMarketValue = Math.round(stock.units * stock.currentPrice * 100) / 100;
                             stock.profit = Math.round((stock.currentMarketValue - stock.amount) * 100) / 100;
                             this._holdingProfit.next(list.reduce(function(a: number, b: HoldingStock){return Math.round((a + b.profit) * 100) / 100}, 0));
                         }

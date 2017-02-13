@@ -11,8 +11,8 @@ export class GoogleApiHelper {
   
   constructor(){
     this.updateUserName("God");
-    this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-    this.makeApiCall();
+    // this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+    // this.makeApiCall();
   }
 
   updateSigninStatus(isSignedIn: boolean){

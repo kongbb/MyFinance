@@ -83,4 +83,14 @@ export class Utility {
             timeout: timeout
     };
   }
+
+  static round(n: number): number{
+      return Math.round(n * 100) / 100;
+  }
+
+  static sameDate(a: Date, b: Date): boolean{
+      var da = moment(a);
+      var db = moment(b);
+      return da.year() == db.year() && da.month() == db.month() && da.date() == db.date();
+  }
 }

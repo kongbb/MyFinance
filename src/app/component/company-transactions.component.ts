@@ -44,7 +44,7 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
         this.titles = ["Transaction Date", "Category", "Amount", "GST", "Comment"];
         this.amountControl.valueChanges.distinctUntilChanged()
             .subscribe(amount => {
-                (<CompanyTransaction>this.newTransaction).gst = amount /10;
+                (<CompanyTransaction>this.newTransaction).gst = Utility.round(amount /10);
             });
     }
 
@@ -55,6 +55,7 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
         this.skipDuplication = this.modalComponents.toArray().find(x => {
             return x.name == "skipDuplication";
         });
+        this.skipDuplication.show();
     }
 
     initialNewTransaction(){
@@ -62,6 +63,8 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
     }
 
     submit(){
+        this.newTransaction.userId = "roger";
+        this.newTransaction.transactionType = "Company";
         this.store.addTransaction(<CompanyTransaction>this.newTransaction)
             .subscribe(res => {
                     this.initialNewTransaction();
@@ -72,13 +75,31 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
             );
     }
 
+     submitImportedTran(){
+        this.newTransaction.userId = "roger";
+        this.newTransaction.transactionType = "Company";
+        this.store.addTransaction(<CompanyTransaction>this.newTransaction)
+            .subscribe(res => {
+                    this.initialNewTransaction();
+                    this.bulkDone++;
+                    this.proceedingImport();
+                },
+                err => {
+                    alert(err);
+                }
+            );
+    }
+
     proceedingImport(){
-        super.proceedingImport();
-        var t = this.store.findTransactionByDateAmount(this.newTransaction);
-        if(t != null){
-            this.duplicationMessage = t.toString();
-            //this.duplicationModal.show();
-        }
+        // super.proceedingImport();
+        // var t = this.store.findTransactionByDateAmount(this.newTransaction);
+        // if(t != null){
+        //     this.duplicationMessage = t.toString();
+        //     this.skipDuplication.show();
+        // }
+        // else{
+        // }
+        this.skipDuplication.show();
     }
 
     skipAllDuplication(){

@@ -173,6 +173,7 @@ export abstract class Transactions implements OnInit {
         this.initialNewTransaction();
         this.newTransaction.amount = tran.amount;
         this.newTransaction.date = moment(tran.date).format("YYYY-MM-DD");
+        this.newTransaction.comment = tran.comment;
     }
 
     setCategory(value: string){

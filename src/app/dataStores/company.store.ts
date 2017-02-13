@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { List, Iterable } from 'immutable';
 import { BehaviorSubject } from 'rxjs/RX';
+import { Utility } from "../common/utility";
 import { CompanyTransaction } from '../model/company-transaction';
 import { Category } from '../model/category';
 import { CompanyService } from '../service/company.service';
@@ -93,13 +94,13 @@ export class CompanyStore {
                 c.subCategories = [sub];
             }
 
-            this._categories.getValue().push(c);
+            this._categories.next(this._categories.getValue().push(c).toList());
         }
     }
 
     findTransactionByDateAmount(tran: CompanyTransaction): CompanyTransaction {
         return this._transactions.getValue().find(t => {
-            return t.amount == tran.amount && t.date == tran.date;
+            return t.amount == tran.amount && Utility.sameDate(t.date, tran.date);
         });
     }
 

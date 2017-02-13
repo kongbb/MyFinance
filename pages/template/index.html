@@ -8,7 +8,7 @@
   <a class="btn btn-default" (click)="signinGoogle()"><span class="fa fa-user"></span> Sign in with Google</a>
   <!--<a class="btn btn-default" routerLink="/signup" routerLinkActive="active"><span class="fa fa-user"></span> Local Signup</a>-->
 </div>
-<div [hidden]="!store.isSignedIn" class="jumbotron text-center">
+<div class="jumbotron text-center">
   <h1><span class="fa fa-lock"></span> Welcome Back {{store.userName | async}}</h1>
   <a class="btn btn-default" routerLink="/finance" routerLinkActive="active"><span class="fa fa-user"></span> Finance</a>
 </div>
