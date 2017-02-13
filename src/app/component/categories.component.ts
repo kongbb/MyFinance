@@ -12,7 +12,6 @@ import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
                     <label>Category</label>
                     <select class="form-control" [(ngModel)]="category" [formControl]="categoryControl" required>
                         <option *ngFor="let c of bestGuessCategories;let i = index" [selected]="i == 0" [value]="c.name">{{c.name}}</option>
-                        <option value="">Create new Category</option>
                     </select>
                 </div>
                 
@@ -25,7 +24,6 @@ import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
                     <label>Sub-Category</label>
                     <select class="form-control" [(ngModel)]="subCategory">
                         <option *ngFor="let s of subCategories; let i = index" [selected]="i == 0" [value]="s.name">{{s.name}}</option>
-                        <option value="">Create new SubCategory</option>
                     </select>
                 </div>
                 

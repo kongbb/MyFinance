@@ -11,7 +11,7 @@
                 {{message}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="confirmAction()">OK</button>
+                <button *ngFor = "let text of buttons;let i = index" type="button" class="btn btn-primary" (click)="takeActions(i)">{{text}}</button>
                 <button type="button" class="btn btn-secondary" (click)="confirmModal.hide()">Cancel</button>
             </div>
         </div>

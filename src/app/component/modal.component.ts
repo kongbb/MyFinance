@@ -11,7 +11,13 @@ export class ModalComponent {
     public confirmModal: ModalDirective
 
     @Input()
+    name: string;
+
+    @Input()
     title: string;
+
+    @Input()
+    buttons: string[];
 
     @Input()
     message: string;
@@ -19,7 +25,7 @@ export class ModalComponent {
     @Input()
     arg: any;
 
-    @Output() action = new EventEmitter();
+    @Output() actions = new EventEmitter();
 
     public defaultActionOnly: boolean;
 
@@ -31,10 +37,8 @@ export class ModalComponent {
         this.confirmModal.hide();
     }
 
-    confirmAction(){
-        if(!this.defaultActionOnly){
-            this.action.next();
-        }
-        this.confirmModal.hide();
+    public takeActions(i: number){
+        this.hide();
+        this.actions.emit({index: i});
     }
 }

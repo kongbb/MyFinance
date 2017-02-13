@@ -71,7 +71,7 @@ export class CompanyStore {
                 res => {
                     this._transactions.next(this._transactions.getValue().push(tran).sort(this.sortByDate).toList());
                     this._balance.next(this._balance.getValue() + tran.amount);
-                    //update category
+                    this.updateCategory(tran);
                 },
                 err => {
                     console.log("Error saving company categories");
@@ -80,7 +80,24 @@ export class CompanyStore {
         return this.transactions;
     }
 
-    FindTransactionByDateAmount(tran: CompanyTransaction): CompanyTransaction {
+    updateCategory(tran: CompanyTransaction){
+        //TypeScript doesn't support & operator against Boolean type
+        //for now, only add new Category, not updating existing Categories' data
+        var c = this._categories.getValue().find(c => {
+            return c.name == tran.category && ((c.isIncome && tran.amount > 0) || (!c.isIncome && tran.amount < 0));
+        });
+        if(c == null){
+            c = Category.create(tran.category, tran.amount > 0, null, 1, tran.amount);
+            if(tran.subCategory != null){
+                var sub = Category.create(tran.subCategory, tran.amount, null, 1, tran.amount);
+                c.subCategories = [sub];
+            }
+
+            this._categories.getValue().push(c);
+        }
+    }
+
+    findTransactionByDateAmount(tran: CompanyTransaction): CompanyTransaction {
         return this._transactions.getValue().find(t => {
             return t.amount == tran.amount && t.date == tran.date;
         });

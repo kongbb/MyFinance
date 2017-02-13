@@ -14,7 +14,7 @@
             <div class="panel-body">
                 <div  class="form-group">
                     <input type="file" class="form-control" ng2FileSelect [uploader]="stockBulkUploader" />
-                    <modal (action)="confirmImport()"></modal>
+                    <modal name="importConfirmation" [buttons]="['OK']" (actions)="confirmImport()"></modal>
                 </div>
             </div>
         </div>

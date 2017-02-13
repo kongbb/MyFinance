@@ -1,5 +1,5 @@
 const moment = require('moment');
-import { OnInit, ViewChild } from "@angular/core";
+import { OnInit, ViewChild, ViewChildren, QueryList } from "@angular/core";
 import { ModalComponent } from "../component/modal.component";
 import { Transaction } from '../model/transaction';
 import { TransactionType } from '../model/transaction-type';
@@ -11,10 +11,10 @@ import { FileUploader } from "ng2-file-upload";
 const URL = "api/company";
 export abstract class Transactions implements OnInit {
     // variable store all the transactions
-    protected allTransactions: Transaction[];
+    // protected allTransactions: Transaction[];
     
     // variable for the right side transactions table
-    protected transactions: Transaction[];
+    // protected transactions: Transaction[];
     
     // temporary transactions extracted from upload file
     protected importingTrans: Transaction[];
@@ -44,8 +44,12 @@ export abstract class Transactions implements OnInit {
     
     public transactionBulkUploader: FileUploader = new FileUploader({url: URL});
 
-    @ViewChild(ModalComponent)
-    public modalConfirmation: ModalComponent;
+
+    @ViewChildren(ModalComponent)
+    public modalComponents: QueryList<ModalComponent>;
+
+    protected importConfirmation: ModalComponent;
+    protected skipDuplication: ModalComponent;
 
     // variable for filter in the all transactions table
     protected showTransactionsMode = DisplayTransaactionsMode.currentQuarter;
@@ -93,39 +97,11 @@ export abstract class Transactions implements OnInit {
     onSuccessItem(item: any, response: string, status: number, headers: any){
         var trades = JSON.parse(response);
         this.transactionBulkUploader.clearQueue();
-        this.modalConfirmation.title = "Confirmation";
-        
-        //mock up data
-        this.importingTrans = new Array<Transaction>();
-        
-        var transaction = new Transaction();
-        transaction.amount = -39;
-        transaction.date = Utility.getToday();
-        this.importingTrans.push(transaction);
-
-        transaction = new Transaction();
-        transaction.amount = 87;
-        transaction.date = new Date(2017, 1, 25);
-        this.importingTrans.push(transaction);
-
-        transaction = new Transaction();
-        transaction.amount = -6;
-        transaction.date = new Date(2017, 1, 13);
-        this.importingTrans.push(transaction);
-
-        transaction = new Transaction();
-        transaction.amount = 87;
-        transaction.date = new Date(2017, 1, 25);
-        this.importingTrans.push(transaction);
-
-        transaction = new Transaction();
-        transaction.amount = 90;
-        transaction.date = Utility.getToday();
-        this.importingTrans.push(transaction);
-
-        this.modalConfirmation.message = "Proceed to import " + this.importingTrans.length + "  transactions.";
-        this.modalConfirmation.defaultActionOnly = false;
-        this.modalConfirmation.show();
+        this.importConfirmation.title = "Confirmation";
+        this.importingTrans = trades;
+        this.importConfirmation.message = "Proceed to import " + this.importingTrans.length + "  transactions.";
+        this.importConfirmation.defaultActionOnly = false;
+        this.importConfirmation.show();
     }
     
     onErrorItem(item: any, response: string, status: number, headers: any){
@@ -176,6 +152,19 @@ export abstract class Transactions implements OnInit {
         }
     }
 
+    skipDuplicationActions($event){
+        switch ($event.index){
+            case 0:
+                this.skipImport();
+                break;
+            case 1:
+                this.skipAllDuplication();
+                break;
+            default:
+                throw new Error("Wrong event!")
+        }
+    }
+
     proceedingImport(){
         if(this.bulkDone == this.bulkTotal){
             this.stopImport();
@@ -200,10 +189,6 @@ export abstract class Transactions implements OnInit {
         this.newTransaction.category = value.category;
         this.newTransaction.subCategory = value.subCategory;
     }
-
-    // setDate(results: Date){
-    //     this.newTransaction.date = results;
-    // }
     
     showTransactions(number){
         this.showTransactionsMode = number;
@@ -211,15 +196,9 @@ export abstract class Transactions implements OnInit {
         
     protected abstract submit();
     
-    // reset(){
-    //     // this.subCategories = [];
-    //     this.initialNewTransaction();
-    // }
-    
     resetCategory(){
         this.newTransaction.category = null;
         this.newTransaction.subCategory = null;
-        // this.subCategories = null;
     }
 }
 

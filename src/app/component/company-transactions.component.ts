@@ -1,5 +1,5 @@
 const moment = require('moment');
-import { Component, OnChanges, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, OnChanges, ViewChild, AfterViewInit, QueryList } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { NgIf } from '@angular/common';
 import { Observable } from "rxjs/Observable";
@@ -24,12 +24,12 @@ import { CompanyService } from "../service/company.service";
     providers: [MatchTransaction,  CompanyStore, CompanyService]
 })
 
-export class CompanyTransactionsComponent extends Transactions{
+export class CompanyTransactionsComponent extends Transactions implements AfterViewInit{
     amountControl: FormControl = new FormControl();
     gst: number;
     
-    @ViewChild("duplicationModal")
-    public duplicationModal: ModalDirective;
+    // @ViewChild("duplicationModal")
+    // public duplicationModal: ModalDirective;
 
     protected duplicationMessage: string;
 
@@ -46,6 +46,15 @@ export class CompanyTransactionsComponent extends Transactions{
             .subscribe(amount => {
                 (<CompanyTransaction>this.newTransaction).gst = amount /10;
             });
+    }
+
+    ngAfterViewInit(){
+        this.importConfirmation = this.modalComponents.toArray().find(x => {
+            return x.name == "importConfirmation";
+        });
+        this.skipDuplication = this.modalComponents.toArray().find(x => {
+            return x.name == "skipDuplication";
+        });
     }
 
     initialNewTransaction(){
@@ -65,10 +74,17 @@ export class CompanyTransactionsComponent extends Transactions{
 
     proceedingImport(){
         super.proceedingImport();
-        var t = this.store.FindTransactionByDateAmount(this.newTransaction);
+        var t = this.store.findTransactionByDateAmount(this.newTransaction);
         if(t != null){
             this.duplicationMessage = t.toString();
-            this.duplicationModal.show();
+            //this.duplicationModal.show();
+        }
+    }
+
+    skipAllDuplication(){
+        super.skipAllDuplication();
+        for(var i = this.bulkDone; i < this.bulkTotal; i++){
+
         }
     }
     
