@@ -96,6 +96,12 @@ export class CompanyStore {
 
             this._categories.next(this._categories.getValue().push(c).toList());
         }
+        else if(tran.subCategory != null){
+            if(c.subCategories.find(sc => sc.name == tran.subCategory)){
+                var sub = Category.create(tran.subCategory, tran.amount, null, 1, tran.amount);
+                c.subCategories.push(sub);
+            }
+        }
     }
 
     findTransactionByDateAmount(tran: CompanyTransaction): CompanyTransaction {

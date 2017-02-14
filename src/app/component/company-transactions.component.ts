@@ -31,7 +31,7 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
     // @ViewChild("duplicationModal")
     // public duplicationModal: ModalDirective;
 
-    protected duplicationMessage: string;
+    // protected duplicationMessage: string;
 
     constructor(protected store: CompanyStore,
                 protected matchTransactionPipe: MatchTransaction) {
@@ -55,7 +55,6 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
         this.skipDuplication = this.modalComponents.toArray().find(x => {
             return x.name == "skipDuplication";
         });
-        this.skipDuplication.show();
     }
 
     initialNewTransaction(){
@@ -75,7 +74,7 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
             );
     }
 
-     submitImportedTran(){
+    submitImportedTran(){
         this.newTransaction.userId = "roger";
         this.newTransaction.transactionType = "Company";
         this.store.addTransaction(<CompanyTransaction>this.newTransaction)
@@ -90,24 +89,26 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
             );
     }
 
-    proceedingImport(){
-        // super.proceedingImport();
-        // var t = this.store.findTransactionByDateAmount(this.newTransaction);
-        // if(t != null){
-        //     this.duplicationMessage = t.toString();
-        //     this.skipDuplication.show();
-        // }
-        // else{
-        // }
-        this.skipDuplication.show();
-    }
+    // proceedingImport(){
+    //     super.proceedingImport();
+    //     var t = this.store.findTransactionByDateAmount(this.newTransaction);
+    //     if(t != null){
+    //         this.skipImport();
+    //         //I believe this is a bug in ng2-bootstrap Modal
+    //         //Modal is not displaying correctly trigger through EventEmitter
+    //         //this.duplicationMessage = t.toString();
+    //         //this.skipDuplication.show();
+    //     }
+    //     else{
+    //     }
+    // }
 
-    skipAllDuplication(){
-        super.skipAllDuplication();
-        for(var i = this.bulkDone; i < this.bulkTotal; i++){
+    // skipAllDuplication(){
+    //     super.skipAllDuplication();
+    //     for(var i = this.bulkDone; i < this.bulkTotal; i++){
 
-        }
-    }
+    //     }
+    // }
     
     delete(tran){
         this.store.deleteTransaction(tran)
@@ -121,8 +122,7 @@ export class CompanyTransactionsComponent extends Transactions implements AfterV
             );
     }
 
-    // reset(){
-    //     // this.subCategories = [];
-    //     this.initialNewTransaction();
-    // }
+    reset(){
+        this.initialNewTransaction();
+    }
 }

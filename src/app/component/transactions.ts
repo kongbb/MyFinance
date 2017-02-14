@@ -102,6 +102,7 @@ export abstract class Transactions implements OnInit {
         this.importConfirmation.message = "Proceed to import " + this.importingTrans.length + "  transactions.";
         this.importConfirmation.defaultActionOnly = false;
         this.importConfirmation.show();
+        // this.skipDuplication.show();
     }
     
     onErrorItem(item: any, response: string, status: number, headers: any){
@@ -172,6 +173,9 @@ export abstract class Transactions implements OnInit {
         var tran = this.importingTrans[this.bulkDone];
         this.initialNewTransaction();
         this.newTransaction.amount = tran.amount;
+        //update GST value here because if multiple transactions with same amount during importing,
+        //gst would be left as empty
+        this.newTransaction.gst = Math.round(tran.amount * 10) / 100;
         this.newTransaction.date = moment(tran.date).format("YYYY-MM-DD");
         this.newTransaction.comment = tran.comment;
     }
@@ -183,13 +187,6 @@ export abstract class Transactions implements OnInit {
     setSubCategory(value: string){
         this.newTransaction.subCategory = value;
     }
-
-    setValue(value: any){
-        this.newTransaction.amount = value.amount;
-        this.newTransaction.gst = value.gst;
-        this.newTransaction.category = value.category;
-        this.newTransaction.subCategory = value.subCategory;
-    }
     
     showTransactions(number){
         this.showTransactionsMode = number;
@@ -200,6 +197,10 @@ export abstract class Transactions implements OnInit {
     resetCategory(){
         this.newTransaction.category = null;
         this.newTransaction.subCategory = null;
+    }
+
+    reset(){
+        this.initialNewTransaction();
     }
 }
 

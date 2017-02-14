@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { HttpModule, JsonpModule } from "@angular/http";
+import { ModalModule } from "ng2-bootstrap";
 //import { InMemoryBackendService, SEED_DATA } from "angular2-in-memory-web-api";
 // import { InMemoryWebApiModule } from "angular2-in-memory-web-api";
 // modules
@@ -34,7 +35,7 @@ import { routing, appRoutingProviders } from "./route/app.router";
     JsonpModule,
     // InMemoryWebApiModule.forRoot(UserData),
     SharedModule,
-    FinanceModule
+    FinanceModule,
   ],
   declarations: [
     AppComponent,

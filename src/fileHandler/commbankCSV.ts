@@ -42,17 +42,21 @@ export class CommbankCSV {
 
     private transactionFromLine(str: string): Transaction{
         var vs = str.split(",");
-        return new Transaction(null, null, null, moment(vs[0], "DD/MM/YYYY").toDate(), this.parseFloat(vs[1]), this.parseFloat(vs[1]) / 10, null, null, vs[2], null);
+        return new Transaction(null, null, null, moment(vs[0], "DD/MM/YYYY").toDate(), this.parseFloat(vs[1]), this.parseFloat(vs[1]) / 10, null, null, this.removeDoubleQuotes(vs[2]), null);
     }
 
     private parseFloat(str: string): number{
+        var t: string = this.removeDoubleQuotes(str);
+        return parseFloat(t);
+    }
+
+    private removeDoubleQuotes(str: string): string{
         var t: string = str.trim();
         if (t.length >= 2 ){
             if(t[0] == '"' && t[t.length - 1] == '"'){
                 t = t.substring(1, t.length - 2);
             }
         }
-
-        return parseFloat(t);
+        return t;
     }
 }

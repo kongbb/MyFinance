@@ -138,7 +138,7 @@ export class Categories {
         // if(this.bestGuessCategories != null && this.bestGuessCategories.length > 0){
             if(this.category != this.bestGuessCategories[0].name){
                 this.category = this.bestGuessCategories[0].name;
-                this.handleCategoryChanged(this.category, amount);
+                this.handleCategoryChanged(this.category);
             }
         // }
         
@@ -146,13 +146,17 @@ export class Categories {
         // }
     }
 
-    protected handleCategoryChanged(newValue, amount){
-        if(newValue != "Create new Category"){
-            this.subCategories = this.bestGuessCategories.find(c => c.name == newValue && c.isIncome == amount > 0).subCategories;
+    protected handleCategoryChanged(newValue){
+        if(newValue == null){
+        }
+        else if(newValue != "Create new Category"){
+            this.subCategories = this.bestGuessCategories.find(c => c.name == newValue).subCategories;
             if(this.subCategories == null){
                 this.subCategories = [];
             }
-            this.subCategories.push(this.defaultSubCategory);
+            if(this.subCategories.find(sc => sc.name == "Create new SubCategory") == null){
+                this.subCategories.push(this.defaultSubCategory);
+            }
             // if(this.subCategories != null && this.subCategories.length > 0){
                 this.subCategory = this.subCategories[0].name;
             // }
@@ -176,12 +180,12 @@ export class Categories {
         });
         //remove category Subscribe due to that cause "Expression has changed after it is checked"
         //should be fixed by enable Production model
-        // this.categoryControl
-        //     .valueChanges
-        //     .distinctUntilChanged()
-        //     .subscribe(c => {
-        //         this.handleCategoryChanged(c);
-        // });
+        this.categoryControl
+            .valueChanges
+            .distinctUntilChanged()
+            .subscribe(c => {
+                this.handleCategoryChanged(c);
+        });
         this.newCategoryControl.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
