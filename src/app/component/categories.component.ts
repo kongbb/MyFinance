@@ -3,34 +3,13 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { List } from 'immutable';
 
+import Config from "../common/configuration";
 import { Category } from '../model/Category';
 import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
 
 @Component({
     selector: 'categories',
-    template: `<div [hidden]="!displayCategoryDropdown" class="form-group">
-                    <label>Category</label>
-                    <select class="form-control" [(ngModel)]="category" [formControl]="categoryControl" required>
-                        <option *ngFor="let c of bestGuessCategories;let i = index" [selected]="i == 0" [value]="c.name">{{c.name}}</option>
-                    </select>
-                </div>
-                
-                <div [hidden]="!displayNewCategoryInput" class="form-group">
-                    <label>New Category</label>
-                    <input class="form-control" [formControl]="newCategoryControl" placeholder="Enter new category" [(ngModel)]="newCategory">
-                </div>
-                
-                <div [hidden]="!displaySubCategoryDropdown" class="form-group">
-                    <label>Sub-Category</label>
-                    <select class="form-control" [(ngModel)]="subCategory">
-                        <option *ngFor="let s of subCategories; let i = index" [selected]="i == 0" [value]="s.name">{{s.name}}</option>
-                    </select>
-                </div>
-                
-                <div [hidden]="!displayCreateNewSubCategory" class="form-group">
-                    <label>New Sub-Category</label>
-                    <input class="form-control" [formControl]="newSubCategoryControl" placeholder="Enter new sub-category">
-                </div>`,
+    templateUrl: "../../pages/template/categories.html",
     providers: [BestGuessCategories],
 })
 
@@ -52,8 +31,8 @@ export class Categories {
 
     protected bestGuessCategories: Category[];
     private subCategories: Category[]
-    private defaultCategory: Category = Category.create("Create new Category", null, null, null, null);
-    private defaultSubCategory: Category = Category.create("Create new SubCategory", null, null, null, null);
+    private defaultCategory: Category = Category.create(Config.NewCategory, null, null, null, null);
+    private defaultSubCategory: Category = Category.create(Config.NewSubCategory, null, null, null, null);
 
     protected displayCategoryDropdown: boolean;
     protected displayNewCategoryInput: boolean;

@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { List, Iterable } from 'immutable';
 import { BehaviorSubject } from 'rxjs/RX';
 import { Utility } from "../common/utility";
+import Config from "../common/configuration";
 import { CompanyTransaction } from '../model/company-transaction';
 import { Category } from '../model/category';
 import { CompanyService } from '../service/company.service';
@@ -67,6 +68,9 @@ export class CompanyStore {
     }
 
     addTransaction(tran: CompanyTransaction){
+        if(tran.subCategory == Config.NewSubCategory){
+            tran.subCategory = null;
+        }
         this.service.save(tran)
             .subscribe(
                 res => {

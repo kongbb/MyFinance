@@ -1,0 +1,23 @@
+<div [hidden]="!displayCategoryDropdown" class="form-group">
+    <label>Category</label>
+    <select class="form-control" [(ngModel)]="category" [formControl]="categoryControl" required>
+        <option *ngFor="let c of bestGuessCategories;let i = index" [selected]="i == 0" [value]="c.name">{{c.name}}</option>
+    </select>
+</div>
+
+<div [hidden]="!displayNewCategoryInput" class="form-group">
+    <label>New Category</label>
+    <input class="form-control" [formControl]="newCategoryControl" placeholder="Enter new category" [(ngModel)]="newCategory">
+</div>
+
+<div [hidden]="!displaySubCategoryDropdown" class="form-group">
+    <label>Sub-Category</label>
+    <select class="form-control" [(ngModel)]="subCategory">
+        <option *ngFor="let s of subCategories; let i = index" [selected]="i == 0" [value]="s.name">{{s.name}}</option>
+    </select>
+</div>
+
+<div [hidden]="!displayCreateNewSubCategory" class="form-group">
+    <label>New Sub-Category</label>
+    <input class="form-control" [formControl]="newSubCategoryControl" placeholder="Enter new sub-category">
+</div>
