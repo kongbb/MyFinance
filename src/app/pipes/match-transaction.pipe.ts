@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { List } from 'immutable';
 import { Transaction } from '../model/transaction';
-import { CompanyTransaction } from '../model/company-transaction';
 import { Utility } from '../common/utility';
 
 @Pipe({

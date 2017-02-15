@@ -3,7 +3,6 @@ import { List } from 'immutable';
 
 import { Utility } from '../common/utility';
 import { Category } from '../model/category';
-import { CompanyTransaction } from '../model/company-transaction';
 
 @Pipe({
     name: 'bestGuessCategories',

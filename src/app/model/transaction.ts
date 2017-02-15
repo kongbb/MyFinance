@@ -33,19 +33,18 @@ export class Transaction {
     return this.displayTransactionDate + " " + this.displayCategory + " " + this.amount;
   }
   
-  static create(category, subCategory, date, amount) : Transaction{
+  static createTransaction(id, userId, transactionType, category, subCategory, date, amount, gst, comment, createdDate) : Transaction{
       var t = new Transaction();
+      t.id = id;
+      t.userId = userId;
+      t.transactionType = transactionType;
       t.category = category;
       t.subCategory = subCategory;
       t.date = date;
       t.amount = amount;
-      t.createdDate = new Date();
+      t.gst = gst;
+      t.comment = comment;
+      t.createdDate = createdDate;
       return t;
-  }
-
-  static createEmpty(): Transaction{
-    var t = new Transaction();
-    t.createdDate = new Date();
-    return t;
   }
 }

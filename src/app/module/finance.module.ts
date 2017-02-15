@@ -8,17 +8,13 @@ import { financeComponents, financePipes, financeDirectives } from "./finance.mo
 
 import { FinanceComponent } from "../component/finance.component";
 import { StocksComponent } from "../component/stocks.component";
-import { CompanyTransactionsComponent } from "../component/company-transactions.component";
-// import { HomeTransactionsComponent } from "../component/home-transactions.component";
+import { TransactionsComponent } from "../component/transactions.component";
 
 import { StockStore } from "../dataStores/stock.store";
 import { StockService } from "../service/stock.service";
 
-import { CompanyStore } from "../dataStores/company.store";
-import { CompanyService } from "../service/company.service";
-
-import { HomeStore } from "../dataStores/home.store";
-import { HomeService } from "../service/home.service";
+import { TransactionStore } from "../dataStores/transaction.store";
+import { TransactionService } from "../service/transaction.service";
 
 export const routerConfig : Routes = [
   { 
@@ -35,12 +31,8 @@ export const routerConfig : Routes = [
       },
       {
         path: "company",
-        component: CompanyTransactionsComponent,
-      },
-      // {
-      //   path: "home",
-      //   component: HomeTransactionsComponent,
-      // }
+        component: TransactionsComponent,
+      }
     ] 
   },
 ];
@@ -61,10 +53,8 @@ export const routerConfig : Routes = [
   providers: [
     StockStore,
     StockService,
-    CompanyStore,
-    CompanyService,
-    HomeStore,
-    HomeService
+    TransactionStore,
+    TransactionService
   ],
 })
 

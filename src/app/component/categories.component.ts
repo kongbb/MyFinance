@@ -27,7 +27,6 @@ export class Categories {
     categoryControl: FormControl = new FormControl();
     newCategoryControl: FormControl = new FormControl();
     newSubCategoryControl: FormControl = new FormControl();
-    newCategory: String;
 
     protected bestGuessCategories: Category[];
     private subCategories: Category[]

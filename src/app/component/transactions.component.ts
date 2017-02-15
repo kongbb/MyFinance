@@ -1,30 +1,42 @@
 const moment = require('moment');
-import { OnInit, ViewChild, ViewChildren, QueryList } from "@angular/core";
+import { OnInit, ViewChild, ViewChildren, QueryList, Component, OnChanges, AfterViewInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { NgIf } from '@angular/common';
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/RX";
+
+import { Utility } from "../common/utility";
+import { Category } from "../model/category";
+import { DataTable } from "./data-table.component";
+import { MatchTransaction } from "../pipes/match-transaction.pipe";
+import { BestGuessCategories } from "../pipes/best-guess-categories.pipe";
+import { TransactionStore } from "../dataStores/transaction.store";
+import { DateMatchTransactionPipe } from "../pipes/date-match.pipe";
+import { Categories } from "./categories.component";
+import { TransactionService } from "../service/transaction.service";
+
 import { ModalComponent } from "../component/modal.component";
 import { Transaction } from '../model/transaction';
-import { TransactionType } from '../model/transaction-type';
-import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
-import { Utility } from '../common/utility';
-import { Category } from '../model/category';
 import { FileUploader } from "ng2-file-upload";
 
 const URL = "api/company";
-export abstract class Transactions implements OnInit {
-    // variable store all the transactions
-    // protected allTransactions: Transaction[];
-    
-    // variable for the right side transactions table
-    // protected transactions: Transaction[];
-    
+
+@Component({
+    selector: "transactions",
+    templateUrl: "../../pages/template/transactions.html",
+    providers: [MatchTransaction,  TransactionStore, TransactionService]
+})
+
+export class TransactionsComponent implements OnInit, AfterViewInit {
+    public transactionBulkUploader: FileUploader = new FileUploader({url: URL});
     // temporary transactions extracted from upload file
     protected importingTrans: Transaction[];
-    
-    // variable store all the categories
-    protected categories: Category[];
-    
-    // variable for displaying corresponding subCategories
-    // protected subCategories: Category[] = [];
-    
+
+    protected isImporting: boolean;
+    protected bulkTotal: number;
+    protected bulkDone: number;
+    protected bulkSkipped: number;
+
     // model
     protected newTransaction: Transaction;
         
@@ -37,14 +49,6 @@ export abstract class Transactions implements OnInit {
     protected quarter: number;
     protected year: number;
 
-    protected isImporting: boolean;
-    protected bulkTotal: number;
-    protected bulkDone: number;
-    protected bulkSkipped: number;
-    
-    public transactionBulkUploader: FileUploader = new FileUploader({url: URL});
-
-
     @ViewChildren(ModalComponent)
     public modalComponents: QueryList<ModalComponent>;
 
@@ -53,6 +57,10 @@ export abstract class Transactions implements OnInit {
 
     // variable for filter in the all transactions table
     protected showTransactionsMode = DisplayTransaactionsMode.currentQuarter;
+
+    public alerts: any = [];
+
+    amountControl: FormControl = new FormControl();
 
     protected get quarterString(): string{
         return Utility.getQuarterStringFromQuarterNumber(this.quarter);
@@ -71,18 +79,23 @@ export abstract class Transactions implements OnInit {
         throw new Error("Should call actual method in child class. This is because no abstract property in TypeScript.")
     }
 
-    protected abstract initialNewTransaction();
-
-    public alerts: any = [];
-
-    constructor() {
+    constructor(protected store: TransactionStore,
+                protected matchTransactionPipe: MatchTransaction) {
+    }
+    
+    ngOnInit() {
         this.initialNewTransaction();
         var date = Utility.getToday();
         this.quarter = Utility.getQuarterNumber(date);
         this.year = Utility.getYearNumber(date);
-    }
-    
-    ngOnInit() {
+
+        this.columns = ["displayTransactionDate", "displayCategory", "amount", "gst", "comment"];
+        this.titles = ["Transaction Date", "Category", "Amount", "GST", "Comment"];
+        this.amountControl.valueChanges.distinctUntilChanged()
+            .subscribe(amount => {
+                (<Transaction>this.newTransaction).gst = Utility.round(amount /10);
+            });
+
         this.transactionBulkUploader.onSuccessItem = (item: any, response: string, status: number, headers: any) => {
             this.onSuccessItem(item, response, status, headers);
         };
@@ -94,6 +107,19 @@ export abstract class Transactions implements OnInit {
         }
     }
 
+    ngAfterViewInit(){
+        this.importConfirmation = this.modalComponents.toArray().find(x => {
+            return x.name == "importConfirmation";
+        });
+        this.skipDuplication = this.modalComponents.toArray().find(x => {
+            return x.name == "skipDuplication";
+        });
+    }
+
+    protected initialNewTransaction(){
+        this.newTransaction = new Transaction();
+    }
+
     onSuccessItem(item: any, response: string, status: number, headers: any){
         var trades = JSON.parse(response);
         this.transactionBulkUploader.clearQueue();
@@ -102,7 +128,6 @@ export abstract class Transactions implements OnInit {
         this.importConfirmation.message = "Proceed to import " + this.importingTrans.length + "  transactions.";
         this.importConfirmation.defaultActionOnly = false;
         this.importConfirmation.show();
-        // this.skipDuplication.show();
     }
     
     onErrorItem(item: any, response: string, status: number, headers: any){
@@ -135,12 +160,6 @@ export abstract class Transactions implements OnInit {
         }
     }
 
-    submitImportedTran(){
-        this.submit();
-        this.bulkDone++;
-        this.proceedingImport();
-    }
-
     skipImport(){
         this.bulkSkipped++;
         this.bulkDone++;
@@ -148,9 +167,7 @@ export abstract class Transactions implements OnInit {
     }
 
     skipAllDuplication(){
-        for(var i = this.bulkDone; i < this.bulkTotal; i++){
-
-        }
+        throw new Error("not implemented")
     }
 
     skipDuplicationActions($event){
@@ -192,7 +209,33 @@ export abstract class Transactions implements OnInit {
         this.showTransactionsMode = number;
     }
         
-    protected abstract submit();
+    submit(){
+        this.newTransaction.userId = "roger";
+        this.newTransaction.transactionType = "Company";
+        this.store.addTransaction(<Transaction>this.newTransaction)
+            .subscribe(res => {
+                    this.initialNewTransaction();
+                },
+                err => {
+                    alert(err);
+                }
+            );
+    }
+    
+    submitImportedTran(){
+        this.newTransaction.userId = "roger";
+        this.newTransaction.transactionType = "Company";
+        this.store.addTransaction(<Transaction>this.newTransaction)
+            .subscribe(res => {
+                    this.initialNewTransaction();
+                    this.bulkDone++;
+                    this.proceedingImport();
+                },
+                err => {
+                    alert(err);
+                }
+            );
+    }
     
     resetCategory(){
         this.newTransaction.category = null;

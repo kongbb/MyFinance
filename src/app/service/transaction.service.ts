@@ -3,13 +3,11 @@ import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { List } from 'immutable';
 import { ITransactionsService } from './iservice';
-import { CompanyTransaction } from '../model/company-transaction';
+import { Transaction } from '../model/transaction';
 import { Category } from '../model/category';
-import { CompanyTransactions } from './mock-data';
-import { CompanyCategories } from './mock-data';
 
 @Injectable()
-export class CompanyService implements ITransactionsService{
+export class TransactionService implements ITransactionsService{
 
     constructor(protected http: Http){}
 
@@ -21,13 +19,13 @@ export class CompanyService implements ITransactionsService{
         return this.http.get('/api/company/categories');
     }
     
-    save(transaction: CompanyTransaction){
+    save(transaction: Transaction){
         var headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=utf-8');
         return this.http.post('/api/company/transactions', JSON.stringify(transaction),{headers}).share();
     }
 
-    delete(transaction: CompanyTransaction){
+    delete(transaction: Transaction){
         // var headers = new Headers();
         // headers.append('Content-Type', 'application/json; charset=utf-8');
         // return this.http.post('/company/transactions', JSON.stringify(transaction),{headers}).share();

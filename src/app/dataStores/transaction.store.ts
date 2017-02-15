@@ -5,20 +5,20 @@ import { List, Iterable } from 'immutable';
 import { BehaviorSubject } from 'rxjs/RX';
 import { Utility } from "../common/utility";
 import Config from "../common/configuration";
-import { CompanyTransaction } from '../model/company-transaction';
+import { Transaction } from '../model/transaction';
 import { Category } from '../model/category';
-import { CompanyService } from '../service/company.service';
+import { TransactionService } from '../service/transaction.service';
 
 @Injectable()
-export class CompanyStore {
-    private _transactions : BehaviorSubject<List<CompanyTransaction>> 
+export class TransactionStore {
+    private _transactions : BehaviorSubject<List<Transaction>> 
         = new BehaviorSubject(List([]));
     private _categories : BehaviorSubject<List<Category>> 
         = new BehaviorSubject(List([]));
     private _balance: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     
-    constructor(private service: CompanyService){
+    constructor(private service: TransactionService){
         this.loadInitialData();
     }
     
@@ -39,7 +39,7 @@ export class CompanyStore {
             .subscribe(
                 res => {
                     let ts = (<Object[]>res.json()).map((t: any) =>
-                    CompanyTransaction.createCompanyTransaction(t._id, t.category, t.subCategory, t.date, t.amount, t.gst, t.comment, t.createdDate));
+                    Transaction.createTransaction(t._id, null, null, t.category, t.subCategory, t.date, t.amount, t.gst, t.comment, t.createdDate));
                     this._transactions.next(List(ts));
                     this._balance.next(ts.reduce(function(a, b){return a + b.amount}, 0));
                 },
@@ -67,7 +67,7 @@ export class CompanyStore {
             );
     }
 
-    addTransaction(tran: CompanyTransaction){
+    addTransaction(tran: Transaction){
         if(tran.subCategory == Config.NewSubCategory){
             tran.subCategory = null;
         }
@@ -85,7 +85,7 @@ export class CompanyStore {
         return this.transactions;
     }
 
-    updateCategory(tran: CompanyTransaction){
+    updateCategory(tran: Transaction){
         //TypeScript doesn't support & operator against Boolean type
         //for now, only add new Category, not updating existing Categories' data
         var c = this._categories.getValue().find(c => {
@@ -108,17 +108,17 @@ export class CompanyStore {
         }
     }
 
-    findTransactionByDateAmount(tran: CompanyTransaction): CompanyTransaction {
+    findTransactionByDateAmount(tran: Transaction): Transaction {
         return this._transactions.getValue().find(t => {
             return t.amount == tran.amount && Utility.sameDate(t.date, tran.date);
         });
     }
 
-    compareTransaction(target: CompanyTransaction, transaction: CompanyTransaction) : boolean{
+    compareTransaction(target: Transaction, transaction: Transaction) : boolean{
         return target.amount == transaction.amount && target.date == transaction.date;
     }
 
-    deleteTransaction(tran: CompanyTransaction){
+    deleteTransaction(tran: Transaction){
         this.service.delete(tran)
             .subscribe(
                 res => {
@@ -132,7 +132,7 @@ export class CompanyStore {
         return this.transactions;
     }
 
-    sortByDate(a: CompanyTransaction, b: CompanyTransaction){
+    sortByDate(a: Transaction, b: Transaction){
         if(a.date > b.date){
             return -1;
         }
