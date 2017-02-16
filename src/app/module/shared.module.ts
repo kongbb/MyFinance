@@ -11,7 +11,6 @@ import { DatepickerModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 // components
 import { DataTable } from "../component/data-table.component";
-import { NavigationComponent } from "../component/navigation.component";
 import { DateInputComponent } from "../component/date-input.component";
 import { ModalComponent } from "../component/modal.component";
 
@@ -31,13 +30,11 @@ import { ModalComponent } from "../component/modal.component";
   ],
   declarations: [
     DataTable,
-    NavigationComponent,
     DateInputComponent,
     ModalComponent,
   ],
   exports: [
       DataTable,
-      NavigationComponent,
       DateInputComponent,
       ModalComponent,
       FileUploadModule,

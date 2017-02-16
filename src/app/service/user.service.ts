@@ -8,7 +8,9 @@ import { Observable }     from "rxjs/Observable";
 
 @Injectable()
 export class UserService {
-  constructor (private http: Http) {}
+  constructor (private http: Http) {
+    
+  }
 
   private usersUrl = "app/users";  // URL to web API
 
@@ -40,5 +42,12 @@ export class UserService {
       error.status ? `${error.status} - ${error.statusText}` : "Server error";
     console.error(errMsg); // log to console instead
     return Observable.throw(errMsg);
+  }
+
+  getUser(name: string){
+    return Observable.of(JSON.stringify({
+      name: "roger",
+      transactionTypeList: ["Bonheur Station", "Home"]
+    }));
   }
 }

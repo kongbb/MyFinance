@@ -9,8 +9,7 @@ import { BestGuessCategories } from '../pipes/best-guess-categories.pipe';
 
 @Component({
     selector: 'categories',
-    templateUrl: "../../pages/template/categories.html",
-    providers: [BestGuessCategories],
+    templateUrl: "../../pages/template/categories.html"
 })
 
 export class Categories {

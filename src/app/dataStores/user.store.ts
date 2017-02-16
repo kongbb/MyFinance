@@ -1,25 +1,52 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { List } from 'immutable';
-import { BehaviorSubject } from 'rxjs/RX';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { List } from "immutable";
+import { BehaviorSubject } from "rxjs/RX";
 import { GoogleApiHelper } from "../common/gapi";
+import { UserService } from "../service/user.service";
 //gapi is imported at page level by script tag, don't know how to load from SystemJs
 // declare var gapi: any;
 
 @Injectable()
-export class LoginStatusStore {
-  constructor(private google: GoogleApiHelper){
-    
+export class UserStore {
+  private _transactionTypes : BehaviorSubject<string[]> 
+        = new BehaviorSubject([]);
+
+  constructor(private service: UserService){
+    this.loadData();
   }
 
   get isSignedIn(){
-    return this.google.isSignedIn;
+    return false;
+    //return this.google.isSignedIn;
   }
 
   get userName(){
-    return this.google.userName;
+    return Observable.of("roger");
+    // return this.google.userName;
   }
+
+  get transactionTypes(){
+    return new Observable(fn => this._transactionTypes.subscribe(fn));
+  }
+
+  loadData(){
+    this.service.getUser("roger")
+        .subscribe(
+            res => {
+                let user = {
+                  name: "roger",
+                  transactionTypeList: ["company", "Home"]
+                };
+                this._transactionTypes.next(user.transactionTypeList);
+            },
+            err => {
+                console.log("Error retrieving user data!")
+            }
+        );
+    }
+
 
   // init(){
   //   this.google.load();

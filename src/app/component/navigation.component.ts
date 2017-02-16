@@ -1,13 +1,57 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Routes, Router, RouterModule, Route } from "@angular/router";
+import { UserStore } from "../dataStores/user.store";
+
+import { FinanceComponent } from "../component/finance.component";
+import { StocksComponent } from "../component/stocks.component";
+import { TransactionsComponent } from "../component/transactions.component";
+import { HomeComponent } from "../component/home.component";
+import { TransactionStoreResolver } from "../resolver/transaction.store.resolver";
 
 @Component({
     selector: 'navigation',
     templateUrl: "../../pages/template/navigation.html"
 })
 
-export class NavigationComponent {
-    @Output() navigation = new EventEmitter();
-    setPage(page: string){
-        this.navigation.next(page);
+export class NavigationComponent implements OnInit {
+    constructor(private store: UserStore, private router: Router){
     }
+
+    ngOnInit(){
+        // need to find a way to dynamically add new routes not reset
+        // reset will remove all routes defined in root level
+        // if we do following 2 lines, there is only one TransactionComponent instance
+        // not created per route
+        // this.router.config.push(this.routerConfig);
+        // this.router.resetConfig(this.router.config);
+        this.router.resetConfig(this.routerConfig);
+    }
+
+    private routerConfig : Routes = [
+        { 
+            path: "finance", 
+            component: FinanceComponent, 
+            children: [
+                {
+                    path: "",
+                    component: StocksComponent
+                },
+                {
+                    path: "stock",
+                    component: StocksComponent,
+                },
+                {
+                    path: "transactions/:type",
+                    component: TransactionsComponent,
+                    resolve: {
+                        store: TransactionStoreResolver
+                    }
+                }
+            ]
+        },
+        { 
+            path: "", 
+            component: HomeComponent,
+        }]
+    ;
 }

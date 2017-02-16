@@ -3,7 +3,7 @@ import bodyParser = require("body-parser");
 import { Request, Response, Application } from "express";
 import { IndexRoute } from "./route/index.route";
 import { StockRouter } from "./route/stock.route";
-import { CompanyRouter } from "./route/company.route";
+import { TransactionsRouter } from "./route/transactions.route";
 var BearerStrategy = require("passport-http-bearer").Strategy;
 var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 import * as express from "express";
@@ -76,8 +76,8 @@ class Server {
     var stockRouter = new StockRouter().getRouter();
     this.app.use("/api/stocks", stockRouter);
 
-    var companyRoute = new CompanyRouter().getRouter();
-    this.app.use("/api/company", companyRoute);
+    var transRoute = new TransactionsRouter().getRouter();
+    this.app.use("/api/transactions", transRoute);
 
   }
 

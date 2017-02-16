@@ -8,7 +8,7 @@ import { Transaction } from "../model/transaction";
 import bodyParser = require('body-parser');
 import * as moment from 'moment';
 
-export class CompanyRouter{
+export class TransactionsRouter{
     
     private router: Router;
     private controller: TransactionController;
@@ -16,9 +16,9 @@ export class CompanyRouter{
     constructor(){
         this.router = Router();
         this.controller = new TransactionController();
-        this.router.get("/transactions", (req: Request, res: Response) => this.getTransactions(req, res));
-        this.router.get("/categories", (req: Request, res: Response) => this.getCategories(req, res));
-        this.router.post("/transactions", (req: Request, res: Response) => this.postTransaction(req, res));
+        this.router.get("/:type", (req: Request, res: Response) => this.getTransactions(req, res));
+        this.router.get("/:type/categories", (req: Request, res: Response) => this.getCategories(req, res));
+        this.router.post("/transaction", (req: Request, res: Response) => this.postTransaction(req, res));
         this.router.post("/", upload.single('file'), (req: Request, res: Response) => this.uploadTransactionsCSV(req, res));
     }
 
@@ -35,7 +35,8 @@ export class CompanyRouter{
     }
 
     getTransactions(req: express.Request, res: express.Response){
-        this.controller.getTransactions("roger", "Company").then((data) => {
+        var type = req.params.type;
+        this.controller.getTransactions("roger", type).then((data) => {
             res.status(200).json(data);
         }).catch((err) => {
             res.status(400).json(err);
@@ -43,7 +44,8 @@ export class CompanyRouter{
     }
 
     getCategories(req: express.Request, res: express.Response){
-        this.controller.getCategories("roger", "Company").then((data) => {
+        var type = req.params.type;
+        this.controller.getCategories("roger", type).then((data) => {
             res.status(200).json(data);
         }).catch((err) => {
             res.status(400).json(err);

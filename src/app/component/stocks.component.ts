@@ -7,9 +7,9 @@ import { FileUploader } from "ng2-file-upload";
 const URL = "api/stocks";
 @Component({
     selector: "stocks",
-    templateUrl: "../../pages/template/stocks.html",
-    providers: [StockStore, StockService]
+    templateUrl: "../../pages/template/stocks.html"
 })
+
 export class StocksComponent implements OnInit{
     errorMessage: string;
     // variable for what needs to be displayed in the table

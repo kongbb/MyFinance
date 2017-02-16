@@ -1,16 +1,15 @@
 import { Component, ViewChild, OnInit, OnDestroy } from "@angular/core";
-import { LoginStatusStore } from "../dataStores/login-status.store";
+import { UserStore } from "../dataStores/user.store";
 import { GoogleApiHelper } from "../common/gapi";
 
 @Component({
     selector: "home",
-    templateUrl: "../../pages/template/index.html",
-    providers: [LoginStatusStore, GoogleApiHelper]
+    templateUrl: "../../pages/template/index.html"
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
     public userName: string;
-    constructor(private store: LoginStatusStore){
+    constructor(private store: UserStore){
     }
 
     ngOnInit(){
@@ -23,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         
     }
 
-    signInGoogle(){
+    login(){
 
     }
 }

@@ -9,20 +9,22 @@ import { Category } from '../model/category';
 @Injectable()
 export class TransactionService implements ITransactionsService{
 
-    constructor(protected http: Http){}
+    constructor(protected http: Http){
+        
+    }
 
-    getTransactions(){
-        return this.http.get('/api/company/transactions');
+    getTransactions(type: string){
+        return this.http.get('/api/transactions/' + type);
     }
     
-    getCategories(){
-        return this.http.get('/api/company/categories');
+    getCategories(type: string){
+        return this.http.get('/api/transactions/' + type + '/categories');
     }
     
     save(transaction: Transaction){
         var headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=utf-8');
-        return this.http.post('/api/company/transactions', JSON.stringify(transaction),{headers}).share();
+        return this.http.post('/api/transactions/transaction', JSON.stringify(transaction),{headers}).share();
     }
 
     delete(transaction: Transaction){

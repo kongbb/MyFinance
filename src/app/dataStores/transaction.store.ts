@@ -18,7 +18,7 @@ export class TransactionStore {
     private _balance: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     
-    constructor(private service: TransactionService){
+    constructor(private service: TransactionService, private type: string){
         this.loadInitialData();
     }
     
@@ -35,7 +35,7 @@ export class TransactionStore {
     }
 
     loadInitialData(){
-        this.service.getTransactions()
+        this.service.getTransactions(this.type)
             .subscribe(
                 res => {
                     let ts = (<Object[]>res.json()).map((t: any) =>
@@ -44,11 +44,11 @@ export class TransactionStore {
                     this._balance.next(ts.reduce(function(a, b){return a + b.amount}, 0));
                 },
                 err => {
-                    console.log("Error retrieving company transactions!")
+                    console.log("Error retrieving transactions!")
                 }
             );
         
-        this.service.getCategories()
+        this.service.getCategories(this.type)
             .subscribe(
                 res => {
                     let cs = (<Object[]>res.json()).map((c: any) =>{

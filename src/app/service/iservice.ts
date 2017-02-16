@@ -4,9 +4,9 @@ import { List } from 'immutable';
 import { Transaction } from '../model/Transaction';
 
 export interface ITransactionsService {
-    getCategories();
+    getCategories(type: string);
     
-    getTransactions();
+    getTransactions(type: string);
     
     save(trancation : Transaction);
 }

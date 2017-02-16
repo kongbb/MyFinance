@@ -10,10 +10,14 @@ import { FinanceComponent } from "../component/finance.component";
 import { StocksComponent } from "../component/stocks.component";
 import { TransactionsComponent } from "../component/transactions.component";
 
+import { MatchTransaction } from "../pipes/match-transaction.pipe";
+import { BestGuessCategories } from "../pipes/best-guess-categories.pipe";
+import { DateMatchTransactionPipe } from "../pipes/date-match.pipe";
 import { StockStore } from "../dataStores/stock.store";
 import { StockService } from "../service/stock.service";
 
 import { TransactionStore } from "../dataStores/transaction.store";
+import { TransactionStoreResolver } from "../resolver/transaction.store.resolver";
 import { TransactionService } from "../service/transaction.service";
 
 export const routerConfig : Routes = [
@@ -25,14 +29,14 @@ export const routerConfig : Routes = [
         path: "",
         component: StocksComponent
       },
-      {
-        path: "stock",
-        component: StocksComponent,
-      },
-      {
-        path: "company",
-        component: TransactionsComponent,
-      }
+      // {
+      //   path: "stock",
+      //   component: StocksComponent,
+      // },
+      // {
+      //   path: "company",
+      //   component: TransactionsComponent,
+      // }
     ] 
   },
 ];
@@ -50,11 +54,16 @@ export const routerConfig : Routes = [
   exports: [
     FinanceComponent
   ],
+  entryComponents: [TransactionsComponent],
   providers: [
     StockStore,
     StockService,
     TransactionStore,
-    TransactionService
+    TransactionStoreResolver,
+    TransactionService,
+    MatchTransaction,
+    DateMatchTransactionPipe,
+    BestGuessCategories
   ],
 })
 

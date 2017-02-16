@@ -3,7 +3,8 @@ import { OnInit, ViewChild, ViewChildren, QueryList, Component, OnChanges, After
 import { FormControl } from "@angular/forms";
 import { NgIf } from '@angular/common';
 import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/RX";
+import { BehaviorSubject, Subscription } from "rxjs/RX";
+import { ActivatedRoute } from "@angular/router";
 
 import { Utility } from "../common/utility";
 import { Category } from "../model/category";
@@ -19,16 +20,13 @@ import { ModalComponent } from "../component/modal.component";
 import { Transaction } from '../model/transaction';
 import { FileUploader } from "ng2-file-upload";
 
-const URL = "api/company";
-
 @Component({
     selector: "transactions",
     templateUrl: "../../pages/template/transactions.html",
-    providers: [MatchTransaction,  TransactionStore, TransactionService]
 })
 
 export class TransactionsComponent implements OnInit, AfterViewInit {
-    public transactionBulkUploader: FileUploader = new FileUploader({url: URL});
+    public transactionBulkUploader: FileUploader;
     // temporary transactions extracted from upload file
     protected importingTrans: Transaction[];
 
@@ -60,7 +58,12 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
 
     public alerts: any = [];
 
+    private transactionType: string;
+    private url: string;
+
     amountControl: FormControl = new FormControl();
+
+    protected store: TransactionStore;
 
     protected get quarterString(): string{
         return Utility.getQuarterStringFromQuarterNumber(this.quarter);
@@ -79,11 +82,15 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
         throw new Error("Should call actual method in child class. This is because no abstract property in TypeScript.")
     }
 
-    constructor(protected store: TransactionStore,
+    constructor(private activatedRoute: ActivatedRoute,
                 protected matchTransactionPipe: MatchTransaction) {
     }
     
     ngOnInit() {
+        this.transactionType = this.activatedRoute.snapshot.params["type"];
+        this.url = "api/transactions/" + this.transactionType;
+        this.store = this.activatedRoute.snapshot.data["store"];
+        this.transactionBulkUploader = new FileUploader({url: this.url});
         this.initialNewTransaction();
         var date = Utility.getToday();
         this.quarter = Utility.getQuarterNumber(date);
