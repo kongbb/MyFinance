@@ -15,9 +15,9 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li *ngFor="let type of store.transactionTypes | async">
-                    <a routerLink="/finance/transactions/{{type}}" routerLinkActive="active"><i class="fa fa-edit fa-fw"></i>{{type}}</a>
+                    <a routerLink="/finance/transactions/{{type.code}}" routerLinkActive="active"><i class="fa fa-edit fa-fw"></i>{{type.displayName}}</a>
                 </li>
-                <li>
+                <li *ngIf="store.stockTracking">
                     <a routerLink="/finance/stock" routerLinkActive="active"><i class="fa fa-edit fa-fw"></i> Stock</a>
                 </li>
                 <li>

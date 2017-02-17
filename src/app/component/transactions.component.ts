@@ -8,6 +8,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import { Utility } from "../common/utility";
 import { Category } from "../model/category";
+import { TransactionType } from "../model/transaction-type";
 import { DataTable } from "./data-table.component";
 import { MatchTransaction } from "../pipes/match-transaction.pipe";
 import { BestGuessCategories } from "../pipes/best-guess-categories.pipe";
@@ -58,7 +59,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
 
     public alerts: any = [];
 
-    private transactionType: string;
+    private transactionType: TransactionType;
     private url: string;
 
     amountControl: FormControl = new FormControl();
@@ -87,21 +88,26 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     }
     
     ngOnInit() {
-        this.transactionType = this.activatedRoute.snapshot.params["type"];
-        this.url = "api/transactions/" + this.transactionType;
+        this.transactionType = this.activatedRoute.snapshot.data["type"];
         this.store = this.activatedRoute.snapshot.data["store"];
+        this.url = "api/transactions/" + this.transactionType.code;
         this.transactionBulkUploader = new FileUploader({url: this.url});
         this.initialNewTransaction();
         var date = Utility.getToday();
         this.quarter = Utility.getQuarterNumber(date);
         this.year = Utility.getYearNumber(date);
 
-        this.columns = ["displayTransactionDate", "displayCategory", "amount", "gst", "comment"];
-        this.titles = ["Transaction Date", "Category", "Amount", "GST", "Comment"];
-        this.amountControl.valueChanges.distinctUntilChanged()
-            .subscribe(amount => {
-                (<Transaction>this.newTransaction).gst = Utility.round(amount /10);
-            });
+        this.columns = ["displayTransactionDate", "displayCategory", "amount", "comment"];
+        this.titles = ["Transaction Date", "Category", "Amount", "Comment"];
+        if(this.transactionType.includeGST){
+            this.columns.splice(3, 0, "gst");
+            this.titles.splice(3, 0, "GST");
+
+            this.amountControl.valueChanges.distinctUntilChanged()
+                .subscribe(amount => {
+                    (<Transaction>this.newTransaction).gst = Utility.round(amount /10);
+                });
+        }
 
         this.transactionBulkUploader.onSuccessItem = (item: any, response: string, status: number, headers: any) => {
             this.onSuccessItem(item, response, status, headers);

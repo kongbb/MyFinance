@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { List, Iterable } from 'immutable';
-import { BehaviorSubject } from 'rxjs/RX';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { List, Iterable } from "immutable";
+import { BehaviorSubject } from "rxjs/RX";
 import { Utility } from "../common/utility";
 import Config from "../common/configuration";
-import { Transaction } from '../model/transaction';
-import { Category } from '../model/category';
-import { TransactionService } from '../service/transaction.service';
+import { Transaction } from "../model/transaction";
+import { TransactionType } from "../model/transaction-type";
+import { Category } from "../model/category";
+import { TransactionService } from "../service/transaction.service";
 
 @Injectable()
 export class TransactionStore {
@@ -18,7 +19,7 @@ export class TransactionStore {
     private _balance: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     
-    constructor(private service: TransactionService, private type: string){
+    constructor(private service: TransactionService, private type: TransactionType){
         this.loadInitialData();
     }
     
@@ -35,7 +36,7 @@ export class TransactionStore {
     }
 
     loadInitialData(){
-        this.service.getTransactions(this.type)
+        this.service.getTransactions(this.type.code)
             .subscribe(
                 res => {
                     let ts = (<Object[]>res.json()).map((t: any) =>
@@ -48,7 +49,7 @@ export class TransactionStore {
                 }
             );
         
-        this.service.getCategories(this.type)
+        this.service.getCategories(this.type.code)
             .subscribe(
                 res => {
                     let cs = (<Object[]>res.json()).map((c: any) =>{
@@ -139,6 +140,5 @@ export class TransactionStore {
         else{
             return 1;
         }
-
     }
 }

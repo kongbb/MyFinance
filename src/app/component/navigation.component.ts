@@ -1,12 +1,14 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Routes, Router, RouterModule, Route } from "@angular/router";
-import { UserStore } from "../dataStores/user.store";
+import { NgIf } from '@angular/common';
 
+import { UserStore } from "../dataStores/user.store";
 import { FinanceComponent } from "../component/finance.component";
 import { StocksComponent } from "../component/stocks.component";
 import { TransactionsComponent } from "../component/transactions.component";
 import { HomeComponent } from "../component/home.component";
 import { TransactionStoreResolver } from "../resolver/transaction.store.resolver";
+import { TransactionTypeResolver } from "../resolver/transaction.type.resolver";
 
 @Component({
     selector: 'navigation',
@@ -44,7 +46,8 @@ export class NavigationComponent implements OnInit {
                     path: "transactions/:type",
                     component: TransactionsComponent,
                     resolve: {
-                        store: TransactionStoreResolver
+                        store: TransactionStoreResolver,
+                        type: TransactionTypeResolver
                     }
                 }
             ]

@@ -18,6 +18,7 @@ import { StockService } from "../service/stock.service";
 
 import { TransactionStore } from "../dataStores/transaction.store";
 import { TransactionStoreResolver } from "../resolver/transaction.store.resolver";
+import { TransactionTypeResolver } from "../resolver/transaction.type.resolver";
 import { TransactionService } from "../service/transaction.service";
 
 export const routerConfig : Routes = [
@@ -60,6 +61,7 @@ export const routerConfig : Routes = [
     StockService,
     TransactionStore,
     TransactionStoreResolver,
+    TransactionTypeResolver,
     TransactionService,
     MatchTransaction,
     DateMatchTransactionPipe,
@@ -67,5 +69,4 @@ export const routerConfig : Routes = [
   ],
 })
 
-// export default class FinanceModule { }
 export class FinanceModule { }

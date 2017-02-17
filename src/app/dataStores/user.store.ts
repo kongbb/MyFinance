@@ -5,13 +5,16 @@ import { List } from "immutable";
 import { BehaviorSubject } from "rxjs/RX";
 import { GoogleApiHelper } from "../common/gapi";
 import { UserService } from "../service/user.service";
+import { User } from "../model/user";
+import { TransactionType } from "../model/transaction-type";
 //gapi is imported at page level by script tag, don't know how to load from SystemJs
 // declare var gapi: any;
 
 @Injectable()
 export class UserStore {
-  private _transactionTypes : BehaviorSubject<string[]> 
-        = new BehaviorSubject([]);
+  private _user : BehaviorSubject<User> 
+        = new BehaviorSubject(new User());
+  private _transactionTypes: BehaviorSubject<Array<TransactionType>> = new BehaviorSubject(new Array());
 
   constructor(private service: UserService){
     this.loadData();
@@ -27,19 +30,34 @@ export class UserStore {
     // return this.google.userName;
   }
 
+  get user(){
+    return new Observable(fn => this._user.subscribe(fn));
+  }
+
   get transactionTypes(){
     return new Observable(fn => this._transactionTypes.subscribe(fn));
+  }
+
+  get stockTracking(){
+    return new Observable(fn => this._user.subscribe(fn));
+  }
+
+  getTransactionType(code: string): TransactionType{
+    return this._transactionTypes.value.find(x => x.code == code);
   }
 
   loadData(){
     this.service.getUser("roger")
         .subscribe(
             res => {
-                let user = {
-                  name: "roger",
-                  transactionTypeList: ["company", "Home"]
-                };
-                this._transactionTypes.next(user.transactionTypeList);
+                let user = new User();
+                user.name = "Roger";
+                user.stockTracking = true;
+                var t1 = new TransactionType("company", "Bonheur Station", true);
+                var t2 = new TransactionType("home", "Home", false);
+                user.transactionTypes = [t1, t2];
+                this._user.next(user);
+                this._transactionTypes.next(user.transactionTypes);
             },
             err => {
                 console.log("Error retrieving user data!")

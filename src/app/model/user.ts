@@ -1,6 +1,7 @@
+import { TransactionType } from "./transaction-type";
+
 export class User {
-  constructor(
-    public email: string,
-    public passport: string
-  ) { }
+  name: string;
+  stockTracking: boolean;
+  transactionTypes: Array<TransactionType>
 }
