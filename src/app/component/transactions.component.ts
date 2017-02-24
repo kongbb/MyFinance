@@ -238,7 +238,6 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
         this.newTransaction.transactionType = this.transactionType.code;
         this.store.addTransaction(<Transaction>this.newTransaction)
             .subscribe(res => {
-                    this.initialNewTransaction();
                     this.bulkDone++;
                     this.proceedingImport();
                 },

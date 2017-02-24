@@ -17,6 +17,9 @@ export class TransactionStore {
     private _categories : BehaviorSubject<List<Category>> 
         = new BehaviorSubject(List([]));
     private _balance: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+    private transactionsObservable : Observable<{}>;
+    private categoriesObservable : Observable<{}>;
+    private balanceObservable : Observable<{}>;
 
     
     constructor(private service: TransactionService, private type: TransactionType){
@@ -24,15 +27,24 @@ export class TransactionStore {
     }
     
     get transactions(){
-        return new Observable(fn => this._transactions.subscribe(fn));
+        if(!this.transactionsObservable){
+            this.transactionsObservable = new Observable(fn => this._transactions.subscribe(fn)).share();
+        }
+        return this.transactionsObservable;
     }
     
     get categories(){
-        return new Observable(fn => this._categories.subscribe(fn));
+        if(!this.categoriesObservable){
+            this.categoriesObservable = new Observable(fn => this._categories.subscribe(fn)).share();
+        }
+        return this.categoriesObservable;
     }
 
     get balance(){
-        return new Observable(fn => this._balance.subscribe(fn));
+        if(!this.balanceObservable){
+            this.balanceObservable = new Observable(fn => this._balance.subscribe(fn)).share();
+        }
+        return this.balanceObservable;
     }
 
     loadInitialData(){

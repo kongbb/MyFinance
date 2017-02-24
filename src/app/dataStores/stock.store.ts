@@ -15,6 +15,11 @@ export class StockStore {
         = new BehaviorSubject(List([]));
     private _profit: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     private _holdingProfit: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+    
+    private soldTransObservable : Observable<{}>;
+    private holdingsObservable : Observable<{}>;
+    private profitObservable : Observable<{}>;
+    private holdingProfitObservable : Observable<{}>;
 
     
     constructor(private service: StockService){
@@ -22,19 +27,31 @@ export class StockStore {
     }
     
     get soldTransactions(){
-        return new Observable(fn => this._soldTransactions.subscribe(fn));
+        if(!this.soldTransObservable){
+            this.soldTransObservable = new Observable(fn => this._soldTransactions.subscribe(fn)).share();
+        }
+        return this.soldTransObservable;
     }
     
     get holdingStocks(){
-        return new Observable(fn => this._holdingStocks.subscribe(fn));
+        if(!this.holdingsObservable){
+            this.holdingsObservable = new Observable(fn => this._holdingStocks.subscribe(fn)).share();
+        }
+        return this.holdingsObservable;
     }
 
     get profit(){
-        return new Observable(fn => this._profit.subscribe(fn));
+        if(!this.profitObservable){
+            this.profitObservable = new Observable(fn => this._profit.subscribe(fn)).share();
+        }
+        return this.profitObservable;
     }
 
     get holdingProfit(){
-        return new Observable(fn => this._holdingProfit.subscribe(fn));
+        if(!this.holdingProfitObservable){
+            this.holdingProfitObservable = new Observable(fn => this._holdingProfit.subscribe(fn)).share();
+        }
+        return this.holdingProfitObservable;
     }
 
     importStockTrades(filePath: string){
