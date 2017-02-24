@@ -25,3 +25,14 @@ Google client secret
 
 typings upgrade
 npm i -g typings
+
+mongodb migration
+--rename collection
+db.CompanyTransactions.renameCollection("Transactions")
+--add field
+db.Transactions.update({}, {$set: {"transactionType": "company"}}, false, true)
+--move docs
+var docs = db.HomeTransactions.find();
+docs.forEach(function(doc){
+    db.Transactions.insert(doc);
+});
