@@ -42,7 +42,7 @@ export class CommbankCSV {
 
     private transactionFromLine(str: string): Transaction{
         var vs = str.split(",");
-        return new Transaction(null, null, null, moment(vs[0], "DD/MM/YYYY").toDate(), this.parseFloat(vs[1]), this.parseFloat(vs[1]) / 10, null, null, this.removeDoubleQuotes(vs[2]), null);
+        return new Transaction(null, null, null, moment(vs[0], "DD/MM/YYYY").toDate(), this.parseFloat(vs[1]), Math.round(this.parseFloat(vs[1]) * 10) / 100, null, null, this.removeDoubleQuotes(vs[2]), null);
     }
 
     private parseFloat(str: string): number{
