@@ -21,7 +21,7 @@ import { ModalComponent } from "./modal.component";
                         </tr>
                     </tbody>
                 </table>
-                <modal (action)="doDelete()"></modal>
+                <modal [buttons]="['OK']" (actions)="doDelete()"></modal>
             </div>`,
 })
 

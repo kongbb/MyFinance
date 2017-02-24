@@ -52,7 +52,7 @@ export class TransactionStore {
             .subscribe(
                 res => {
                     let ts = (<Object[]>res.json()).map((t: any) =>
-                    Transaction.createTransaction(t._id, null, null, t.category, t.subCategory, t.date, t.amount, t.gst, t.comment, t.createdDate));
+                    Transaction.createTransaction(t.id, null, null, t.category, t.subCategory, t.date, t.amount, t.gst, t.comment, t.createdDate));
                     this._transactions.next(List(ts));
                     this._balance.next(ts.reduce(function(a, b){return a + b.amount}, 0));
                 },

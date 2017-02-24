@@ -20,6 +20,7 @@ export class TransactionsRouter{
         this.router.get("/:type/categories", (req: Request, res: Response) => this.getCategories(req, res));
         this.router.post("/transaction", (req: Request, res: Response) => this.postTransaction(req, res));
         this.router.post("/", upload.single('file'), (req: Request, res: Response) => this.uploadTransactionsCSV(req, res));
+        this.router.delete("/:id", (req: Request, res: Response) => this.deleteTransaction(req, res));
     }
 
     public getRouter(){
@@ -72,7 +73,15 @@ export class TransactionsRouter{
         }).catch((err) => {
             res.status(400).json(err);
         });
-    } 
+    }
+
+    deleteTransaction(req: express.Request, res: express.Response) {
+        this.controller.deleteTransaction(req.params.id).then(() => {
+            res.status(200).json({message: "delete Successfully"});
+        }).catch((err) => {
+            res.status(400).json(err);
+        })
+    }
 }
 
 // var jsonParser = bodyParser.json();
