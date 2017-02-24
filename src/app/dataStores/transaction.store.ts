@@ -63,7 +63,7 @@ export class TransactionStore {
                     this._categories.next(List(cs));
                 },
                 err => {
-                    console.log("Error retrieving company categories");
+                    console.log("Error retrieving categories");
                 }
             );
     }
@@ -80,7 +80,7 @@ export class TransactionStore {
                     this.updateCategory(tran);
                 },
                 err => {
-                    console.log("Error saving company categories");
+                    console.log("Error saving categories");
                 }
             );
         return this.transactions;
@@ -127,7 +127,7 @@ export class TransactionStore {
                     this._balance.next(this._balance.getValue() - tran.amount);
                 },
                 err => {
-                    console.log("Error deleting company categories");
+                    console.log("Error deleting transaction");
                 }
             );
         return this.transactions;

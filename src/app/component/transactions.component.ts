@@ -60,7 +60,6 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     public alerts: any = [];
 
     private transactionType: TransactionType;
-    private url: string;
 
     amountControl: FormControl = new FormControl();
 
@@ -90,8 +89,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.transactionType = this.activatedRoute.snapshot.data["type"];
         this.store = this.activatedRoute.snapshot.data["store"];
-        this.url = "api/transactions/" + this.transactionType.code;
-        this.transactionBulkUploader = new FileUploader({url: this.url});
+        this.transactionBulkUploader = new FileUploader({url: "api/transactions"});
         this.initialNewTransaction();
         var date = Utility.getToday();
         this.quarter = Utility.getQuarterNumber(date);
@@ -224,7 +222,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
         
     submit(){
         this.newTransaction.userId = "roger";
-        this.newTransaction.transactionType = "Company";
+        this.newTransaction.transactionType = this.transactionType.code;
         this.store.addTransaction(<Transaction>this.newTransaction)
             .subscribe(res => {
                     this.initialNewTransaction();
@@ -237,7 +235,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     
     submitImportedTran(){
         this.newTransaction.userId = "roger";
-        this.newTransaction.transactionType = "Company";
+        this.newTransaction.transactionType = this.transactionType.code;
         this.store.addTransaction(<Transaction>this.newTransaction)
             .subscribe(res => {
                     this.initialNewTransaction();
