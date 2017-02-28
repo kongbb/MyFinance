@@ -84,8 +84,8 @@ export class TransactionStore {
         if(tran.subCategory == Config.NewSubCategory){
             tran.subCategory = null;
         }
-        this.service.save(tran)
-            .subscribe(
+        var obs = this.service.save(tran);
+        obs.subscribe(
                 res => {
                     this._transactions.next(this._transactions.getValue().push(tran).sort(this.sortByDate).toList());
                     this._balance.next(this._balance.getValue() + tran.amount);
@@ -95,7 +95,7 @@ export class TransactionStore {
                     console.log("Error saving categories");
                 }
             );
-        return this.transactions;
+        return obs;
     }
 
     updateCategory(tran: Transaction){
@@ -114,7 +114,7 @@ export class TransactionStore {
             this._categories.next(this._categories.getValue().push(c).toList());
         }
         else if(tran.subCategory != null){
-            if(c.subCategories.find(sc => sc.name == tran.subCategory)){
+            if(c.subCategories.find(sc => sc.name == tran.subCategory) == null){
                 var sub = Category.create(tran.subCategory, tran.amount, null, 1, tran.amount);
                 c.subCategories.push(sub);
             }

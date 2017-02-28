@@ -228,7 +228,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
                     this.initialNewTransaction();
                 },
                 err => {
-                    alert(err);
+                    this.alerts.push(Utility.createAlert("danger", err, 5000));
                 }
             );
     }
@@ -242,7 +242,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
                     this.proceedingImport();
                 },
                 err => {
-                    alert(err);
+                    this.alerts.push(Utility.createAlert("danger", err, 5000));
                 }
             );
     }
