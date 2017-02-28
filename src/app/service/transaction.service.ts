@@ -31,6 +31,6 @@ export class TransactionService implements ITransactionsService{
         // var headers = new Headers();
         // headers.append('Content-Type', 'application/json; charset=utf-8');
         // return this.http.post('/company/transactions', JSON.stringify(transaction),{headers}).share();
-        return this.http.delete('api/company/transactions/' + transaction.id);
+        return this.http.delete('api/transactions/' + transaction.id);
     }
 }

@@ -39,4 +39,8 @@ export class TransactionController{
       }
     });
   }
+
+  deleteTransaction(id: string){
+    return this.repository.deleteTransaction(id);
+  }
 }
