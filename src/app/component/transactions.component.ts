@@ -246,6 +246,10 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
                 }
             );
     }
+
+    delete(args){
+        this.store.deleteTransaction(args)
+    }
     
     resetCategory(){
         this.newTransaction.category = null;
