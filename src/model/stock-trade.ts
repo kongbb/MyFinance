@@ -3,6 +3,7 @@ import * as moment from 'moment';
 export class StockTrade {
   code: string;
   confirmationNumber: string;
+  reference: string;
   orderNumber: string;
   buySell: string;
   units: number;
@@ -13,12 +14,12 @@ export class StockTrade {
   settlementDate: Date;
   confirmationStatus: string;
 
-  constructor(trade: StockTrade, code?: string, orderNumber?: string, buySell?: string, units?: number, price?: number, 
+  constructor(trade: StockTrade, code?: string, reference?: string, buySell?: string, units?: number, price?: number, 
     brokerage?: number, netAmount?: number, tradeDate?: string, confirmationNumber?: string, 
     confirmationStatus?: string, settlementDate?: string){
       if(trade){
         this.code = trade.code;
-        this.orderNumber = trade.orderNumber;
+        this.reference = trade.reference;
         this.buySell = trade.buySell;
         this.units = trade.units;
         this.price = trade.price;
@@ -31,7 +32,7 @@ export class StockTrade {
       }
       else{  
         this.code = code;
-        this.orderNumber = orderNumber;
+        this.reference = reference;
         this.buySell = buySell;
         this.units = units;
         this.price = price;
@@ -45,7 +46,7 @@ export class StockTrade {
   }
 
   clone(): StockTrade{
-    return new StockTrade(null, this.code, this.orderNumber, this.buySell, 
+    return new StockTrade(null, this.code, this.reference, this.buySell, 
       this.units, this.price, this.brokerage, this.netAmount, moment(this.tradeDate).format("DD/MM/YYYY"), 
       this.confirmationNumber, this.confirmationStatus, moment(this.settlementDate).format("DD/MM/YYYY"));
   }

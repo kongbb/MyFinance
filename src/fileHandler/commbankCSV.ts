@@ -33,6 +33,15 @@ export class CommbankCSV {
     }
 
     private isValidLine(str: string): boolean{
+        var i, flag = false;
+        for(i = 0; i < str.length; i++){
+            if(str[i] == "\""){
+                flag = !flag;
+            }
+            if(str[i] == "," && flag){
+                str = str.substr(0, i) + " " + str.substr(i + 1, str.length - i - 1);
+            }
+        }
         var vs = str.split(",");
         if(vs.length < 4){
             return false;

@@ -11,22 +11,19 @@ export class StockRepository{
     // if create a single object by new Model(), then save(), it's fine
     var stockTrades = trades.map(function(t: StockTrade){
       return {
-        confirmationNumber: t.confirmationNumber,
-        orderNumber: t.orderNumber,
+        reference: t.reference,
         security: t.code,
         buySell: t.buySell,
         units: t.units,
         price: t.price,
         brokerage: t.brokerage,
         netAmount: t.netAmount,
-        tradeDate: t.tradeDate,
-        settlementDate: t.settlementDate,
-        confirmationStatus: t.confirmationStatus
+        tradeDate: t.tradeDate
       };
     });
     
     return Promise.filter(stockTrades,function(trade){
-      return StockTradeDB.findOneAsync({confirmationNumber: trade.confirmationNumber}).then(function(doc){
+      return StockTradeDB.findOneAsync({reference: trade.reference}).then(function(doc){
         return doc == null;
       });
     }).then(function(trades){
@@ -40,10 +37,10 @@ export class StockRepository{
   }
 
   public getStockTrades(){
-    return StockTradeDB.find().sort({tradeDate: 1})
+    return StockTradeDB.find().sort({tradeDate: 1, buySell: 1})
         .lean().exec().then(function(trans){
             return Promise.map(trans, (t)=> {
-              return new StockTrade(null, t.security, t.orderNumber, t.buySell, t.units, t.price, t.brokerage, t.netAmount, t.tradeDate, t.confirmationNumber, t.confirmationStatus, t.settlementDate);
+              return new StockTrade(null, t.security, t.reference, t.buySell, t.units, t.price, t.brokerage, t.netAmount, t.tradeDate, null, null, null);
             });
         });
   }
