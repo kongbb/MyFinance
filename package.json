@@ -8,7 +8,7 @@
     "start": "node ./bin/www",
     "devhome": "concurrently \"code ..\\MyFinance \" \"npm run grunt watch \" \"mongod.exe --dbpath ./mongodb/data --nojournal \" \"node ./bin/www\" \"backup.bat \"",
     "devcompany": "concurrently \"npm run grunt watch \" \"node ./bin/www\" \"mongod.exe --dbpath ./mongodb/data --nojournal \" ",
-    "demo": "concurrently \"mongod.exe --dbpath ./mongodb/data \" \"./bin/www\" ",
+    "demo": "concurrently \"mongod.exe --dbpath ./mongodb/data \" \"node ./bin/www\" ",
     "db": "mongod.exe --dbpath ./mongodb/data",
     "lite": "lite-server",
     "tsc": "tsc",
